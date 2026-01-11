@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Quran Teacher Finder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Find a Quran Teacher Near You</h2>
 
+  <!-- Filters -->
+  <div class="filters">
+    <label for="gender">Gender:</label>
+    <select id="gender">
+      <option value="all">All</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+
+    <label for="area">Area:</label>
+    <select id="area">
+      <option value="all">All</option>
+      <option value="Addis Ababa">Addis Ababa</option>
+      <option value="Dire Dawa">Dire Dawa</option>
+      <option value="Mekelle">Mekelle</option>
+    </select>
+  </div>
+
+  <!-- Teacher list -->
+  <div id="teacher-list"></div>
+
+  <button onclick="closeApp()">Close Mini App</button>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
