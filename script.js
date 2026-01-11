@@ -39,4 +39,23 @@ function renderTeachers() {
       Experience: ${t.experience} years<br>
       <button onclick="contactTeacher('${t.name}')">Contact</button>
     `;
-    teacherList
+    teacherListDiv.appendChild(card);
+  });
+}
+
+// Contact button (for now just alert)
+function contactTeacher(name) {
+  alert(`You clicked to contact ${name}`);
+}
+
+// Filters change
+genderSelect.addEventListener("change", renderTeachers);
+areaSelect.addEventListener("change", renderTeachers);
+
+// Initial render
+renderTeachers();
+
+// Close Mini App
+function closeApp() {
+  tg.close();
+}
