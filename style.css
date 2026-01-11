@@ -1,31 +1,91 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #F9F9F9;
   text-align: center;
   padding: 20px;
+  color: #333;
 }
 
 h2 {
+  color: #2E8B57;
   margin-bottom: 20px;
 }
 
 .filters {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 select {
-  margin: 0 10px;
-  padding: 5px;
-}
-
-.teacher-card {
+  padding: 8px 12px;
+  border-radius: 6px;
   border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-  text-align: left;
-  border-radius: 5px;
+  font-size: 16px;
 }
 
+#teacher-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+/* Teacher card styling */
+.teacher-card {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 15px 20px;
+  text-align: left;
+  transition: transform 0.2s;
+}
+
+.teacher-card:hover {
+  transform: scale(1.02);
+}
+
+/* Teacher info */
+.teacher-card strong {
+  font-size: 18px;
+  color: #2E8B57;
+}
+
+.teacher-card p {
+  margin: 5px 0;
+}
+
+/* Contact button */
 .teacher-card button {
   margin-top: 10px;
-  padding: 5px 10px;
+  padding: 8px 14px;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  background-color: #4682B4;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.teacher-card button:hover {
+  background-color: #2E5C9C;
+}
+
+/* Close button */
+button.close-btn {
+  margin-top: 25px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: #FFD700;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button.close-btn:hover {
+  background-color: #E6C200;
 }
