@@ -1,91 +1,80 @@
 body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background-color: #F9F9F9;
-  text-align: center;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #fff;
+  margin: 0;
+}
+
+.container {
+  max-width: 350px;
+  margin: 80px auto;
   padding: 20px;
-  color: #333;
-}
-
-h2 {
-  color: #2E8B57;
-  margin-bottom: 20px;
-}
-
-.filters {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-select {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-}
-
-#teacher-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 10px;
-}
-
-/* Teacher card styling */
-.teacher-card {
-  background-color: #FFFFFF;
+  background: #1e293b;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  padding: 15px 20px;
-  text-align: left;
-  transition: transform 0.2s;
 }
 
-.teacher-card:hover {
-  transform: scale(1.02);
+h1, h2 {
+  text-align: center;
 }
 
-/* Teacher info */
-.teacher-card strong {
-  font-size: 18px;
-  color: #2E8B57;
-}
-
-.teacher-card p {
-  margin: 5px 0;
-}
-
-/* Contact button */
-.teacher-card button {
+input, select, button {
+  width: 100%;
+  padding: 10px;
   margin-top: 10px;
-  padding: 8px 14px;
-  font-size: 15px;
-  border: none;
   border-radius: 6px;
-  background-color: #4682B4;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.teacher-card button:hover {
-  background-color: #2E5C9C;
-}
-
-/* Close button */
-button.close-btn {
-  margin-top: 25px;
-  padding: 10px 20px;
-  border-radius: 8px;
   border: none;
-  background-color: #FFD700;
+}
+
+button {
+  background: #22c55e;
+  color: #000;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
 
-button.close-btn:hover {
-  background-color: #E6C200;
+.link {
+  text-align: center;
+  margin-top: 10px;
+}
+
+a {
+  color: #22c55e;
+  text-decoration: none;
+}
+
+.hidden {
+  display: none;
+}
+
+/* SIDE MENU */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -200px;
+  width: 200px;
+  height: 100%;
+  background: #020617;
+  padding-top: 60px;
+  transition: 0.3s;
+}
+
+.side-menu a {
+  display: block;
+  padding: 15px;
+  color: #fff;
+}
+
+.side-menu.open {
+  left: 0;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #020617;
+}
+
+.top-bar button {
+  margin-right: 10px;
 }
