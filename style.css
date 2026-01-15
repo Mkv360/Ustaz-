@@ -1,80 +1,98 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: #fff;
   margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #020617, #0f172a);
+  color: #fff;
 }
 
 .container {
-  max-width: 350px;
-  margin: 80px auto;
-  padding: 20px;
+  width: 90%;
+  max-width: 320px;
+  margin: 70px auto;
+  padding: 18px;
   background: #1e293b;
-  border-radius: 10px;
-}
-
-h1, h2 {
+  border-radius: 16px;
   text-align: center;
 }
 
-input, select, button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 6px;
-  border: none;
+h1 {
+  font-size: 20px;
+  margin-bottom: 6px;
 }
 
+.subtitle {
+  font-size: 13px;
+  color: #cbd5f5;
+  margin-bottom: 20px;
+}
+
+/* INPUTS */
+input, select {
+  width: 100%;
+  padding: 9px 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+}
+
+/* BUTTON */
 button {
+  width: 70%;
+  padding: 9px;
+  margin: 16px auto 0;
+  display: block;
+  border-radius: 20px;
   background: #22c55e;
   color: #000;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
   cursor: pointer;
 }
 
+/* LINKS */
 .link {
-  text-align: center;
-  margin-top: 10px;
+  margin-top: 14px;
+  font-size: 13px;
 }
 
-a {
+.link span {
   color: #22c55e;
-  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
 }
 
+/* AUTH SLIDER */
+.auth-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 360px;
+}
+
+.auth-card {
+  position: absolute;
+  width: 100%;
+  transition: transform 0.4s ease;
+}
+
+.login-card {
+  transform: translateX(0);
+}
+
+.signup-card {
+  transform: translateX(100%);
+}
+
+.auth-card.active {
+  transform: translateX(0);
+}
+
+.auth-card.hidden-left {
+  transform: translateX(-100%);
+}
+
+/* EXTRA */
 .hidden {
   display: none;
-}
-
-/* SIDE MENU */
-.side-menu {
-  position: fixed;
-  top: 0;
-  left: -200px;
-  width: 200px;
-  height: 100%;
-  background: #020617;
-  padding-top: 60px;
-  transition: 0.3s;
-}
-
-.side-menu a {
-  display: block;
-  padding: 15px;
-  color: #fff;
-}
-
-.side-menu.open {
-  left: 0;
-}
-
-.top-bar {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background: #020617;
-}
-
-.top-bar button {
-  margin-right: 10px;
 }
