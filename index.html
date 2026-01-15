@@ -2,18 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<script src="https://telegram.org/js/telegram-web-script.js"></script>
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-<link rel="stylesheet" href="style.css">
-<script src="script.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 
   <title>Quran Ustaz Finder</title>
-
-  <!-- Telegram WebApp SDK (EXTERNAL) -->
-  
- 
 </head>
 <body>
 
@@ -21,65 +18,56 @@
     <h1>Quran Ustaz Finder</h1>
     <p class="subtitle">Find a trusted Quran teacher near you</p>
 
-    <div class="auth-wrapper">
+    <div class="card login-card active">
+      <form>
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button type="button" onclick="login()">Login</button>
+      </form>
 
-      <!-- LOGIN -->
-      <div class="auth-card login-card active">
-        <form>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <button type="button" onclick="login()">Login</button>
-        </form>
+      <p class="link">
+        Don’t have an account?
+        <span onclick="showSignup()">Sign up</span>
+      </p>
+    </div>
 
-        <p class="link">
-          Don’t have an account?
-          <span onclick="showSignup()">Sign up</span>
-        </p>
-      </div>
+    <div class="card signup-card">
+      <form>
+        <select id="userType" onchange="toggleUstazFields()">
+          <option value="">Sign up as</option>
+          <option value="parent">Parent</option>
+          <option value="ustaz">Ustaz</option>
+        </select>
 
-      <!-- SIGNUP -->
-      <div class="auth-card signup-card">
-        <form>
+        <input type="text" placeholder="Full Name">
+        <input type="email" placeholder="Email">
 
-          <select id="userType">
-            <option value="">Sign up as</option>
-            <option value="parent">Parent</option>
-            <option value="ustaz">Ustaz</option>
-          </select>
+        <select>
+          <option value="">Select Area</option>
+          <option>Addis Ababa - Bole</option>
+          <option>Addis Ababa - Yeka</option>
+          <option>Addis Ababa - Kirkos</option>
+          <option>Addis Ababa - Kolfe</option>
+          <option>Adama</option>
+          <option>Dire Dawa</option>
+          <option>Bahir Dar</option>
+        </select>
 
-          <input type="text" placeholder="Full Name" />
-          <input type="email" placeholder="Email" />
+        <div id="ustazFields" class="hidden">
+          <input type="text" placeholder="Years of Experience">
+          <input type="text" placeholder="Available Days">
+        </div>
 
-          <select>
-            <option value="">Select Area</option>
-            <option>Addis Ababa - Bole</option>
-            <option>Addis Ababa - Yeka</option>
-            <option>Addis Ababa - Kirkos</option>
-            <option>Addis Ababa - Kolfe</option>
-            <option>Adama</option>
-            <option>Dire Dawa</option>
-            <option>Bahir Dar</option>
-          </select>
+        <input type="password" placeholder="Password">
+        <button type="button" onclick="signup()">Sign Up</button>
+      </form>
 
-          <div id="ustazFields" class="hidden">
-            <input type="text" placeholder="Years of Experience" />
-            <input type="text" placeholder="Available Days" />
-          </div>
-
-          <input type="password" placeholder="Password" />
-
-          <button type="button" onclick="signup()">Sign Up</button>
-        </form>
-
-        <p class="link">
-          Already have an account?
-          <span onclick="showLogin()">Login</span>
-        </p>
-      </div>
-
+      <p class="link">
+        Already have an account?
+        <span onclick="showLogin()">Login</span>
+      </p>
     </div>
   </div>
 
-  <script src="script.js"></script>
 </body>
 </html>
