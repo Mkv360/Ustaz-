@@ -3,31 +3,26 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-// Navigation
-function goTo(page) {
-  window.location.href = page;
+function showSignup() {
+  document.querySelector(".login-card").classList.remove("active");
+  document.querySelector(".signup-card").classList.add("active");
 }
 
-// Example submit handler
-function handleSignup(e) {
-  e.preventDefault();
+function showLogin() {
+  document.querySelector(".signup-card").classList.remove("active");
+  document.querySelector(".login-card").classList.add("active");
+}
 
-  const role = document.getElementById("role")?.value;
-  const name = document.getElementById("name")?.value;
-  const email = document.getElementById("email")?.value;
-  const area = document.getElementById("area")?.value;
-  const password = document.getElementById("password")?.value;
+function toggleUstazFields() {
+  const type = document.getElementById("userType").value;
+  document.getElementById("ustazFields").style.display =
+    type === "ustaz" ? "block" : "none";
+}
 
-  const data = {
-    telegram_id: tg.initDataUnsafe?.user?.id || null,
-    role,
-    name,
-    email,
-    area,
-    password
-  };
+function login() {
+  tg.showAlert("Login clicked (frontend demo)");
+}
 
-  console.log("Signup data:", data);
-
-  tg.showAlert("Signup successful (frontend demo)");
+function signup() {
+  tg.showAlert("Signup clicked (frontend demo)");
 }
