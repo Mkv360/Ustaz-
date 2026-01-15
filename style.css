@@ -1,16 +1,16 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(180deg, #020617, #0f172a);
-  color: #fff;
+  font-family: system-ui, Arial, sans-serif;
+  background: var(--tg-theme-bg-color, #0f172a);
+  color: var(--tg-theme-text-color, #ffffff);
 }
 
 .container {
   width: 90%;
   max-width: 320px;
-  margin: 70px auto;
+  margin: 60px auto;
   padding: 18px;
-  background: #1e293b;
+  background: var(--tg-theme-secondary-bg-color, #1e293b);
   border-radius: 16px;
   text-align: center;
 }
@@ -22,11 +22,10 @@ h1 {
 
 .subtitle {
   font-size: 13px;
-  color: #cbd5f5;
+  opacity: 0.85;
   margin-bottom: 20px;
 }
 
-/* INPUTS */
 input, select {
   width: 100%;
   padding: 9px 10px;
@@ -36,34 +35,29 @@ input, select {
   font-size: 14px;
 }
 
-/* BUTTON */
 button {
   width: 70%;
   padding: 9px;
   margin: 16px auto 0;
   display: block;
   border-radius: 20px;
-  background: #22c55e;
-  color: #000;
+  background: var(--tg-theme-button-color, #22c55e);
+  color: var(--tg-theme-button-text-color, #000);
   font-weight: 600;
   font-size: 14px;
   border: none;
-  cursor: pointer;
 }
 
-/* LINKS */
 .link {
   margin-top: 14px;
   font-size: 13px;
 }
 
 .link span {
-  color: #22c55e;
+  color: var(--tg-theme-link-color, #22c55e);
   cursor: pointer;
-  font-weight: 500;
 }
 
-/* AUTH SLIDER */
 .auth-wrapper {
   position: relative;
   overflow: hidden;
@@ -92,7 +86,6 @@ button {
   transform: translateX(-100%);
 }
 
-/* EXTRA */
 .hidden {
   display: none;
 }
