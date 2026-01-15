@@ -1,45 +1,33 @@
+// Telegram WebApp init
 const tg = window.Telegram.WebApp;
-
-// Expand WebApp to full height
-tg.expand();
 tg.ready();
+tg.expand();
 
-// Slide logic
-function showSignup() {
-  document.querySelector(".login-card").classList.remove("active");
-  document.querySelector(".login-card").classList.add("hidden-left");
-  document.querySelector(".signup-card").classList.add("active");
+// Navigation
+function goTo(page) {
+  window.location.href = page;
 }
 
-function showLogin() {
-  document.querySelector(".signup-card").classList.remove("active");
-  document.querySelector(".login-card").classList.remove("hidden-left");
-  document.querySelector(".login-card").classList.add("active");
-}
+// Example submit handler
+function handleSignup(e) {
+  e.preventDefault();
 
-// Show extra fields for Ustaz
-const userType = document.getElementById("userType");
-const ustazFields = document.getElementById("ustazFields");
+  const role = document.getElementById("role")?.value;
+  const name = document.getElementById("name")?.value;
+  const email = document.getElementById("email")?.value;
+  const area = document.getElementById("area")?.value;
+  const password = document.getElementById("password")?.value;
 
-if (userType) {
-  userType.addEventListener("change", () => {
-    ustazFields.classList.toggle("hidden", userType.value !== "ustaz");
-  });
-}
+  const data = {
+    telegram_id: tg.initDataUnsafe?.user?.id || null,
+    role,
+    name,
+    email,
+    area,
+    password
+  };
 
-// TEMP actions (frontend only)
-function login() {
-  tg.showPopup({
-    title: "Login",
-    message: "Login successful (demo)",
-    buttons: [{ type: "ok" }]
-  });
-}
+  console.log("Signup data:", data);
 
-function signup() {
-  tg.showPopup({
-    title: "Signup",
-    message: "Account created (demo)",
-    buttons: [{ type: "ok" }]
-  });
+  tg.showAlert("Signup successful (frontend demo)");
 }
