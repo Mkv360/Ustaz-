@@ -1,22 +1,16 @@
-
-const loginForm = document.getElementById("loginForm");
-if (loginForm) {
-  loginForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    window.location.href = "home.html";
-  });
+function showSignup() {
+  document.querySelector(".login-card").classList.remove("active");
+  document.querySelector(".login-card").classList.add("hidden-left");
+  document.querySelector(".signup-card").classList.add("active");
 }
 
-// SIGNUP REDIRECT
-const signupForm = document.getElementById("signupForm");
-if (signupForm) {
-  signupForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    window.location.href = "home.html";
-  });
+function showLogin() {
+  document.querySelector(".signup-card").classList.remove("active");
+  document.querySelector(".login-card").classList.remove("hidden-left");
+  document.querySelector(".login-card").classList.add("active");
 }
 
-// USER TYPE SWITCH
+// Show extra fields for Ustaz
 const userType = document.getElementById("userType");
 const ustazFields = document.getElementById("ustazFields");
 
@@ -30,7 +24,7 @@ if (userType) {
   });
 }
 
-// SIDE MENU
-function toggleMenu() {
-  document.getElementById("sideMenu").classList.toggle("open");
+// TEMP redirect
+function goHome() {
+  alert("Login / Signup successful (frontend only)");
 }
