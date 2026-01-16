@@ -1,7 +1,4 @@
-* {
-  box-sizing: border-box;
-  font-family: system-ui, sans-serif;
-}
+* { box-sizing: border-box; font-family: system-ui, sans-serif; }
 
 body {
   margin: 0;
@@ -11,33 +8,28 @@ body {
   justify-content: center;
   align-items: center;
   color: #fff;
-  overflow: hidden; /* Telegram safe */
+  overflow: hidden;
 }
 
-.app {
-  width: 100%;
-  max-width: 380px;
-  text-align: center;
-}
+.app { width: 100%; max-width: 380px; text-align: center; }
 
 .title { margin-bottom: 5px; }
 .subtitle { font-size: 14px; opacity: 0.8; margin-bottom: 20px; }
 
-/* Card container */
 .card-container { perspective: 1000px; }
 
-/* Card */
 .card {
   position: relative;
   width: 100%;
-  height: 560px; /* Telegram fixed height */
+  height: 560px;
   transform-style: preserve-3d;
   transition: transform 0.7s;
 }
 
 /* Flip classes */
 .card.flipped { transform: rotateY(180deg); }
-.card.otp-flipped { transform: rotateY(360deg); }
+.card.otp-active .front,
+.card.otp-active .back { display: none; }
 
 /* Card faces */
 .card-face {
@@ -53,13 +45,14 @@ body {
   overflow: hidden;
 }
 
-.card-face.otp { transform: rotateY(360deg); overflow-y: auto; transition: transform 0.7s; }
+.card-face.otp { display: none; overflow-y: auto; }
+
+.card.otp-active .otp { display: block; }
 
 .card-content { height: 100%; overflow-y: auto; padding-bottom: 20px; }
 
 .back { transform: rotateY(180deg); }
 
-/* Inputs & Selects */
 input, select {
   width: 85%;
   padding: 10px;
@@ -82,7 +75,6 @@ select {
   padding-right: 40px;
 }
 
-/* Buttons */
 button {
   width: 70%;
   padding: 10px;
@@ -96,9 +88,6 @@ button {
 }
 button:active { transform: scale(0.98); }
 
-/* Links */
 .link { margin-top: 15px; font-size: 13px; }
 .link span { color: #2ecc71; cursor: pointer; }
-
-/* Back button */
 .back-btn { margin-top: 10px; font-size: 13px; opacity: 0.8; cursor: pointer; }
