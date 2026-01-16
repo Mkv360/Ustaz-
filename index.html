@@ -1,90 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quran Ustaz Finder</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="app-wrapper">
-  <div class="card" id="card">
+<div class="app">
 
-    <!-- LOGIN -->
-    <div class="card-face front">
-      <h2>Quran Ustaz Finder</h2>
-      <p class="subtitle">Find a trusted Quran teacher near you</p>
+  <h1 class="title">Quran Ustaz Finder</h1>
+  <p class="subtitle">Find a trusted Quran teacher near you</p>
 
-      <input id="loginPhone" placeholder="Phone number">
-      <input id="loginPass" type="password" placeholder="Password">
+  <div class="card-container">
+    <div class="card" id="card">
 
-      <button onclick="login()">Login</button>
+      <!-- LOGIN -->
+      <div class="card-face front">
+        <h2>Login</h2>
 
-      <p class="switch">
-        Don’t have an account?
-        <span onclick="flipCard()">Sign up</span>
-      </p>
-    </div>
+        <input type="text" id="loginPhone" placeholder="Phone number">
+        <input type="password" id="loginPassword" placeholder="Password">
 
-    <!-- SIGN UP -->
-    <div class="card-face back">
-      <div class="back-arrow" onclick="flipCard()">←</div>
+        <button onclick="login()">Login</button>
 
-      <h2>Create Account</h2>
-
-      <div class="role-buttons">
-        <button onclick="showParent()">Parent</button>
-        <button onclick="showUstaz()">Ustaz / Ustaza</button>
+        <p class="link">
+          Don’t have an account?
+          <span onclick="flipCard()">Sign up</span>
+        </p>
       </div>
 
-      <!-- Parent -->
-      <div id="parentForm" class="hidden">
-        <input placeholder="Full name">
-        <input placeholder="Phone number">
+      <!-- SIGNUP -->
+      <div class="card-face back">
+        <h2>Create Account</h2>
 
+        <select id="role">
+          <option value="">Sign up as</option>
+          <option value="parent">Parent</option>
+          <option value="ustaz">Ustaz / Ustaza</option>
+        </select>
+
+        <input type="text" placeholder="Full name">
+        <input type="text" placeholder="Phone number">
+        
         <select>
-          <option value="">Select area</option>
+          <option value="">City / Area</option>
           <option>Addis Ababa</option>
-          <option>Dire Dawa</option>
           <option>Adama</option>
+          <option>Dire Dawa</option>
           <option>Bahir Dar</option>
           <option>Mekelle</option>
         </select>
 
-        <button>Create</button>
+        <input type="password" placeholder="Password">
+
+        <button>Sign Up</button>
+
+        <p class="link">
+          Already have an account?
+          <span onclick="flipCard()">Login</span>
+        </p>
+
+        <div class="back-btn" onclick="flipCard()">← Back</div>
       </div>
 
-      <!-- Ustaz -->
-      <div id="ustazForm" class="hidden">
-        <input placeholder="Full name">
-        <input placeholder="Phone number">
-
-        <select>
-          <option value="">Select area</option>
-          <option>Addis Ababa</option>
-          <option>Dire Dawa</option>
-          <option>Adama</option>
-          <option>Bahir Dar</option>
-          <option>Mekelle</option>
-        </select>
-
-        <select>
-          <option value="">Gender</option>
-          <option>Male</option>
-          <option>Female</option>
-        </select>
-
-        <input placeholder="Years of experience">
-
-        <button>Create</button>
-      </div>
     </div>
-
   </div>
+
 </div>
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
