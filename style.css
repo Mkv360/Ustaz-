@@ -37,7 +37,7 @@ body {
 .card {
   position: relative;
   width: 100%;
-  height: 420px;
+  height: 520px;
   transform-style: preserve-3d;
   transition: transform 0.7s;
 }
@@ -48,6 +48,7 @@ body {
 }
 
 /* Card faces */
+
 .card-face {
   position: absolute;
   width: 100%;
@@ -58,11 +59,23 @@ body {
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   backface-visibility: hidden;
+  overflow-y: auto;
 }
 
 /* Back */
 .back {
   transform: rotateY(180deg);
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 18px;
+  padding-right: 40px;
 }
 
 /* Inputs */
@@ -92,6 +105,10 @@ button {
 
 button:active {
   transform: scale(0.98);
+}
+
+button {
+  margin-bottom: 15px;
 }
 
 /* Links */
