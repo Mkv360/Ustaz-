@@ -8,44 +8,23 @@
 </head>
 <body>
 
-  <div class="container">
-    <div class="card" id="card">
+<div class="center-container">
+  <div class="glass-card">
+    <h2>Welcome</h2>
 
-      <!-- LOGIN -->
-      <div class="card-face front">
-        <h2>Login</h2>
+    <input type="text" placeholder="Phone number">
+    <input type="password" placeholder="Password">
 
-        <input type="text" placeholder="Phone number">
-        <input type="password" placeholder="Password">
+    <button class="small-btn" onclick="goHome()">Login</button>
 
-        <button class="action-btn">Login</button>
-
-        <p class="switch-text">
-          No account?
-          <span onclick="flipCard()">Sign up</span>
-        </p>
-      </div>
-
-      <!-- SIGNUP -->
-      <div class="card-face back">
-        <h2>Sign Up</h2>
-
-        <input type="text" placeholder="Full name">
-        <input type="text" placeholder="Phone number">
-        <input type="password" placeholder="Password">
-
-        <button class="action-btn">Create</button>
-
-        <p class="switch-text">
-          Already have an account?
-          <span onclick="flipCard()">Login</span>
-        </p>
-      </div>
-
-    </div>
+    <p class="link-text">
+      New here?
+      <span onclick="goSignup()">Create account</span>
+    </p>
   </div>
+</div>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="script.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
