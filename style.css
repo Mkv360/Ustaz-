@@ -43,23 +43,38 @@ body {
 }
 
 /* Flip classes */
-.card.flipped {
-  transform: rotateY(180deg);
+.card.flipped { transform: rotateY(180deg); }
+
+/* Card faces */
+.card-face { 
+  position: absolute; 
+  width: 100%; 
+  height: 100%; 
+  padding: 25px; 
+  border-radius: 20px; 
+  backdrop-filter: blur(14px); 
+  background: rgba(255,255,255,0.08); 
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
+  backface-visibility: hidden; 
+  overflow: hidden; 
+  transition: opacity 0.3s ease, transform 0.7s ease;
+  opacity: 1;
+  pointer-events: auto;
 }
 
-/* OTP show/hide */
-.card.otp-active .front,
-.card.otp-active .back {
-  display: none;
+/* OTP card hidden by default */
+.card-face.otp { 
+  transform: rotateY(0deg); 
+  opacity: 0; 
+  pointer-events: none; 
+  z-index: 10;
 }
 
-.card-face.otp {
-  display: none;
-  overflow-y: auto;
-}
-
-.card.otp-active .otp {
-  display: block;
+/* OTP card visible */
+.card.otp-active .otp { 
+  opacity: 1; 
+  pointer-events: auto; 
+  z-index: 100; 
 }
 
 /* Card faces */
