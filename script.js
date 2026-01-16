@@ -69,6 +69,8 @@ function signup() {
 
   // Show OTP card
   card.classList.add("otp-active");
+  card.classList.remove("flipped"); // ensure OTP is on top
+  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
 }
 
 // ===============================
@@ -79,8 +81,7 @@ function verifyOtp() {
   if (otp === generatedOtp) {
     successMessage("Account created successfully!");
     resetOtp();
-    // Flip back to login card after success
-    card.classList.remove("flipped");
+    card.classList.remove("flipped"); // back to login
   } else {
     showMessage("Incorrect OTP");
   }
@@ -91,7 +92,8 @@ function verifyOtp() {
 // ===============================
 function backToSignup() {
   resetOtp(); // hide OTP card
-  flipCard(); // show signup card again
+  card.classList.remove("otp-active"); // show signup card
+  card.classList.add("flipped"); // show back side
 }
 
 // ===============================
