@@ -8,19 +8,79 @@
 </head>
 <body>
 
-<div class="center-container">
-  <div class="glass-card">
-    <h2>Welcome</h2>
+<div class="container">
+  <div class="card" id="card">
 
-    <input type="text" placeholder="Phone number">
-    <input type="password" placeholder="Password">
+    <!-- LOGIN -->
+    <div class="card-face front">
+      <h2>Login</h2>
 
-    <button class="small-btn" onclick="goHome()">Login</button>
+      <input id="loginPhone" placeholder="Phone number">
+      <input id="loginPass" type="password" placeholder="Password">
 
-    <p class="link-text">
-      New here?
-      <span onclick="goSignup()">Create account</span>
-    </p>
+      <button onclick="login()">Login</button>
+
+      <p class="switch">
+        New here? <span onclick="flipCard()">Sign up</span>
+      </p>
+    </div>
+
+    <!-- SIGNUP -->
+    <div class="card-face back">
+
+      <!-- BACK ARROW -->
+      <div class="back-arrow" onclick="flipCard()">←</div>
+
+      <h2>Sign Up</h2>
+
+      <div class="role-select">
+        <button onclick="showParent()">Parent</button>
+        <button onclick="showUstaz()">Ustaz / Ustaza</button>
+      </div>
+
+      <!-- PARENT FORM -->
+      <div id="parentForm" class="hidden">
+        <input placeholder="Full name">
+        <input placeholder="Phone number">
+
+        <select>
+          <option value="">Select Area</option>
+          <option>Addis Ababa</option>
+          <option>Dire Dawa</option>
+          <option>Adama</option>
+          <option>Bahir Dar</option>
+          <option>Mekelle</option>
+        </select>
+
+        <button>Create Account</button>
+      </div>
+
+      <!-- USTAZ FORM -->
+      <div id="ustazForm" class="hidden">
+        <input placeholder="Full name">
+        <input placeholder="Phone number">
+
+        <select>
+          <option value="">Select Area</option>
+          <option>Addis Ababa</option>
+          <option>Dire Dawa</option>
+          <option>Adama</option>
+          <option>Bahir Dar</option>
+          <option>Mekelle</option>
+        </select>
+
+        <select>
+          <option value="">Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+
+        <input placeholder="Years of experience">
+
+        <button>Create Account</button>
+      </div>
+
+    </div>
   </div>
 </div>
 
