@@ -6,7 +6,6 @@ const card = document.getElementById("card");
 function flipCard() {
   card.classList.toggle("flipped");
 
-  // Reset scroll position when flipping (Telegram-friendly)
   document.querySelectorAll(".card-content").forEach(c => {
     c.scrollTop = 0;
   });
@@ -36,14 +35,37 @@ function successMessage(message) {
 }
 
 // ===============================
+// ETHIOPIAN PHONE VALIDATION
+// ===============================
+function validateEthiopianPhone(phone) {
+  let cleaned = phone.replace(/\s+/g, "");
+
+  if (/^0[79]\d{8}$/.test(cleaned)) {
+    cleaned = "+251" + cleaned.slice(1);
+  }
+
+  if (/^251[79]\d{8}$/.test(cleaned)) {
+    cleaned = "+" + cleaned;
+  }
+
+  if (!/^\+251[79]\d{8}$/.test(cleaned)) {
+    return null;
+  }
+
+  return cleaned;
+}
+
+// ===============================
 // LOGIN
 // ===============================
 function login() {
-  const phone = document.getElementById("loginPhone")?.value.trim();
-  const password = document.getElementById("loginPassword")?.value.trim();
+  const rawPhone = document.getElementById("loginPhone").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
+
+  const phone = validateEthiopianPhone(rawPhone);
 
   if (!phone || !password) {
-    showMessage("Please fill in all login fields");
+    showMessage("Enter a valid Ethiopian phone and password");
     return;
   }
 
@@ -54,17 +76,21 @@ function login() {
 // SIGNUP
 // ===============================
 function signup() {
-  const role = document.getElementById("role")?.value;
-  const name = document.getElementById("fullName")?.value.trim();
-  const phone = document.getElementById("signupPhone")?.value.trim();
-  const subcity = document.getElementById("subcity")?.value;
-  const area = document.getElementById("area")?.value;
-  const password = document.getElementById("signupPassword")?.value.trim();
+  const role = document.getElementById("role").value;
+  const name = document.getElementById("fullName").value.trim();
+  const rawPhone = document.getElementById("signupPhone").value.trim();
+  const subcity = document.getElementById("subcity").value;
+  const area = document.getElementById("area").value;
+  const password = document.getElementById("signupPassword").value.trim();
+
+  const phone = validateEthiopianPhone(rawPhone);
 
   if (!role || !name || !phone || !subcity || !area || !password) {
-    showMessage("Please fill in all signup fields");
+    showMessage("Please fill all fields correctly");
     return;
   }
+
+  console.log("Normalized phone:", phone);
 
   successMessage("Account created successfully (demo)");
   flipCard();
@@ -74,24 +100,14 @@ function signup() {
 // SUBCITY → AREA DATA
 // ===============================
 const areas = {
-  bole: [
-    "Bole Medhanealem",
-    "Gerji",
-    "Edna Mall",
-    "Welo Sefer",
-    "Japan",
-    "Rwanda",
-    "Michael",
-    "CMC",
-    "Bulbula"
-  ],
-  yeka: ["Megenagna", "Kotebe", "Summit", "Ayat", "Shola"],
-  kirkos: ["Kazanchis", "Mexico", "Meskel Flower", "Sar Bet"],
-  lideta: ["Lideta", "Abinet", "Tor Hailoch", "Balcha Hospital"],
-  arada: ["Piazza", "Arat Kilo", "Sidist Kilo"],
-  addisketema: ["Merkato", "Sebategna", "Alem Bank"],
-  nifassilk: ["Jemo", "Lancha", "Sar Bet"],
-  kolfe: ["Kolfe", "Asko", "Alem Bank"],
+  bole: ["Bole Medhanealem", "Gerji", "CMC", "Bulbula"],
+  yeka: ["Megenagna", "Ayat", "Summit"],
+  kirkos: ["Kazanchis", "Mexico"],
+  lideta: ["Tor Hailoch", "Abinet"],
+  arada: ["Piazza", "Arat Kilo"],
+  addisketema: ["Merkato", "Sebategna"],
+  nifassilk: ["Jemo", "Lancha"],
+  kolfe: ["Kolfe", "Asko"],
   akakikaliti: ["Akaki", "Kality"],
   gullele: ["Shiro Meda", "Entoto"]
 };
@@ -106,7 +122,7 @@ function loadAreas() {
   areaSelect.innerHTML = '<option value="">Select Area</option>';
   areaSelect.style.display = "none";
 
-  if (!subcity || !areas[subcity]) return;
+  if (!areas[subcity]) return;
 
   areas[subcity].forEach(area => {
     const option = document.createElement("option");
@@ -122,16 +138,8 @@ function loadAreas() {
 // INIT (Telegram-safe)
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  const subcitySelect = document.getElementById("subcity");
-  const areaSelect = document.getElementById("area");
-
-  if (areaSelect) {
-    areaSelect.style.display = "none";
-  }
-
-  if (subcitySelect) {
-    subcitySelect.addEventListener("change", loadAreas);
-  }
+  document.getElementById("area").style.display = "none";
+  document.getElementById("subcity").addEventListener("change", loadAreas);
 
   if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
