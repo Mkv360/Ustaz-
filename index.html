@@ -43,20 +43,7 @@
           </select>
 
           <!-- Ustaz extra fields -->
-          <div id="ustazFields" style="display:none; margin-top:10px;">
-            <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50">
-            <label style="margin-top:10px; font-size:13px;">Available days:</label>
-            <select id="availableDays" multiple size="5">
-              <option value="monday">Monday</option>
-              <option value="tuesday">Tuesday</option>
-              <option value="wednesday">Wednesday</option>
-              <option value="thursday">Thursday</option>
-              <option value="friday">Friday</option>
-              <option value="saturday">Saturday</option>
-              <option value="sunday">Sunday</option>
-            </select>
-            <small>Hold Ctrl (or Cmd) to select multiple days</small>
-          </div>
+          
 
           <input type="text" id="fullName" placeholder="Full name">
           <input type="text" id="signupPhone" placeholder="Phone number">
@@ -78,7 +65,20 @@
           <select id="area">
             <option value="">Select Area</option>
           </select>
-
+<div id="ustazFields" style="display:none; margin-top:10px;">
+            <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50">
+            <label style="margin-top:10px; font-size:13px;">Available days:</label>
+            <select id="availableDays" multiple size="5">
+              <option value="monday">Monday</option>
+              <option value="tuesday">Tuesday</option>
+              <option value="wednesday">Wednesday</option>
+              <option value="thursday">Thursday</option>
+              <option value="friday">Friday</option>
+              <option value="saturday">Saturday</option>
+              <option value="sunday">Sunday</option>
+            </select>
+            <small>Hold Ctrl (or Cmd) to select multiple days</small>
+          </div>
           <input type="password" id="signupPassword" placeholder="Password">
           <button onclick="signup()">Sign Up</button>
 
