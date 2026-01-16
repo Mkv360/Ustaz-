@@ -1,6 +1,3 @@
-// ===============================
-// CARD FLIP
-// ===============================
 const card = document.getElementById("card");
 
 function flipCard() {
@@ -8,32 +5,26 @@ function flipCard() {
   document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
 }
 
-// ===============================
-// TELEGRAM / BROWSER ALERTS
-// ===============================
-function showMessage(msg) {
-  if (window.Telegram?.WebApp) Telegram.WebApp.showAlert(msg);
-  else alert(msg);
+// Alerts
+function showMessage(msg) { 
+  if (window.Telegram?.WebApp) Telegram.WebApp.showAlert(msg); 
+  else alert(msg); 
 }
 
-function successMessage(msg) {
-  if (window.Telegram?.WebApp) Telegram.WebApp.showPopup({ title: "Success", message: msg, buttons:[{type:"ok"}] });
-  else alert(msg);
+function successMessage(msg) { 
+  if (window.Telegram?.WebApp) Telegram.WebApp.showPopup({ title:"Success", message:msg, buttons:[{type:"ok"}] }); 
+  else alert(msg); 
 }
 
-// ===============================
-// ETHIOPIAN PHONE VALIDATION
-// ===============================
+// Ethiopian phone validation
 function validateEthiopianPhone(phone) {
-  const cleaned = phone.replace(/\s+/g,'');
-  if (/^0[79]\d{8}$/.test(cleaned)) return "+251" + cleaned.slice(1);
-  if (/^\+251[79]\d{8}$/.test(cleaned)) return cleaned;
+  const p = phone.replace(/\s+/g,'');
+  if (/^0[79]\d{8}$/.test(p)) return "+251" + p.slice(1);
+  if (/^\+251[79]\d{8}$/.test(p)) return p;
   return null;
 }
 
-// ===============================
 // LOGIN
-// ===============================
 function login() {
   const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
   const pass = document.getElementById("loginPassword").value.trim();
@@ -41,11 +32,8 @@ function login() {
   successMessage("Login successful (demo)");
 }
 
-// ===============================
-// SIGNUP
-// ===============================
-let generatedOtp = "";
-let signupData = {};
+// SIGNUP → OTP
+let generatedOtp = "", signupData = {};
 
 function signup() {
   const role = document.getElementById("role").value;
@@ -58,39 +46,36 @@ function signup() {
   if (!role || !name || !phone || !subcity || !area || !pass) return showMessage("Fill all fields");
 
   signupData = { role,name,phone,subcity,area,pass };
-
   generatedOtp = Math.floor(1000 + Math.random()*9000).toString();
   console.log("Demo OTP:", generatedOtp);
 
-  card.classList.add("otp-flipped");
+  card.classList.add("otp-active"); // show OTP
 }
 
-// ===============================
 // VERIFY OTP
-// ===============================
 function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
   if (otp === generatedOtp) {
     successMessage("Account created successfully!");
     resetOtp();
-    flipCard();
+    card.classList.remove("flipped"); // go back to login
   } else showMessage("Incorrect OTP");
 }
 
-function goBackToSignup() {
+// BACK TO SIGNUP
+function backToSignup() {
   resetOtp();
 }
 
+// RESET OTP
 function resetOtp() {
   generatedOtp = "";
   signupData = {};
   document.getElementById("otpInput").value = "";
-  card.classList.remove("otp-flipped");
+  card.classList.remove("otp-active");
 }
 
-// ===============================
 // SUBCITY → AREA
-// ===============================
 const areas = {
   bole:["Bole Medhanealem","Gerji","Edna Mall","Welo Sefer","Japan","Rwanda","Michael","CMC","Bulbula"],
   yeka:["Megenagna","Kotebe","Summit","Ayat","Shola"],
@@ -109,16 +94,15 @@ function loadAreas() {
   const areaSelect = document.getElementById("area");
   areaSelect.innerHTML = '<option value="">Select Area</option>';
   if (!areas[subcity]) return;
-  areas[subcity].forEach(a=>{
+  areas[subcity].forEach(a => {
     const opt = document.createElement("option");
-    opt.value = a; opt.textContent = a;
+    opt.value = a;
+    opt.textContent = a;
     areaSelect.appendChild(opt);
   });
 }
 
-// ===============================
 // INIT
-// ===============================
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("subcity").addEventListener("change", loadAreas);
   if (window.Telegram?.WebApp) {
