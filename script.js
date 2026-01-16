@@ -5,73 +5,39 @@ const card = document.getElementById("card");
 
 function flipCard() {
   card.classList.toggle("flipped");
-
-  // Reset scroll positions on flip
-  document.querySelectorAll(".card-content").forEach(c => {
-    c.scrollTop = 0;
-  });
+  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
 }
 
 // ===============================
 // TELEGRAM / BROWSER ALERTS
 // ===============================
-function showMessage(message) {
-  if (window.Telegram && Telegram.WebApp) {
-    Telegram.WebApp.showAlert(message);
-  } else {
-    alert(message);
-  }
+function showMessage(msg) {
+  if (window.Telegram?.WebApp) Telegram.WebApp.showAlert(msg);
+  else alert(msg);
 }
 
-function successMessage(message) {
-  if (window.Telegram && Telegram.WebApp) {
-    Telegram.WebApp.showPopup({
-      title: "Success",
-      message,
-      buttons: [{ type: "ok" }]
-    });
-  } else {
-    alert(message);
-  }
+function successMessage(msg) {
+  if (window.Telegram?.WebApp) Telegram.WebApp.showPopup({ title: "Success", message: msg, buttons:[{type:"ok"}] });
+  else alert(msg);
 }
 
 // ===============================
 // ETHIOPIAN PHONE VALIDATION
 // ===============================
 function validateEthiopianPhone(phone) {
-  let cleaned = phone.replace(/\s+/g, "");
-
-  // Start with 0
-  if (/^0[79]\d{8}$/.test(cleaned)) {
-    cleaned = "+251" + cleaned.slice(1);
-  }
-
-  // Already with 251
-  if (/^251[79]\d{8}$/.test(cleaned)) {
-    cleaned = "+" + cleaned;
-  }
-
-  if (!/^\+251[79]\d{8}$/.test(cleaned)) {
-    return null;
-  }
-
-  return cleaned;
+  const cleaned = phone.replace(/\s+/g,'');
+  if (/^0[79]\d{8}$/.test(cleaned)) return "+251" + cleaned.slice(1);
+  if (/^\+251[79]\d{8}$/.test(cleaned)) return cleaned;
+  return null;
 }
 
 // ===============================
 // LOGIN
 // ===============================
 function login() {
-  const rawPhone = document.getElementById("loginPhone").value.trim();
-  const password = document.getElementById("loginPassword").value.trim();
-
-  const phone = validateEthiopianPhone(rawPhone);
-
-  if (!phone || !password) {
-    showMessage("Enter a valid Ethiopian phone and password");
-    return;
-  }
-
+  const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
+  const pass = document.getElementById("loginPassword").value.trim();
+  if (!phone || !pass) return showMessage("Enter valid phone & password");
   successMessage("Login successful (demo)");
 }
 
@@ -84,26 +50,18 @@ let signupData = {};
 function signup() {
   const role = document.getElementById("role").value;
   const name = document.getElementById("fullName").value.trim();
-  const rawPhone = document.getElementById("signupPhone").value.trim();
+  const phone = validateEthiopianPhone(document.getElementById("signupPhone").value.trim());
   const subcity = document.getElementById("subcity").value;
   const area = document.getElementById("area").value;
-  const password = document.getElementById("signupPassword").value.trim();
+  const pass = document.getElementById("signupPassword").value.trim();
 
-  const phone = validateEthiopianPhone(rawPhone);
+  if (!role || !name || !phone || !subcity || !area || !pass) return showMessage("Fill all fields");
 
-  if (!role || !name || !phone || !subcity || !area || !password) {
-    showMessage("Please fill all fields correctly");
-    return;
-  }
+  signupData = { role,name,phone,subcity,area,pass };
 
-  // Store signup data
-  signupData = { role, name, phone, subcity, area, password };
+  generatedOtp = Math.floor(1000 + Math.random()*9000).toString();
+  console.log("Demo OTP:", generatedOtp);
 
-  // Generate demo OTP
-  generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-  console.log("Demo OTP:", generatedOtp); // in real app, send via bot or SMS
-
-  // Show OTP card using card class
   card.classList.add("otp-flipped");
 }
 
@@ -112,14 +70,11 @@ function signup() {
 // ===============================
 function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
-
   if (otp === generatedOtp) {
     successMessage("Account created successfully!");
     resetOtp();
-    flipCard(); // go back to login
-  } else {
-    showMessage("Incorrect OTP. Try again.");
-  }
+    flipCard();
+  } else showMessage("Incorrect OTP");
 }
 
 function goBackToSignup() {
@@ -134,37 +89,30 @@ function resetOtp() {
 }
 
 // ===============================
-// SUBCITY → AREA DATA
+// SUBCITY → AREA
 // ===============================
 const areas = {
-  bole: ["Bole Medhanealem", "Gerji", "Edna Mall", "Welo Sefer", "Japan", "Rwanda", "Michael", "CMC", "Bulbula"],
-  yeka: ["Megenagna", "Kotebe", "Summit", "Ayat", "Shola"],
-  kirkos: ["Kazanchis", "Mexico", "Meskel Flower", "Sar Bet"],
-  lideta: ["Lideta", "Abinet", "Tor Hailoch", "Balcha Hospital"],
-  arada: ["Piazza", "Arat Kilo", "Sidist Kilo"],
-  addisketema: ["Merkato", "Sebategna", "Alem Bank"],
-  nifassilk: ["Jemo", "Lancha", "Sar Bet"],
-  kolfe: ["Kolfe", "Asko", "Alem Bank"],
-  akakikaliti: ["Akaki", "Kality"],
-  gullele: ["Shiro Meda", "Entoto"]
+  bole:["Bole Medhanealem","Gerji","Edna Mall","Welo Sefer","Japan","Rwanda","Michael","CMC","Bulbula"],
+  yeka:["Megenagna","Kotebe","Summit","Ayat","Shola"],
+  kirkos:["Kazanchis","Mexico","Meskel Flower","Sar Bet"],
+  lideta:["Lideta","Abinet","Tor Hailoch","Balcha Hospital"],
+  arada:["Piazza","Arat Kilo","Sidist Kilo"],
+  addisketema:["Merkato","Sebategna","Alem Bank"],
+  nifassilk:["Jemo","Lancha","Sar Bet"],
+  kolfe:["Kolfe","Asko","Alem Bank"],
+  akakikaliti:["Akaki","Kality"],
+  gullele:["Shiro Meda","Entoto"]
 };
 
-// ===============================
-// LOAD AREAS
-// ===============================
 function loadAreas() {
   const subcity = document.getElementById("subcity").value;
   const areaSelect = document.getElementById("area");
-
   areaSelect.innerHTML = '<option value="">Select Area</option>';
-
   if (!areas[subcity]) return;
-
-  areas[subcity].forEach(area => {
-    const option = document.createElement("option");
-    option.value = area;
-    option.textContent = area;
-    areaSelect.appendChild(option);
+  areas[subcity].forEach(a=>{
+    const opt = document.createElement("option");
+    opt.value = a; opt.textContent = a;
+    areaSelect.appendChild(opt);
   });
 }
 
@@ -172,10 +120,8 @@ function loadAreas() {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  const subcitySelect = document.getElementById("subcity");
-  subcitySelect.addEventListener("change", loadAreas);
-
-  if (window.Telegram && Telegram.WebApp) {
+  document.getElementById("subcity").addEventListener("change", loadAreas);
+  if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
   }
