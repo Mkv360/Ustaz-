@@ -1,5 +1,5 @@
 // ===============================
-// CARD FLIP (Login <-> Signup)
+// CARD FLIP
 // ===============================
 const card = document.getElementById("card");
 
@@ -7,12 +7,8 @@ function flipCard() {
   card.classList.toggle("flipped");
 }
 
-function goBack() {
-  card.classList.remove("flipped");
-}
-
 // ===============================
-// TELEGRAM / BROWSER ALERT HANDLER
+// TELEGRAM / BROWSER ALERTS
 // ===============================
 function showMessage(message) {
   if (window.Telegram?.WebApp) {
@@ -35,7 +31,7 @@ function successMessage(message) {
 }
 
 // ===============================
-// LOGIN VALIDATION
+// LOGIN
 // ===============================
 function login() {
   const phone = document.getElementById("loginPhone").value.trim();
@@ -50,7 +46,7 @@ function login() {
 }
 
 // ===============================
-// SIGNUP VALIDATION
+// SIGNUP
 // ===============================
 function signup() {
   const role = document.getElementById("role").value;
@@ -66,44 +62,87 @@ function signup() {
   }
 
   successMessage("Account created successfully (demo)");
-  flipCard(); // return to login
+  flipCard();
 }
 
 // ===============================
-// ADDIS ABABA SUBCITY -> AREA
+// SUBCITY → AREA DATA
 // ===============================
 const areas = {
-  bole: ["Bole Medhanealem", "Bole Atlas", "Gerji", "CMC", "Bulbula"],
-  yeka: ["Megenagna", "Kotebe", "Summit", "Ayat"],
-  kirkos: ["Kazanchis", "Mexico", "Meskel Flower"],
-  lideta: ["Lideta", "Abinet", "Tor Hailoch"],
-  arada: ["Piazza", "Arat Kilo", "Sidist Kilo"],
-  addisketema: ["Merkato", "Sebategna"],
-  nifassilk: ["Jemo", "Lancha", "Sar Bet"],
-  kolfe: ["Kolfe", "Asko"],
-  akakikaliti: ["Akaki", "Kality"],
-  gullele: ["Shiro Meda", "Entoto"]
+  bole: [
+    "Bole Medhanealem",
+    "Gerji",
+    "Edna Mall",
+    "Welo Sefer",
+    "Japan",
+    "Rwanda",
+    "Michael",
+    "CMC",
+    "Bulbula"
+  ],
+  yeka: [
+    "Megenagna",
+    "Kotebe",
+    "Summit",
+    "Ayat",
+    "Shola"
+  ],
+  kirkos: [
+    "Kazanchis",
+    "Mexico",
+    "Meskel Flower",
+    "Sar Bet"
+  ],
+  lideta: [
+    "Lideta",
+    "Abinet",
+    "Tor Hailoch",
+    "Balcha Hospital"
+  ],
+  arada: [
+    "Piazza",
+    "Arat Kilo",
+    "Sidist Kilo"
+  ],
+  addisketema: [
+    "Merkato",
+    "Sebategna",
+    "Alem Bank"
+  ],
+  nifassilk: [
+    "Jemo",
+    "Lancha",
+    "Sar Bet"
+  ],
+  kolfe: [
+    "Kolfe",
+    "Asko",
+    "Alem Bank"
+  ],
+  akakikaliti: [
+    "Akaki",
+    "Kality"
+  ],
+  gullele: [
+    "Shiro Meda",
+    "Entoto"
+  ]
 };
 
 // ===============================
-// TELEGRAM-SAFE EVENT LISTENERS
+// LOAD AREAS ON SUBCITY CHANGE
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
   const subcitySelect = document.getElementById("subcity");
-  if (subcitySelect) {
-    subcitySelect.addEventListener("change", loadAreas);
-  }
 
-  // Optional: expand Telegram WebApp on load
+  subcitySelect.addEventListener("change", loadAreas);
+
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
   }
 });
 
-// ===============================
-// LOAD AREAS BASED ON SUBCITY
-// ===============================
 function loadAreas() {
   const subcity = document.getElementById("subcity").value;
   const areaSelect = document.getElementById("area");
