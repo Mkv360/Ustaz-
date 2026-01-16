@@ -1,3 +1,6 @@
+// ===============================
+// CARD FLIP
+// ===============================
 const card = document.getElementById("card");
 
 function flipCard() {
@@ -5,18 +8,27 @@ function flipCard() {
   document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
 }
 
-// Alerts
+// ===============================
+// ALERTS
+// ===============================
 function showMessage(msg) { 
   if (window.Telegram?.WebApp) Telegram.WebApp.showAlert(msg); 
   else alert(msg); 
 }
 
 function successMessage(msg) { 
-  if (window.Telegram?.WebApp) Telegram.WebApp.showPopup({ title:"Success", message:msg, buttons:[{type:"ok"}] }); 
-  else alert(msg); 
+  if (window.Telegram?.WebApp) {
+    Telegram.WebApp.showPopup({ 
+      title: "Success", 
+      message: msg, 
+      buttons: [{ type: "ok" }] 
+    }); 
+  } else alert(msg); 
 }
 
-// Ethiopian phone validation
+// ===============================
+// ETHIOPIAN PHONE VALIDATION
+// ===============================
 function validateEthiopianPhone(phone) {
   const p = phone.replace(/\s+/g,'');
   if (/^0[79]\d{8}$/.test(p)) return "+251" + p.slice(1);
@@ -24,7 +36,9 @@ function validateEthiopianPhone(phone) {
   return null;
 }
 
+// ===============================
 // LOGIN
+// ===============================
 function login() {
   const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
   const pass = document.getElementById("loginPassword").value.trim();
@@ -32,7 +46,9 @@ function login() {
   successMessage("Login successful (demo)");
 }
 
+// ===============================
 // SIGNUP → OTP
+// ===============================
 let generatedOtp = "", signupData = {};
 
 function signup() {
@@ -43,50 +59,64 @@ function signup() {
   const area = document.getElementById("area").value;
   const pass = document.getElementById("signupPassword").value.trim();
 
-  if (!role || !name || !phone || !subcity || !area || !pass) return showMessage("Fill all fields");
+  if (!role || !name || !phone || !subcity || !area || !pass) {
+    return showMessage("Please fill in all signup fields correctly");
+  }
 
-  signupData = { role,name,phone,subcity,area,pass };
-  generatedOtp = Math.floor(1000 + Math.random()*9000).toString();
+  signupData = { role, name, phone, subcity, area, pass };
+  generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
   console.log("Demo OTP:", generatedOtp);
 
-  card.classList.add("otp-active"); // show OTP
+  // Show OTP card
+  card.classList.add("otp-active");
 }
 
+// ===============================
 // VERIFY OTP
+// ===============================
 function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
   if (otp === generatedOtp) {
     successMessage("Account created successfully!");
     resetOtp();
-    card.classList.remove("flipped"); // go back to login
-  } else showMessage("Incorrect OTP");
+    card.classList.remove("flipped"); // back to login
+  } else {
+    showMessage("Incorrect OTP");
+  }
 }
 
+// ===============================
 // BACK TO SIGNUP
+// ===============================
 function backToSignup() {
   resetOtp();
 }
 
+// ===============================
 // RESET OTP
+// ===============================
 function resetOtp() {
   generatedOtp = "";
   signupData = {};
-  document.getElementById("otpInput").value = "";
+  const otpInput = document.getElementById("otpInput");
+  if (otpInput) otpInput.value = "";
   card.classList.remove("otp-active");
 }
 
+// ===============================
 // SUBCITY → AREA
+// ===============================
 const areas = {
-  bole:["Bole Medhanealem","Gerji","Edna Mall","Welo Sefer","Japan","Rwanda","Michael","CMC","Bulbula"],
-  yeka:["Megenagna","Kotebe","Summit","Ayat","Shola"],
-  kirkos:["Kazanchis","Mexico","Meskel Flower","Sar Bet"],
-  lideta:["Lideta","Abinet","Tor Hailoch","Balcha Hospital"],
-  arada:["Piazza","Arat Kilo","Sidist Kilo"],
-  addisketema:["Merkato","Sebategna","Alem Bank"],
-  nifassilk:["Jemo","Lancha","Sar Bet"],
-  kolfe:["Kolfe","Asko","Alem Bank"],
-  akakikaliti:["Akaki","Kality"],
-  gullele:["Shiro Meda","Entoto"]
+  bole: ["Bole Medhanealem","Gerji","Edna Mall","Welo Sefer","Japan","Rwanda","Michael","CMC","Bulbula"],
+  yeka: ["Megenagna","Kotebe","Summit","Ayat","Shola"],
+  kirkos: ["Kazanchis","Mexico","Meskel Flower","Sar Bet"],
+  lideta: ["Lideta","Abinet","Tor Hailoch","Balcha Hospital"],
+  arada: ["Piazza","Arat Kilo","Sidist Kilo"],
+  addisketema: ["Merkato","Sebategna","Alem Bank"],
+  nifassilk: ["Jemo","Lancha","Sar Bet"],
+  kolfe: ["Kolfe","Asko","Alem Bank"],
+  akakikaliti: ["Akaki","Kality"],
+  gullele: ["Shiro Meda","Entoto"]
 };
 
 function loadAreas() {
@@ -102,19 +132,22 @@ function loadAreas() {
   });
 }
 
+// ===============================
 // INIT
+// ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  // Reset everything to login on first load
-  const card = document.getElementById("card");
+  // Always start on login
   card.classList.remove("flipped");
   card.classList.remove("otp-active");
 
-  document.getElementById("otpInput").value = "";
+  const otpInput = document.getElementById("otpInput");
+  if (otpInput) otpInput.value = "";
 
-  // Load areas for subcity select
-  document.getElementById("subcity").addEventListener("change", loadAreas);
+  // Load areas on subcity change
+  const subcitySelect = document.getElementById("subcity");
+  if (subcitySelect) subcitySelect.addEventListener("change", loadAreas);
 
-  // Telegram safe
+  // Telegram WebApp init
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
