@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <title>Quran Ustaz Finder</title>
-
+  
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -24,37 +23,28 @@
       <!-- LOGIN -->
       <div class="card-face front">
         <div class="card-content">
-
           <h2>Login</h2>
-
           <input type="text" id="loginPhone" placeholder="Phone number">
           <input type="password" id="loginPassword" placeholder="Password">
-
           <button onclick="login()">Login</button>
-
           <p class="link">
-            Don’t have an account?
+            Don’t have an account? 
             <span onclick="flipCard()">Sign up</span>
           </p>
-
         </div>
       </div>
 
       <!-- SIGNUP -->
       <div class="card-face back">
         <div class="card-content">
-
           <h2>Create Account</h2>
-
           <select id="role">
             <option value="">Sign up as</option>
             <option value="parent">Parent</option>
             <option value="ustaz">Ustaz / Ustaza</option>
           </select>
-
           <input type="text" id="fullName" placeholder="Full name">
           <input type="text" id="signupPhone" placeholder="Phone number">
-
           <select id="subcity">
             <option value="">Select Sub-City</option>
             <option value="bole">Bole</option>
@@ -68,33 +58,26 @@
             <option value="akakikaliti">Akaki Kality</option>
             <option value="gullele">Gullele</option>
           </select>
-
           <select id="area">
             <option value="">Select Area</option>
           </select>
-
           <input type="password" id="signupPassword" placeholder="Password">
-
           <button onclick="signup()">Sign Up</button>
-
           <p class="link">
             Already have an account?
             <span onclick="flipCard()">Login</span>
           </p>
-
           <div class="back-btn" onclick="flipCard()">← Back</div>
-
         </div>
       </div>
 
-      <!-- OTP VERIFICATION -->
+      <!-- OTP -->
       <div class="card-face otp">
         <div class="card-content">
-          <h2>Verify OTP</h2>
-          <p>We sent a 4-digit OTP to your phone number.</p>
-          <input type="text" id="otpInput" maxlength="4" placeholder="Enter OTP" />
+          <h2>Enter OTP</h2>
+          <input type="text" id="otpInput" placeholder="Enter OTP">
           <button onclick="verifyOtp()">Verify OTP</button>
-          <button class="back-btn" onclick="goBackToSignup()">← Back</button>
+          <div class="back-btn" onclick="goBackToSignup()">← Back</div>
         </div>
       </div>
 
