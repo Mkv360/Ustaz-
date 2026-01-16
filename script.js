@@ -79,7 +79,8 @@ function verifyOtp() {
   if (otp === generatedOtp) {
     successMessage("Account created successfully!");
     resetOtp();
-    card.classList.remove("flipped"); // back to login
+    // Flip back to login card after success
+    card.classList.remove("flipped");
   } else {
     showMessage("Incorrect OTP");
   }
@@ -89,7 +90,8 @@ function verifyOtp() {
 // BACK TO SIGNUP
 // ===============================
 function backToSignup() {
-  resetOtp();
+  resetOtp(); // hide OTP card
+  flipCard(); // show signup card again
 }
 
 // ===============================
