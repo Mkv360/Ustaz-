@@ -2,6 +2,8 @@
 // CARD FLIP
 // ===============================
 const card = document.getElementById("card");
+const roleSelect = document.getElementById("role");
+const ustazFields = document.getElementById("ustazFields");
 
 function flipCard() {
   card.classList.toggle("flipped");
@@ -52,18 +54,29 @@ function login() {
 let generatedOtp = "", signupData = {};
 
 function signup() {
-  const role = document.getElementById("role").value;
+  const role = roleSelect.value;
   const name = document.getElementById("fullName").value.trim();
   const phone = validateEthiopianPhone(document.getElementById("signupPhone").value.trim());
   const subcity = document.getElementById("subcity").value;
   const area = document.getElementById("area").value;
   const pass = document.getElementById("signupPassword").value.trim();
 
+  // Ustaz-specific fields
+  let experience = null, availableDays = [];
+  if (role === "ustaz") {
+    experience = document.getElementById("experience").value.trim();
+    const daysSelect = document.getElementById("availableDays");
+    availableDays = Array.from(daysSelect.selectedOptions).map(opt => opt.value);
+    if (!experience || availableDays.length === 0) {
+      return showMessage("Please enter experience and select available days");
+    }
+  }
+
   if (!role || !name || !phone || !subcity || !area || !pass) {
     return showMessage("Please fill in all signup fields correctly");
   }
 
-  signupData = { role, name, phone, subcity, area, pass };
+  signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
   generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
   console.log("Demo OTP:", generatedOtp);
 
@@ -135,6 +148,17 @@ function loadAreas() {
     areaSelect.appendChild(opt);
   });
 }
+
+// ===============================
+// ROLE CHANGE → SHOW USTAZ FIELDS
+// ===============================
+roleSelect.addEventListener("change", () => {
+  if (roleSelect.value === "ustaz") {
+    ustazFields.style.display = "block";
+  } else {
+    ustazFields.style.display = "none";
+  }
+});
 
 // ===============================
 // INIT
