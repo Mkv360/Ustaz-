@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ustaz Finder</title>
+  <title>Quran Ustaz Finder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
+<div class="app-wrapper">
   <div class="card" id="card">
 
     <!-- LOGIN -->
     <div class="card-face front">
-      <h2>Login</h2>
+      <h2>Quran Ustaz Finder</h2>
+      <p class="subtitle">Find a trusted Quran teacher near you</p>
 
       <input id="loginPhone" placeholder="Phone number">
       <input id="loginPass" type="password" placeholder="Password">
@@ -21,30 +22,29 @@
       <button onclick="login()">Login</button>
 
       <p class="switch">
-        New here? <span onclick="flipCard()">Sign up</span>
+        Don’t have an account?
+        <span onclick="flipCard()">Sign up</span>
       </p>
     </div>
 
-    <!-- SIGNUP -->
+    <!-- SIGN UP -->
     <div class="card-face back">
-
-      <!-- BACK ARROW -->
       <div class="back-arrow" onclick="flipCard()">←</div>
 
-      <h2>Sign Up</h2>
+      <h2>Create Account</h2>
 
-      <div class="role-select">
+      <div class="role-buttons">
         <button onclick="showParent()">Parent</button>
         <button onclick="showUstaz()">Ustaz / Ustaza</button>
       </div>
 
-      <!-- PARENT FORM -->
+      <!-- Parent -->
       <div id="parentForm" class="hidden">
         <input placeholder="Full name">
         <input placeholder="Phone number">
 
         <select>
-          <option value="">Select Area</option>
+          <option value="">Select area</option>
           <option>Addis Ababa</option>
           <option>Dire Dawa</option>
           <option>Adama</option>
@@ -52,16 +52,16 @@
           <option>Mekelle</option>
         </select>
 
-        <button>Create Account</button>
+        <button>Create</button>
       </div>
 
-      <!-- USTAZ FORM -->
+      <!-- Ustaz -->
       <div id="ustazForm" class="hidden">
         <input placeholder="Full name">
         <input placeholder="Phone number">
 
         <select>
-          <option value="">Select Area</option>
+          <option value="">Select area</option>
           <option>Addis Ababa</option>
           <option>Dire Dawa</option>
           <option>Adama</option>
@@ -77,10 +77,10 @@
 
         <input placeholder="Years of experience">
 
-        <button>Create Account</button>
+        <button>Create</button>
       </div>
-
     </div>
+
   </div>
 </div>
 
