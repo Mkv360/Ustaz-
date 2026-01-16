@@ -6,6 +6,7 @@ const card = document.getElementById("card");
 function flipCard() {
   card.classList.toggle("flipped");
 
+  // Reset scroll positions on flip
   document.querySelectorAll(".card-content").forEach(c => {
     c.scrollTop = 0;
   });
@@ -40,10 +41,12 @@ function successMessage(message) {
 function validateEthiopianPhone(phone) {
   let cleaned = phone.replace(/\s+/g, "");
 
+  // Start with 0
   if (/^0[79]\d{8}$/.test(cleaned)) {
     cleaned = "+251" + cleaned.slice(1);
   }
 
+  // Already with 251
   if (/^251[79]\d{8}$/.test(cleaned)) {
     cleaned = "+" + cleaned;
   }
@@ -100,9 +103,8 @@ function signup() {
   generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
   console.log("Demo OTP:", generatedOtp); // in real app, send via bot or SMS
 
-  // Show OTP card
-  document.querySelector(".otp").style.display = "block";
-  document.querySelector(".card-face.back").style.display = "none";
+  // Show OTP card using card class
+  card.classList.add("otp-flipped");
 }
 
 // ===============================
@@ -128,8 +130,7 @@ function resetOtp() {
   generatedOtp = "";
   signupData = {};
   document.getElementById("otpInput").value = "";
-  document.querySelector(".otp").style.display = "none";
-  document.querySelector(".card-face.back").style.display = "block";
+  card.classList.remove("otp-flipped");
 }
 
 // ===============================
@@ -156,7 +157,6 @@ function loadAreas() {
   const areaSelect = document.getElementById("area");
 
   areaSelect.innerHTML = '<option value="">Select Area</option>';
-  areaSelect.style.display = "none";
 
   if (!areas[subcity]) return;
 
@@ -166,18 +166,14 @@ function loadAreas() {
     option.textContent = area;
     areaSelect.appendChild(option);
   });
-
-  areaSelect.style.display = "block";
 }
 
 // ===============================
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("area").style.display = "none";
-  document.getElementById("subcity").addEventListener("change", loadAreas);
-
-  document.querySelector(".otp").style.display = "none";
+  const subcitySelect = document.getElementById("subcity");
+  subcitySelect.addEventListener("change", loadAreas);
 
   if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
