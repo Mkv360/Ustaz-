@@ -104,7 +104,17 @@ function loadAreas() {
 
 // INIT
 document.addEventListener("DOMContentLoaded", () => {
+  // Reset everything to login on first load
+  const card = document.getElementById("card");
+  card.classList.remove("flipped");
+  card.classList.remove("otp-active");
+
+  document.getElementById("otpInput").value = "";
+
+  // Load areas for subcity select
   document.getElementById("subcity").addEventListener("change", loadAreas);
+
+  // Telegram safe
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
