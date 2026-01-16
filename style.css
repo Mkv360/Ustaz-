@@ -11,7 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   color: #fff;
-  overflow: hidden; /* IMPORTANT for Telegram */
+  overflow: hidden; /* Telegram safe */
 }
 
 .app {
@@ -20,34 +20,24 @@ body {
   text-align: center;
 }
 
-.title {
-  margin-bottom: 5px;
-}
-
-.subtitle {
-  font-size: 14px;
-  opacity: 0.8;
-  margin-bottom: 20px;
-}
+.title { margin-bottom: 5px; }
+.subtitle { font-size: 14px; opacity: 0.8; margin-bottom: 20px; }
 
 /* Card container */
-.card-container {
-  perspective: 1000px;
-}
+.card-container { perspective: 1000px; }
 
 /* Card */
 .card {
   position: relative;
   width: 100%;
-  height: 560px; /* FIXED height for Telegram */
+  height: 560px; /* Telegram fixed height */
   transform-style: preserve-3d;
   transition: transform 0.7s;
 }
 
-/* Flip */
-.card.flipped {
-  transform: rotateY(180deg);
-}
+/* Flip classes */
+.card.flipped { transform: rotateY(180deg); }
+.card.otp-flipped { transform: rotateY(360deg); }
 
 /* Card faces */
 .card-face {
@@ -57,47 +47,20 @@ body {
   padding: 25px;
   border-radius: 20px;
   backdrop-filter: blur(14px);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  backface-visibility: hidden;
-  overflow: hidden; /* IMPORTANT */
-}
-
-.card-face.otp {
-  transform: rotateY(360deg); /* start hidden */
-  backface-visibility: hidden;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  padding: 25px;
-  border-radius: 20px;
-  backdrop-filter: blur(14px);
   background: rgba(255,255,255,0.08);
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  transition: transform 0.7s;
-  overflow-y: auto;
+  backface-visibility: hidden;
+  overflow: hidden;
 }
 
-/* Show OTP when card has otp class */
-.card.otp-flipped {
-  transform: rotateY(360deg);
-}
+.card-face.otp { transform: rotateY(360deg); overflow-y: auto; transition: transform 0.7s; }
 
-/* Inner scroll container (Telegram-safe) */
-.card-content {
-  height: 100%;
-  overflow-y: auto;
-  padding-bottom: 20px;
-}
+.card-content { height: 100%; overflow-y: auto; padding-bottom: 20px; }
 
-/* Back face */
-.back {
-  transform: rotateY(180deg);
-}
+.back { transform: rotateY(180deg); }
 
 /* Inputs & Selects */
-input,
-select {
+input, select {
   width: 85%;
   padding: 10px;
   margin: 10px auto;
@@ -108,7 +71,6 @@ select {
   font-size: 14px;
 }
 
-/* Custom select arrow */
 select {
   appearance: none;
   -webkit-appearance: none;
@@ -132,26 +94,11 @@ button {
   color: #000;
   cursor: pointer;
 }
-
-button:active {
-  transform: scale(0.98);
-}
+button:active { transform: scale(0.98); }
 
 /* Links */
-.link {
-  margin-top: 15px;
-  font-size: 13px;
-}
+.link { margin-top: 15px; font-size: 13px; }
+.link span { color: #2ecc71; cursor: pointer; }
 
-.link span {
-  color: #2ecc71;
-  cursor: pointer;
-}
-
-/* Back arrow */
-.back-btn {
-  margin-top: 10px;
-  font-size: 13px;
-  opacity: 0.8;
-  cursor: pointer;
-}
+/* Back button */
+.back-btn { margin-top: 10px; font-size: 13px; opacity: 0.8; cursor: pointer; }
