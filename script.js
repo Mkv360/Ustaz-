@@ -1,22 +1,33 @@
-function goSignup() {
-  window.location.href = "signup.html";
-}
+const card = document.getElementById("card");
 
-function goHome() {
-  window.location.href = "home.html";
+function flipCard() {
+  card.classList.toggle("flip");
+  hideForms();
 }
 
 function showParent() {
+  hideForms();
   document.getElementById("parentForm").classList.remove("hidden");
-  document.getElementById("ustazForm").classList.add("hidden");
 }
 
 function showUstaz() {
+  hideForms();
   document.getElementById("ustazForm").classList.remove("hidden");
-  document.getElementById("parentForm").classList.add("hidden");
 }
 
-function toggleMenu() {
-  const menu = document.getElementById("menu");
-  menu.style.left = menu.style.left === "0px" ? "-200px" : "0px";
+function hideForms() {
+  document.getElementById("parentForm").classList.add("hidden");
+  document.getElementById("ustazForm").classList.add("hidden");
+}
+
+function login() {
+  const phone = document.getElementById("loginPhone").value.trim();
+  const pass = document.getElementById("loginPass").value.trim();
+
+  if (!phone || !pass) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  alert("Login successful (demo)");
 }
