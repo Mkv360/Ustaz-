@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="center-container">
+  <div class="glass-card">
+
+    <h2>Sign Up As</h2>
+
+    <div class="role-buttons">
+      <button onclick="showParent()">Parent</button>
+      <button onclick="showUstaz()">Ustaz / Ustaza</button>
+    </div>
+
+    <!-- Parent form -->
+    <div id="parentForm" class="hidden">
+      <input placeholder="Full name">
+      <input placeholder="Phone number">
+      <input placeholder="City / Area">
+      <button class="small-btn" onclick="goHome()">Create</button>
+    </div>
+
+    <!-- Ustaz form -->
+    <div id="ustazForm" class="hidden">
+      <input placeholder="Full name">
+      <input placeholder="Phone number">
+      <input placeholder="City / Area">
+      <input placeholder="Gender (Male / Female)">
+      <input placeholder="Years of experience">
+      <button class="small-btn" onclick="goHome()">Create</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
