@@ -23,60 +23,68 @@
 
       <!-- LOGIN -->
       <div class="card-face front">
-        <h2>Login</h2>
+        <div class="card-content">
 
-        <input type="text" id="loginPhone" placeholder="Phone number">
-        <input type="password" id="loginPassword" placeholder="Password">
+          <h2>Login</h2>
 
-        <button onclick="login()">Login</button>
+          <input type="text" id="loginPhone" placeholder="Phone number">
+          <input type="password" id="loginPassword" placeholder="Password">
 
-        <p class="link">
-          Don’t have an account?
-          <span onclick="flipCard()">Sign up</span>
-        </p>
+          <button onclick="login()">Login</button>
+
+          <p class="link">
+            Don’t have an account?
+            <span onclick="flipCard()">Sign up</span>
+          </p>
+
+        </div>
       </div>
 
       <!-- SIGNUP -->
       <div class="card-face back">
-        <h2>Create Account</h2>
+        <div class="card-content">
 
-        <select id="role">
-          <option value="">Sign up as</option>
-          <option value="parent">Parent</option>
-          <option value="ustaz">Ustaz / Ustaza</option>
-        </select>
+          <h2>Create Account</h2>
 
-        <input type="text" id="fullName" placeholder="Full name">
-        <input type="text" id="signupPhone" placeholder="Phone number">
+          <select id="role">
+            <option value="">Sign up as</option>
+            <option value="parent">Parent</option>
+            <option value="ustaz">Ustaz / Ustaza</option>
+          </select>
 
-        <select id="subcity">
-          <option value="">Select Sub-City</option>
-          <option value="bole">Bole</option>
-          <option value="yeka">Yeka</option>
-          <option value="kirkos">Kirkos</option>
-          <option value="lideta">Lideta</option>
-          <option value="arada">Arada</option>
-          <option value="addisketema">Addis Ketema</option>
-          <option value="nifassilk">Nifas Silk</option>
-          <option value="kolfe">Kolfe Keranio</option>
-          <option value="akakikaliti">Akaki Kality</option>
-          <option value="gullele">Gullele</option>
-        </select>
+          <input type="text" id="fullName" placeholder="Full name">
+          <input type="text" id="signupPhone" placeholder="Phone number">
 
-        <select id="area">
-          <option value="">Select Area</option>
-        </select>
+          <select id="subcity">
+            <option value="">Select Sub-City</option>
+            <option value="bole">Bole</option>
+            <option value="yeka">Yeka</option>
+            <option value="kirkos">Kirkos</option>
+            <option value="lideta">Lideta</option>
+            <option value="arada">Arada</option>
+            <option value="addisketema">Addis Ketema</option>
+            <option value="nifassilk">Nifas Silk</option>
+            <option value="kolfe">Kolfe Keranio</option>
+            <option value="akakikaliti">Akaki Kality</option>
+            <option value="gullele">Gullele</option>
+          </select>
 
-        <input type="password" id="signupPassword" placeholder="Password">
+          <select id="area">
+            <option value="">Select Area</option>
+          </select>
 
-        <button onclick="signup()">Sign Up</button>
+          <input type="password" id="signupPassword" placeholder="Password">
 
-        <p class="link">
-          Already have an account?
-          <span onclick="flipCard()">Login</span>
-        </p>
+          <button onclick="signup()">Sign Up</button>
 
-        <div class="back-btn" onclick="flipCard()">← Back</div>
+          <p class="link">
+            Already have an account?
+            <span onclick="flipCard()">Login</span>
+          </p>
+
+          <div class="back-btn" onclick="flipCard()">← Back</div>
+
+        </div>
       </div>
 
     </div>
