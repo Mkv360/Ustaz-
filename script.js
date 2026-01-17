@@ -43,13 +43,13 @@ function login() {
   const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
   const pass = document.getElementById("loginPassword").value.trim();
   if (!phone || !pass) return showMessage("Enter valid phone & password");
-  successMessage("Login successful (demo)");
+  successMessage("Login successful (demo)"); // replace with backend call later
 }
 
 // ===============================
-// SIGNUP → OTP
+// SIGNUP → SEND OTP
 // ===============================
-let generatedOtp = "", signupData = {};
+let signupData = {};
 
 function signup() {
   const role = document.getElementById("role").value;
@@ -75,13 +75,28 @@ function signup() {
   }
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
-  generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-  console.log("Demo OTP:", generatedOtp);
 
-  // Show OTP card
-  card.classList.add("otp-active");
-  card.classList.remove("flipped"); // ensure OTP card is visible
-  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+  // ===== Call backend to send OTP =====
+  fetch("https://ustazapp.kesug.com/api/send_otp.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `phone=${encodeURIComponent(phone)}`
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.success){
+      successMessage("OTP sent! Check your phone (or console for testing)");
+      console.log("OTP (for testing):", data.otp);
+
+      // Show OTP card
+      card.classList.add("otp-active");
+      card.classList.remove("flipped");
+      document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+    } else {
+      showMessage("Failed to send OTP: " + data.message);
+    }
+  })
+  .catch(err => showMessage("Error sending OTP: " + err));
 }
 
 // ===============================
@@ -89,13 +104,29 @@ function signup() {
 // ===============================
 function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
-  if (otp === generatedOtp) {
-    successMessage("Account created successfully!");
-    resetOtp();
-    card.classList.remove("flipped");
-  } else {
-    showMessage("Incorrect OTP");
-  }
+  const phone = signupData.phone;
+
+  if(!otp || !phone) return showMessage("OTP or phone missing");
+
+  // ===== Call backend to verify OTP =====
+  fetch("https://ustazapp.kesug.com/api/verify_otp.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `phone=${encodeURIComponent(phone)}&otp=${encodeURIComponent(otp)}`
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.success){
+      successMessage("Account created successfully!");
+      resetOtp();
+      card.classList.remove("flipped");
+      // TODO: redirect to home or dashboard
+      window.location.href = "home.html"; 
+    } else {
+      showMessage("Incorrect or expired OTP");
+    }
+  })
+  .catch(err => showMessage("Error verifying OTP: " + err));
 }
 
 // ===============================
@@ -111,7 +142,6 @@ function backToSignup() {
 // RESET OTP
 // ===============================
 function resetOtp() {
-  generatedOtp = "";
   signupData = {};
   const otpInput = document.getElementById("otpInput");
   if (otpInput) otpInput.value = "";
