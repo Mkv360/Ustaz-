@@ -1,13 +1,14 @@
 // ===============================
-// CARD & OTP HANDLING
+// CARD REFERENCES
 // ===============================
-const card = document.getElementById("card");
+const loginCard = document.querySelector(".login-card");
+const signupCard = document.querySelector(".signup-card");
+const otpCard = document.querySelector(".otp-card");
+const homeCard = document.querySelector(".home-card");
+const pageSubtitle = document.getElementById("pageSubtitle");
 
-// Scroll reset for any card flip
-function flipCard() {
-  card.classList.toggle("flipped");
-  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
-}
+let signupData = {};
+const BASE_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/api";
 
 // ===============================
 // ALERTS
@@ -38,12 +39,71 @@ function validateEthiopianPhone(phone) {
 }
 
 // ===============================
+// SHOW / HIDE CARDS
+// ===============================
+function showLogin() {
+  loginCard.style.display = "block";
+  signupCard.style.display = "none";
+  otpCard.style.display = "none";
+  homeCard.style.display = "none";
+  pageSubtitle.textContent = "Find a trusted Quran teacher near you";
+}
+
+function showSignup() {
+  loginCard.style.display = "none";
+  signupCard.style.display = "block";
+  otpCard.style.display = "none";
+  homeCard.style.display = "none";
+  pageSubtitle.textContent = "Sign up to find or become a Quran teacher";
+}
+
+function showOtp() {
+  loginCard.style.display = "none";
+  signupCard.style.display = "none";
+  otpCard.style.display = "block";
+  homeCard.style.display = "none";
+}
+
+function showHome() {
+  loginCard.style.display = "none";
+  signupCard.style.display = "none";
+  otpCard.style.display = "none";
+  homeCard.style.display = "block";
+  pageSubtitle.textContent = "Welcome!";
+}
+
+// ===============================
+// BACK BUTTON
+// ===============================
+function backToSignup() {
+  showSignup();
+  resetOtp();
+}
+
+// ===============================
+// LOGOUT
+// ===============================
+function logout() {
+  showLogin();
+}
+
+// ===============================
+// LOGIN (demo)
+// ===============================
+function login() {
+  const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
+  const pass = document.getElementById("loginPassword").value.trim();
+
+  if (!phone || !pass) return showMessage("Enter valid phone & password");
+
+  successMessage("Login successful (demo)");
+  showHome();
+}
+
+// ===============================
 // SIGNUP → SEND OTP
 // ===============================
-let signupData = {};
-const BASE_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/api";
-
-async function signup() {
+function signup() {
   const role = document.getElementById("role").value;
   const name = document.getElementById("fullName").value.trim();
   const phone = validateEthiopianPhone(document.getElementById("signupPhone").value.trim());
@@ -61,7 +121,7 @@ async function signup() {
     ).map(o => o.value);
 
     if (!experience || availableDays.length === 0)
-      return showMessage("Fill Ustaz experience and available days");
+      return showMessage("Fill Ustaz experience and days");
   }
 
   if (!role || !name || !phone || !subcity || !area || !pass)
@@ -69,35 +129,31 @@ async function signup() {
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
-  try {
-    const res = await fetch(`${BASE_URL}/send_otp.php`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone })
-    });
-
-    const data = await res.json();
-
+  // -------------------
+  // Send OTP (demo / API)
+  // -------------------
+  fetch(`${BASE_URL}/send_otp.php`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ phone })
+  })
+  .then(res => res.json())
+  .then(data => {
     if (data.success) {
       successMessage("OTP sent!");
       console.log("OTP (testing):", data.otp); // For testing only
-
-      const btn = document.querySelector("button[onclick='signup()']");
-      if (btn) btn.disabled = true;
-
-      card.classList.add("otp-active"); // Show OTP card
+      showOtp();
     } else {
       showMessage(data.message || "Failed to send OTP");
     }
-  } catch (err) {
-    showMessage("OTP error: " + err.message);
-  }
+  })
+  .catch(err => showMessage("OTP error: " + err.message));
 }
 
 // ===============================
-// VERIFY OTP → REDIRECT TO HOME PAGE
+// VERIFY OTP
 // ===============================
-async function verifyOtp() {
+function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
 
   if (!signupData.phone) {
@@ -108,50 +164,30 @@ async function verifyOtp() {
 
   if (!otp) return showMessage("Enter the OTP");
 
-  try {
-    const res = await fetch(`${BASE_URL}/verify_otp.php`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: signupData.phone, otp })
-    });
-
-    const data = await res.json();
-
+  fetch(`${BASE_URL}/verify_otp.php`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ phone: signupData.phone, otp })
+  })
+  .then(res => res.json())
+  .then(data => {
     if (data.success) {
       successMessage("OTP verified!");
       resetOtp();
-
-      // Open home.html inside Telegram WebApp
-      if (window.Telegram?.WebApp) {
-        Telegram.WebApp.openLink("home.html", true);
-      } else {
-        window.location.href = "home.html";
-      }
+      showHome();
     } else {
       showMessage("Invalid or expired OTP");
     }
-  } catch (err) {
-    showMessage("Verification error: " + err.message);
-  }
+  })
+  .catch(err => showMessage("Verification error: " + err.message));
 }
 
 // ===============================
-// BACK / RESET OTP
+// RESET OTP
 // ===============================
-function backToSignup() {
-  resetOtp();
-  card.classList.remove("otp-active");
-}
-
 function resetOtp() {
   signupData = {};
-  const otpInput = document.getElementById("otpInput");
-  if (otpInput) otpInput.value = "";
-
-  const btn = document.querySelector("button[onclick='signup()']");
-  if (btn) btn.disabled = false;
-
-  card.classList.remove("otp-active");
+  document.getElementById("otpInput").value = "";
 }
 
 // ===============================
@@ -195,7 +231,7 @@ document.getElementById("role").addEventListener("change", function() {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  card.classList.remove("otp-active");
+  showLogin();
   document.getElementById("subcity").addEventListener("change", loadAreas);
 
   if (window.Telegram?.WebApp) {
@@ -203,10 +239,3 @@ document.addEventListener("DOMContentLoaded", () => {
     Telegram.WebApp.expand();
   }
 });
-
-// ===============================
-// NAVIGATION BACK
-// ===============================
-function goBack() {
-  window.location.href = "index.html"; // return to login/landing page
-}
