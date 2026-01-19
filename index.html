@@ -26,12 +26,12 @@
           <button onclick="login()">Login</button>
           <p class="link">
             Don’t have an account? 
-            <span onclick="showSignupCard()">Sign up</span>
+            <span id="signupLink">Sign up</span>
           </p>
         </div>
       </div>
 
-      <!-- SIGNUP CARD -->
+      <!-- SIGNUP CARD (back of login) -->
       <div class="card-face back">
         <div class="card-content">
           <h2>Create Account</h2>
@@ -40,8 +40,10 @@
             <option value="parent">Parent</option>
             <option value="ustaz">Ustaz / Ustaza</option>
           </select>
+
           <input type="text" id="fullName" placeholder="Full name">
           <input type="text" id="signupPhone" placeholder="Phone number">
+
           <select id="subcity">
             <option value="">Select Sub-City</option>
             <option value="bole">Bole</option>
@@ -55,6 +57,7 @@
             <option value="akakikaliti">Akaki Kality</option>
             <option value="gullele">Gullele</option>
           </select>
+
           <select id="area">
             <option value="">Select Area</option>
           </select>
@@ -76,7 +79,8 @@
 
           <input type="password" id="signupPassword" placeholder="Password">
           <button onclick="signup()">Send OTP</button>
-          <div class="back-btn" onclick="showLoginCard()">← Back</div>
+
+          <div class="back-btn" onclick="showLoginCard()">← Back to Login</div>
         </div>
       </div>
 
@@ -93,7 +97,7 @@
 
       <!-- HOME CARD -->
       <div class="card-face home">
-        <div class="card-content">
+        <div class="card-content" id="homeContent">
           <h2>Welcome!</h2>
           <p>You are now logged in. Search for Quran Ustaz, view profiles, and contact them here.</p>
           <button onclick="logout()">← Logout</button>
@@ -104,6 +108,6 @@
   </div>
 </div>
 
-<script src="script.js"></script>
+<script src="signup.js"></script>
 </body>
 </html>
