@@ -1,34 +1,49 @@
-const card = document.getElementById("card");
-
 // ===============================
-// NAVIGATION FUNCTIONS
+// OPEN PAGES
 // ===============================
 function goToSignup() {
   if (window.Telegram?.WebApp) {
-    Telegram.WebApp.openLink("signup.html", true); // opens inside Telegram WebApp
+    // open inside Telegram WebApp
+    Telegram.WebApp.openLink("signup.html", true);
   } else {
-    window.location.href = "signup.html"; // fallback for browser
+    // fallback for normal browser
+    window.location.href = "signup.html";
   }
 }
 
 function goToLogin() {
-  if (window.Telegram?.WebApp) {
-    Telegram.WebApp.openLink("login.html", true); // opens inside Telegram WebApp
-  } else {
-    window.location.href = "login.html"; // fallback for browser
-  }
-}
-
-function goToLoginCard() {
-  card.classList.remove("flipped");
-}
-
-function goToSignupCard() {
-  card.classList.add("flipped");
+  // For now, index.html is the login page, so just reload
+  window.location.href = "index.html";
 }
 
 // ===============================
-// INIT TELEGRAM WEBAPP
+// LOGIN FUNCTION (demo)
+// ===============================
+function login() {
+  const phone = document.getElementById("loginPhone").value.trim();
+  const pass = document.getElementById("loginPassword").value.trim();
+
+  if (!phone || !pass) {
+    alert("Enter phone and password");
+    return;
+  }
+
+  // Demo login success
+  if (window.Telegram?.WebApp) {
+    Telegram.WebApp.showPopup({
+      title: "Success",
+      message: "Login successful (demo)",
+      buttons: [{ type: "ok" }]
+    });
+    Telegram.WebApp.openLink("home.html", true); // open home in Telegram
+  } else {
+    alert("Login successful (demo)");
+    window.location.href = "home.html"; // browser fallback
+  }
+}
+
+// ===============================
+// INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
   if (window.Telegram?.WebApp) {
