@@ -50,7 +50,7 @@ function login() {
 // SIGNUP → SEND OTP
 // ===============================
 let signupData = {};
-const BASE_URL = "https://ustaz-backend.hmdclent.repl.co/api"; // Replit backend API folder
+const BASE_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/api"; // <-- YOUR Replit API
 
 async function signup() {
   const role = document.getElementById("role").value;
@@ -97,7 +97,7 @@ async function signup() {
       showMessage("Failed to send OTP: " + data.message);
     }
   } catch (err) {
-    showMessage("Error sending OTP: " + err);
+    showMessage("Error sending OTP: " + err.message);
   }
 }
 
@@ -131,7 +131,7 @@ async function verifyOtp() {
       showMessage("Incorrect or expired OTP");
     }
   } catch (err) {
-    showMessage("Error verifying OTP: " + err);
+    showMessage("Error verifying OTP: " + err.message);
   }
 }
 
