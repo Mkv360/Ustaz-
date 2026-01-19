@@ -22,10 +22,10 @@
           <h2>Login</h2>
           <input type="text" id="loginPhone" placeholder="Phone number">
           <input type="password" id="loginPassword" placeholder="Password">
-          <button onclick="login()">Login</button>
+          <button id="loginBtn">Login</button>
           <p class="link">
             Don’t have an account?
-            <span onclick="flipToSignup()">Sign up</span>
+            <span id="toSignup">Sign up</span>
           </p>
         </div>
       </div>
@@ -37,12 +37,12 @@
           <input type="text" id="fullName" placeholder="Full Name">
           <input type="text" id="signupPhone" placeholder="Phone Number">
           <input type="password" id="signupPassword" placeholder="Password">
-          <button onclick="signup()">Sign Up</button>
+          <button id="signupBtn">Sign Up</button>
           <p class="link">
             Already have an account?
-            <span onclick="flipToLogin()">Login</span>
+            <span id="toLogin">Login</span>
           </p>
-          <div class="back-btn" onclick="flipToLogin()">← Back</div>
+          <div class="back-btn" id="backToLogin">← Back</div>
         </div>
       </div>
 
