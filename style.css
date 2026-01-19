@@ -111,6 +111,7 @@ button:active {
 .link {
   margin-top: 15px;
   font-size: 13px;
+  text-decoration: none; /* ensure parent doesn't underline */
 }
 
 /* INLINE LINKS (Signup/Login inside text) */
@@ -118,11 +119,12 @@ button:active {
   color: #2ecc71;
   cursor: pointer;
   display: inline-block;              /* Telegram tap safe */
-  padding: 2px 4px;                   /* helps mobile tap detection */
+  padding: 2px 4px;                   /* tap area */
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   font-weight: 600;
-  text-decoration: none;               /* REMOVE underline */
+  text-decoration: none !important;   /* force no underline */
+  pointer-events: auto;
 }
 
 /* Ustaz extra fields label */
