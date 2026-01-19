@@ -1,12 +1,7 @@
 // ===============================
-// CARD FLIP
+// CARD REFERENCE
 // ===============================
 const card = document.getElementById("card");
-
-function flipCard() {
-  card.classList.toggle("flipped");
-  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
-}
 
 // ===============================
 // ALERTS
@@ -37,11 +32,20 @@ function validateEthiopianPhone(phone) {
 }
 
 // ===============================
+// CARD FLIP
+// ===============================
+function flipCard() {
+  card.classList.toggle("flipped");
+  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+}
+
+// ===============================
 // LOGIN (demo)
 // ===============================
 function login() {
   const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
   const pass = document.getElementById("loginPassword").value.trim();
+
   if (!phone || !pass) return showMessage("Enter valid phone & password");
 
   successMessage("Login successful (demo)");
@@ -205,8 +209,7 @@ function loadAreas() {
 }
 
 // ===============================
-// ROLE TOGGLE
-// ===============================
+// ROLE TOGGLE (Ustaz fields)
 document.getElementById("role").addEventListener("change", function() {
   document.getElementById("ustazFields").style.display =
     this.value === "ustaz" ? "block" : "none";
