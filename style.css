@@ -30,9 +30,7 @@ body {
   margin-bottom: 20px;
 }
 
-/* ===============================
-   CARD CONTAINER
-================================ */
+/* CARD */
 .card-container {
   perspective: 1000px;
 }
@@ -47,14 +45,11 @@ body {
   transition: transform 0.7s ease;
 }
 
-/* Flip when signup */
+/* Flip for signup */
 .card[data-state="signup"] {
   transform: rotateY(180deg);
 }
 
-/* ===============================
-   CARD FACES
-================================ */
 .card-face {
   position: absolute;
   inset: 0;
@@ -71,18 +66,14 @@ body {
   transform: rotateY(180deg);
 }
 
-/* ===============================
-   CONTENT
-================================ */
+/* CONTENT */
 .card-content {
   height: 100%;
   overflow-y: auto;
   padding-bottom: 20px;
 }
 
-/* ===============================
-   FORM ELEMENTS
-================================ */
+/* FORM */
 input,
 select {
   width: 85%;
@@ -115,18 +106,18 @@ button:active {
   transform: scale(0.97);
 }
 
-/* ===============================
-   LINKS & HELPERS
-================================ */
+/* LINKS */
 .link {
   margin-top: 15px;
   font-size: 13px;
 }
 
 .link span {
-  color: #2ecc71;
+  display: inline-block;            /* IMPORTANT for Telegram click */
   cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  color: #2ecc71;
 }
 
 .small-label {
@@ -136,16 +127,12 @@ button:active {
   opacity: 0.85;
 }
 
-/* ===============================
-   VISIBILITY HELPERS
-================================ */
+/* VISIBILITY */
 .hidden {
   display: none;
 }
 
-/* ===============================
-   MOBILE / TELEGRAM POLISH
-================================ */
+/* MOBILE / TELEGRAM POLISH */
 button,
 .link span {
   -webkit-tap-highlight-color: transparent;
