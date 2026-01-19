@@ -113,15 +113,16 @@ button:active {
   font-size: 13px;
 }
 
-.link-btn {
-  background: none;
-  border: none;
+/* INLINE LINKS (Signup/Login inside text) */
+.inline-link {
   color: #2ecc71;
   cursor: pointer;
-  padding: 2px 5px;
-  font-size: 13px;
   display: inline-block;              /* Telegram tap safe */
+  padding: 2px 4px;                   /* helps mobile tap detection */
+  user-select: none;
   -webkit-tap-highlight-color: transparent;
+  font-weight: 600;
+  text-decoration: underline;
 }
 
 /* Ustaz extra fields label */
@@ -139,6 +140,6 @@ button:active {
 
 /* MOBILE / TELEGRAM POLISH */
 button,
-.link-btn {
+.inline-link {
   -webkit-tap-highlight-color: transparent;
 }
