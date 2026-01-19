@@ -44,6 +44,7 @@ function login() {
   const pass = document.getElementById("loginPassword").value.trim();
   if (!phone || !pass) return showMessage("Enter valid phone & password");
   successMessage("Login successful (demo)");
+  showHomeCard();
 }
 
 // ===============================
@@ -130,17 +131,30 @@ async function verifyOtp() {
     if (data.success) {
       successMessage("OTP verified!");
       resetOtp();
-
-      // Show home card inside same index.html
-      card.classList.add("home-active"); // CSS shows home card
-      card.classList.remove("otp-active");
-      card.classList.remove("flipped");
+      showHomeCard();
     } else {
       showMessage("Invalid or expired OTP");
     }
   } catch (err) {
     showMessage("Verification error: " + err.message);
   }
+}
+
+// ===============================
+// SHOW HOME CARD
+// ===============================
+function showHomeCard() {
+  card.classList.add("home-active");
+  card.classList.remove("otp-active");
+  card.classList.remove("flipped");
+}
+
+// ===============================
+// LOGOUT → BACK TO LOGIN
+// ===============================
+function logout() {
+  card.classList.remove("home-active");
+  card.classList.add("flipped"); // back to signup/login
 }
 
 // ===============================
