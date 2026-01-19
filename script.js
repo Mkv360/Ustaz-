@@ -1,5 +1,5 @@
 // ===============================
-// CONSTANTS & STATE
+// STATE
 // ===============================
 const UI_STATE = {
   LOGIN: "login",
@@ -59,20 +59,13 @@ function handleBack() {
   }
 }
 
-if (window.Telegram?.WebApp) {
-  Telegram.WebApp.BackButton.onClick(handleBack);
-}
-
 // ===============================
 // NAVIGATION EVENTS
 // ===============================
-goSignup.addEventListener("click", () => {
-  setState(UI_STATE.SIGNUP);
-});
-
-goLogin.addEventListener("click", () => {
-  setState(UI_STATE.LOGIN);
-});
+function attachNavEvents() {
+  goSignup.addEventListener("click", () => setState(UI_STATE.SIGNUP));
+  goLogin.addEventListener("click", () => setState(UI_STATE.LOGIN));
+}
 
 // ===============================
 // ROLE-BASED FIELDS
@@ -114,8 +107,11 @@ subcitySelect.addEventListener("change", loadAreas);
 document.addEventListener("DOMContentLoaded", () => {
   setState(UI_STATE.LOGIN);
 
+  attachNavEvents();
+
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
+    Telegram.WebApp.BackButton.onClick(handleBack);
   }
 });
