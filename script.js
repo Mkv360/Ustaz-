@@ -1,15 +1,7 @@
-// ===============================
-// CARD FLIP
-// ===============================
 const card = document.getElementById("card");
 
-function flipCard() {
-  card.classList.toggle("flipped");
-  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
-}
-
 // ===============================
-// ALERTS
+// Alerts
 // ===============================
 function showMessage(msg) { 
   if (window.Telegram?.WebApp) Telegram.WebApp.showAlert(msg); 
@@ -27,7 +19,7 @@ function successMessage(msg) {
 }
 
 // ===============================
-// ETHIOPIAN PHONE VALIDATION
+// Ethiopian Phone Validation
 // ===============================
 function validateEthiopianPhone(phone) {
   const p = phone.replace(/\s+/g,'');
@@ -37,21 +29,16 @@ function validateEthiopianPhone(phone) {
 }
 
 // ===============================
-// LOGIN (demo)
+// Show / Hide Cards
 // ===============================
-function login() {
-  const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
-  const pass = document.getElementById("loginPassword").value.trim();
-  if (!phone || !pass) return showMessage("Enter valid phone & password");
-  successMessage("Login successful (demo)");
-  showHomeCard();
-}
+function showSignupCard() { card.classList.add("flipped"); }
+function showLoginCard() { card.classList.remove("flipped"); }
 
 // ===============================
-// SIGNUP → SEND OTP
+// Signup → Send OTP
 // ===============================
 let signupData = {};
-const BASE_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/api";
+const BASE_URL = "https://YOUR_REPLIT_LINK/api";
 
 async function signup() {
   const role = document.getElementById("role").value;
@@ -85,16 +72,11 @@ async function signup() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone })
     });
-
     const data = await res.json();
 
     if (data.success) {
       successMessage("OTP sent!");
       console.log("OTP (testing):", data.otp);
-
-      const btn = document.querySelector("button[onclick='signup()']");
-      if (btn) btn.disabled = true;
-
       card.classList.add("otp-active");
       card.classList.remove("flipped");
     } else {
@@ -106,7 +88,7 @@ async function signup() {
 }
 
 // ===============================
-// VERIFY OTP → SHOW HOME CARD
+// Verify OTP → Show Home
 // ===============================
 async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
@@ -125,13 +107,13 @@ async function verifyOtp() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone: signupData.phone, otp })
     });
-
     const data = await res.json();
 
     if (data.success) {
       successMessage("OTP verified!");
       resetOtp();
-      showHomeCard();
+      card.classList.add("home-active");
+      card.classList.remove("otp-active");
     } else {
       showMessage("Invalid or expired OTP");
     }
@@ -141,24 +123,7 @@ async function verifyOtp() {
 }
 
 // ===============================
-// SHOW HOME CARD
-// ===============================
-function showHomeCard() {
-  card.classList.add("home-active");
-  card.classList.remove("otp-active");
-  card.classList.remove("flipped");
-}
-
-// ===============================
-// LOGOUT → BACK TO LOGIN
-// ===============================
-function logout() {
-  card.classList.remove("home-active");
-  card.classList.add("flipped"); // back to signup/login
-}
-
-// ===============================
-// BACK / RESET OTP
+// Back / Reset OTP
 // ===============================
 function backToSignup() {
   resetOtp();
@@ -170,15 +135,18 @@ function resetOtp() {
   signupData = {};
   const otpInput = document.getElementById("otpInput");
   if (otpInput) otpInput.value = "";
-
-  const btn = document.querySelector("button[onclick='signup()']");
-  if (btn) btn.disabled = false;
-
-  card.classList.remove("otp-active");
 }
 
 // ===============================
-// SUBCITY → AREA
+// Logout
+// ===============================
+function logout() {
+  card.classList.remove("home-active");
+  card.classList.add("flipped"); // back to signup/login
+}
+
+// ===============================
+// Subcity → Area
 // ===============================
 const areas = {
   bole: ["Bole Medhanealem","Gerji","Edna Mall","Welo Sefer","Japan","Rwanda","Michael","CMC","Bulbula"],
@@ -206,17 +174,13 @@ function loadAreas() {
   });
 }
 
-// ===============================
-// ROLE TOGGLE
-// ===============================
+// Role toggle for Ustaz fields
 document.getElementById("role").addEventListener("change", function() {
   document.getElementById("ustazFields").style.display =
     this.value === "ustaz" ? "block" : "none";
 });
 
-// ===============================
-// INIT
-// ===============================
+// Init
 document.addEventListener("DOMContentLoaded", () => {
   card.classList.remove("flipped", "otp-active", "home-active");
   document.getElementById("subcity").addEventListener("change", loadAreas);
