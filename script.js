@@ -60,6 +60,7 @@ function handleBack() {
 // NAVIGATION EVENTS
 // ===============================
 function attachNavEvents() {
+  // Inline link taps
   goSignup.addEventListener("click", () => setState(UI_STATE.SIGNUP));
   goLogin.addEventListener("click", () => setState(UI_STATE.LOGIN));
 }
