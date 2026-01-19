@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
@@ -11,7 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   color: #fff;
-  overflow: hidden; /* Telegram-safe */
+  overflow: hidden;
 }
 
 .app {
@@ -20,37 +20,71 @@ body {
   text-align: center;
 }
 
-.title { margin-bottom: 5px; }
-.subtitle { font-size: 14px; opacity: 0.8; margin-bottom: 20px; }
+.title {
+  margin-bottom: 5px;
+}
 
-.card-container { perspective: 1000px; }
+.subtitle {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+/* ===============================
+   CARD CONTAINER
+================================ */
+.card-container {
+  perspective: 1000px;
+}
 
 .card {
   position: relative;
   width: 100%;
-  height: 500px;
+  min-height: 500px;
+  height: 80vh;
+  max-height: 600px;
   transform-style: preserve-3d;
-  transition: transform 0.7s;
+  transition: transform 0.7s ease;
 }
 
-.card.flipped { transform: rotateY(180deg); }
+/* Flip when signup */
+.card[data-state="signup"] {
+  transform: rotateY(180deg);
+}
 
+/* ===============================
+   CARD FACES
+================================ */
 .card-face {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   padding: 25px;
   border-radius: 20px;
   backdrop-filter: blur(14px);
-  background: rgba(255,255,255,0.08);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   backface-visibility: hidden;
   overflow: hidden;
 }
 
-.back { transform: rotateY(180deg); }
+.card-face.back {
+  transform: rotateY(180deg);
+}
 
-input, select {
+/* ===============================
+   CONTENT
+================================ */
+.card-content {
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+/* ===============================
+   FORM ELEMENTS
+================================ */
+input,
+select {
   width: 85%;
   padding: 10px;
   margin: 10px auto;
@@ -59,6 +93,10 @@ input, select {
   border: none;
   outline: none;
   font-size: 14px;
+}
+
+select[multiple] {
+  border-radius: 12px;
 }
 
 button {
@@ -73,24 +111,42 @@ button {
   cursor: pointer;
 }
 
-button:active { transform: scale(0.98); }
+button:active {
+  transform: scale(0.97);
+}
 
+/* ===============================
+   LINKS & HELPERS
+================================ */
 .link {
   margin-top: 15px;
   font-size: 13px;
 }
 
-.link span, .back-btn {
+.link span {
   color: #2ecc71;
   cursor: pointer;
-  display: inline-block;  /* important for Telegram WebApp click */
   user-select: none;
 }
 
-.back-btn { margin-top: 10px; font-size: 13px; }
+.small-label {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: 0.85;
+}
 
-.card-content {
-  height: 100%;
-  overflow-y: auto;
-  padding-bottom: 20px;
+/* ===============================
+   VISIBILITY HELPERS
+================================ */
+.hidden {
+  display: none;
+}
+
+/* ===============================
+   MOBILE / TELEGRAM POLISH
+================================ */
+button,
+.link span {
+  -webkit-tap-highlight-color: transparent;
 }
