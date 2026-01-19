@@ -77,20 +77,22 @@ body {
   z-index: 100; 
 }
 
-/* Card faces */
-.card-face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  padding: 25px;
-  border-radius: 20px;
-  backdrop-filter: blur(14px);
-  background: rgba(255,255,255,0.08);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  backface-visibility: hidden;
-  overflow: hidden; /* inner scrolling handled separately */
+/* Home card hidden by default */
+.card-face.home {
+  transform: rotateY(0deg);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
 }
 
+/* Home card active */
+.card.home-active .home {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 200;
+}
+
+/* Card content scroll */
 .card-content {
   height: 100%;
   overflow-y: auto;
@@ -159,4 +161,11 @@ button:active {
   font-size: 13px;
   opacity: 0.8;
   cursor: pointer;
+}
+
+/* Home content styling */
+#homeContent {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: left;
 }
