@@ -131,9 +131,9 @@ async function verifyOtp() {
       successMessage("OTP verified!");
       resetOtp();
 
-      // Telegram WebApp-safe redirect
+      // Open home.html inside Telegram WebApp
       if (window.Telegram?.WebApp) {
-        Telegram.WebApp.openLink("home.html");
+        Telegram.WebApp.openLink("home.html", true);
       } else {
         window.location.href = "home.html";
       }
