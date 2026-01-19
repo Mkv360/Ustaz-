@@ -1,6 +1,3 @@
-// ===============================
-// CARD REFERENCE
-// ===============================
 const card = document.getElementById("card");
 
 // ===============================
@@ -61,16 +58,11 @@ async function signup() {
 
   if (role === "ustaz") {
     experience = document.getElementById("experience").value;
-    availableDays = Array.from(
-      document.getElementById("availableDays").selectedOptions
-    ).map(o => o.value);
-
-    if (!experience || availableDays.length === 0)
-      return showMessage("Fill Ustaz experience and days");
+    availableDays = Array.from(document.getElementById("availableDays").selectedOptions).map(o => o.value);
+    if (!experience || availableDays.length === 0) return showMessage("Fill Ustaz experience and days");
   }
 
-  if (!role || !name || !phone || !subcity || !area || !pass)
-    return showMessage("Fill all signup fields correctly");
+  if (!role || !name || !phone || !subcity || !area || !pass) return showMessage("Fill all signup fields correctly");
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
@@ -80,16 +72,11 @@ async function signup() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone })
     });
-
     const data = await res.json();
-
     if (data.success) {
       successMessage("OTP sent!");
       console.log("OTP (testing):", data.otp);
-
-      const btn = document.querySelector("button[onclick='signup()']");
-      if (btn) btn.disabled = true;
-
+      document.querySelector("button[onclick='signup()']").disabled = true;
       card.classList.add("otp-active");
       card.classList.remove("flipped");
     } else {
@@ -101,17 +88,15 @@ async function signup() {
 }
 
 // ===============================
-// VERIFY OTP → SHOW HOME CARD
+// VERIFY OTP
 // ===============================
 async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
-
   if (!signupData.phone) {
     showMessage("Session expired. Please sign up again.");
     backToSignup();
     return;
   }
-
   if (!otp) return showMessage("Enter the OTP");
 
   try {
@@ -120,9 +105,7 @@ async function verifyOtp() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone: signupData.phone, otp })
     });
-
     const data = await res.json();
-
     if (data.success) {
       successMessage("OTP verified!");
       resetOtp();
@@ -136,10 +119,10 @@ async function verifyOtp() {
 }
 
 // ===============================
-// SHOW CARDS
+// CARD FLIPS
 // ===============================
-function showSignupCard() { card.classList.add("flipped"); }
-function showLoginCard() { card.classList.remove("flipped"); }
+function flipToSignup() { card.classList.add("flipped"); }
+function flipToLogin() { card.classList.remove("flipped"); }
 function showHomeCard() { 
   card.classList.add("home-active"); 
   card.classList.remove("otp-active");
@@ -151,7 +134,7 @@ function showHomeCard() {
 // ===============================
 function logout() {
   card.classList.remove("home-active");
-  card.classList.add("flipped"); // back to signup/login
+  flipToLogin();
 }
 
 // ===============================
@@ -160,17 +143,15 @@ function logout() {
 function backToSignup() {
   resetOtp();
   card.classList.remove("otp-active");
-  card.classList.add("flipped");
+  flipToSignup();
 }
 
 function resetOtp() {
   signupData = {};
   const otpInput = document.getElementById("otpInput");
   if (otpInput) otpInput.value = "";
-
   const btn = document.querySelector("button[onclick='signup()']");
   if (btn) btn.disabled = false;
-
   card.classList.remove("otp-active");
 }
 
@@ -178,16 +159,16 @@ function resetOtp() {
 // SUBCITY → AREA
 // ===============================
 const areas = {
-  bole: ["Bole Medhanealem","Gerji","Edna Mall","Welo Sefer","Japan","Rwanda","Michael","CMC","Bulbula"],
-  yeka: ["Megenagna","Kotebe","Summit","Ayat","Shola"],
-  kirkos: ["Kazanchis","Mexico","Meskel Flower","Sar Bet"],
-  lideta: ["Lideta","Abinet","Tor Hailoch","Balcha Hospital"],
-  arada: ["Piazza","Arat Kilo","Sidist Kilo"],
-  addisketema: ["Merkato","Sebategna","Alem Bank"],
-  nifassilk: ["Jemo","Lancha","Sar Bet"],
-  kolfe: ["Kolfe","Asko","Alem Bank"],
-  akakikaliti: ["Akaki","Kality"],
-  gullele: ["Shiro Meda","Entoto"]
+  bole:["Bole Medhanealem","Gerji","Edna Mall","Welo Sefer","Japan","Rwanda","Michael","CMC","Bulbula"],
+  yeka:["Megenagna","Kotebe","Summit","Ayat","Shola"],
+  kirkos:["Kazanchis","Mexico","Meskel Flower","Sar Bet"],
+  lideta:["Lideta","Abinet","Tor Hailoch","Balcha Hospital"],
+  arada:["Piazza","Arat Kilo","Sidist Kilo"],
+  addisketema:["Merkato","Sebategna","Alem Bank"],
+  nifassilk:["Jemo","Lancha","Sar Bet"],
+  kolfe:["Kolfe","Asko","Alem Bank"],
+  akakikaliti:["Akaki","Kality"],
+  gullele:["Shiro Meda","Entoto"]
 };
 
 function loadAreas() {
@@ -207,11 +188,9 @@ function loadAreas() {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  if (window.Telegram?.WebApp) {
-    Telegram.WebApp.ready();
-    Telegram.WebApp.expand();
-  }
-
-  const signupLink = document.getElementById("signupLink");
-  if (signupLink) signupLink.addEventListener("click", showSignupCard);
+  document.getElementById("subcity").addEventListener("change", loadAreas);
+  document.getElementById("role").addEventListener("change", function() {
+    document.getElementById("ustazFields").style.display = this.value === "ustaz" ? "block" : "none";
+  });
+  if(window.Telegram?.WebApp){ Telegram.WebApp.ready(); Telegram.WebApp.expand(); }
 });
