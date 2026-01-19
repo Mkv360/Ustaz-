@@ -24,7 +24,7 @@ const areaSelect = document.getElementById("area");
 // ===============================
 function setState(state) {
   currentState = state;
-  card.dataset.state = state;
+  card.dataset.state = state; // flips card via CSS
   resetScroll();
   syncTelegramBackButton();
 }
@@ -54,15 +54,6 @@ function handleBack() {
   if (currentState === UI_STATE.SIGNUP) {
     setState(UI_STATE.LOGIN);
   }
-}
-
-// ===============================
-// NAVIGATION EVENTS
-// ===============================
-function attachNavEvents() {
-  // Inline link taps
-  goSignup.addEventListener("click", () => setState(UI_STATE.SIGNUP));
-  goLogin.addEventListener("click", () => setState(UI_STATE.LOGIN));
 }
 
 // ===============================
@@ -98,6 +89,14 @@ function loadAreas() {
 }
 
 subcitySelect.addEventListener("change", loadAreas);
+
+// ===============================
+// NAVIGATION EVENTS
+// ===============================
+function attachNavEvents() {
+  goSignup.addEventListener("click", () => setState(UI_STATE.SIGNUP));
+  goLogin.addEventListener("click", () => setState(UI_STATE.LOGIN));
+}
 
 // ===============================
 // INIT
