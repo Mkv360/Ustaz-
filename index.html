@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quran Ustaz Finder</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -15,18 +15,21 @@
   <p class="subtitle">Find a trusted Quran teacher near you</p>
 
   <div class="card-container">
-    <div class="card" id="card">
+    <div class="card" id="card" data-state="login">
 
       <!-- LOGIN -->
       <div class="card-face front">
         <div class="card-content">
           <h2>Login</h2>
-          <input type="text" id="loginPhone" placeholder="Phone number">
-          <input type="password" id="loginPassword" placeholder="Password">
-          <button onclick="login()">Login</button>
+
+          <input type="tel" id="loginPhone" placeholder="Phone number" />
+          <input type="password" id="loginPassword" placeholder="Password" />
+
+          <button id="loginBtn">Login</button>
+
           <p class="link">
             Don’t have an account?
-            <span onclick="flipCard()">Sign up</span>
+            <span id="goSignup">Sign up</span>
           </p>
         </div>
       </div>
@@ -43,9 +46,10 @@
           </select>
 
           <!-- Ustaz extra fields -->
-          <div id="ustazFields" style="display:none; margin-top:10px;">
-            <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50">
-            <label style="margin-top:10px; font-size:13px;">Available days:</label>
+          <div id="ustazFields" class="hidden">
+            <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50" />
+
+            <label class="small-label">Available days</label>
             <select id="availableDays" multiple size="5">
               <option value="monday">Monday</option>
               <option value="tuesday">Tuesday</option>
@@ -55,11 +59,10 @@
               <option value="saturday">Saturday</option>
               <option value="sunday">Sunday</option>
             </select>
-            <small>Hold Ctrl (or Cmd) to select multiple days</small>
           </div>
 
-          <input type="text" id="fullName" placeholder="Full name">
-          <input type="text" id="signupPhone" placeholder="Phone number">
+          <input type="text" id="fullName" placeholder="Full name" />
+          <input type="tel" id="signupPhone" placeholder="Phone number" />
 
           <select id="subcity">
             <option value="">Select Sub-City</option>
@@ -79,25 +82,14 @@
             <option value="">Select Area</option>
           </select>
 
-          <input type="password" id="signupPassword" placeholder="Password">
-          <button onclick="signup()">Sign Up</button>
+          <input type="password" id="signupPassword" placeholder="Password" />
+
+          <button id="signupBtn">Create Account</button>
 
           <p class="link">
             Already have an account?
-            <span onclick="flipCard()">Login</span>
+            <span id="goLogin">Login</span>
           </p>
-          <div class="back-btn" onclick="flipCard()">← Back</div>
-        </div>
-      </div>
-
-      <!-- OTP -->
-      <div class="card-face otp">
-        <div class="card-content">
-          <h2>Enter OTP</h2>
-          <p>An OTP has been sent to your phone</p>
-          <input type="text" id="otpInput" placeholder="Enter OTP">
-          <button onclick="verifyOtp()">Verify OTP</button>
-          <div class="back-btn" onclick="backToSignup()">← Back</div>
         </div>
       </div>
 
