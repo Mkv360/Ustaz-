@@ -122,7 +122,7 @@ button:active {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   font-weight: 600;
-  text-decoration: underline;
+  text-decoration: none;               /* REMOVE underline */
 }
 
 /* Ustaz extra fields label */
