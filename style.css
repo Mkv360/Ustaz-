@@ -1,21 +1,17 @@
-/* ===============================
-   GLOBAL STYLES
-   =============================== */
 * {
   box-sizing: border-box;
   font-family: system-ui, sans-serif;
-  margin: 0;
-  padding: 0;
 }
 
 body {
+  margin: 0;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(180deg, #0b132b, #1c2541);
   color: #fff;
-  overflow: hidden; /* Telegram safe */
+  overflow: hidden;
 }
 
 .app {
@@ -34,9 +30,6 @@ body {
   margin-bottom: 20px;
 }
 
-/* ===============================
-   CARD CONTAINER & FLIP
-   =============================== */
 .card-container {
   perspective: 1000px;
 }
@@ -44,118 +37,52 @@ body {
 .card {
   position: relative;
   width: 100%;
-  height: 560px; /* fixed for Telegram WebApp */
+  height: 400px;
   transform-style: preserve-3d;
   transition: transform 0.7s;
 }
 
-/* FLIP CLASS */
-.card.flipped { transform: rotateY(180deg); }
+.card.flipped {
+  transform: rotateY(180deg);
+}
 
-/* ===============================
-   CARD FACES
-   =============================== */
 .card-face {
   position: absolute;
   width: 100%;
   height: 100%;
   padding: 25px;
   border-radius: 20px;
-  background: rgba(255,255,255,0.08);
   backdrop-filter: blur(14px);
+  background: rgba(255,255,255,0.08);
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   backface-visibility: hidden;
   overflow: hidden;
-  transition: opacity 0.3s ease, transform 0.7s ease;
-  opacity: 1;
-  pointer-events: auto;
 }
 
-/* BACK FACE */
-.back { transform: rotateY(180deg); }
-
-/* OTP CARD */
-.card-face.otp {
-  transform: rotateY(0deg);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 10;
+.card-face.back {
+  transform: rotateY(180deg);
 }
 
-.card.otp-active .otp {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 100;
-}
-
-/* HOME CARD */
-.card-face.home {
-  transform: rotateY(0deg);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 5;
-}
-
-.card.home-active .home {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 200;
-}
-
-/* ===============================
-   CARD CONTENT
-   =============================== */
-.card-content {
-  height: 100%;
-  overflow-y: auto;
-  padding-bottom: 20px;
-}
-
-/* ===============================
-   INPUTS & SELECTS
-   =============================== */
-input, select {
-  width: 85%;
-  padding: 10px;
+input, button {
+  width: 80%;
   margin: 10px auto;
-  display: block;
-  border-radius: 25px;
-  border: none;
-  outline: none;
-  font-size: 14px;
-}
-
-select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 15px center;
-  background-size: 18px;
-  padding-right: 40px;
-}
-
-/* ===============================
-   BUTTONS
-   =============================== */
-button {
-  width: 70%;
   padding: 10px;
-  margin: 15px auto 20px;
   border-radius: 25px;
   border: none;
   font-size: 14px;
+  display: block;
+}
+
+button {
   background: #2ecc71;
   color: #000;
   cursor: pointer;
 }
 
-button:active { transform: scale(0.98); }
+button:active {
+  transform: scale(0.98);
+}
 
-/* ===============================
-   LINKS
-   =============================== */
 .link {
   margin-top: 15px;
   font-size: 13px;
@@ -166,21 +93,9 @@ button:active { transform: scale(0.98); }
   cursor: pointer;
 }
 
-/* ===============================
-   BACK BUTTON
-   =============================== */
 .back-btn {
   margin-top: 10px;
   font-size: 13px;
   opacity: 0.8;
   cursor: pointer;
-}
-
-/* ===============================
-   HOME CONTENT
-   =============================== */
-#homeContent {
-  margin-top: 20px;
-  font-size: 14px;
-  text-align: left;
 }
