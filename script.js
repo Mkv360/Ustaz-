@@ -105,7 +105,7 @@ async function signup() {
 }
 
 // ===============================
-// VERIFY OTP
+// VERIFY OTP → SHOW HOME CARD
 // ===============================
 async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
@@ -131,12 +131,10 @@ async function verifyOtp() {
       successMessage("OTP verified!");
       resetOtp();
 
-      // Open home.html inside Telegram WebApp
-      if (window.Telegram?.WebApp) {
-        Telegram.WebApp.openLink("home.html", true);
-      } else {
-        window.location.href = "home.html";
-      }
+      // Show home card inside same index.html
+      card.classList.add("home-active"); // CSS shows home card
+      card.classList.remove("otp-active");
+      card.classList.remove("flipped");
     } else {
       showMessage("Invalid or expired OTP");
     }
@@ -206,7 +204,7 @@ document.getElementById("role").addEventListener("change", function() {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  card.classList.remove("flipped", "otp-active");
+  card.classList.remove("flipped", "otp-active", "home-active");
   document.getElementById("subcity").addEventListener("change", loadAreas);
 
   if (window.Telegram?.WebApp) {
