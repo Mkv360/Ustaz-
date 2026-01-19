@@ -37,20 +37,20 @@ function validateEthiopianPhone(phone) {
 }
 
 // ===============================
-// LOGIN
+// LOGIN (demo)
 // ===============================
 function login() {
   const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
   const pass = document.getElementById("loginPassword").value.trim();
   if (!phone || !pass) return showMessage("Enter valid phone & password");
-  successMessage("Login successful (demo)"); // Replace with backend call later
+  successMessage("Login successful (demo)");
 }
 
 // ===============================
 // SIGNUP → SEND OTP
 // ===============================
 let signupData = {};
-const BASE_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/api"; // <-- YOUR Replit API
+const BASE_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/api";
 
 async function signup() {
   const role = document.getElementById("role").value;
@@ -65,11 +65,16 @@ async function signup() {
 
   if (role === "ustaz") {
     experience = document.getElementById("experience").value;
-    availableDays = Array.from(document.getElementById("availableDays").selectedOptions).map(o => o.value);
-    if (!experience || availableDays.length === 0) return showMessage("Please fill in Ustaz experience and available days");
+    availableDays = Array.from(
+      document.getElementById("availableDays").selectedOptions
+    ).map(o => o.value);
+
+    if (!experience || availableDays.length === 0)
+      return showMessage("Fill Ustaz experience and days");
   }
 
-  if (!role || !name || !phone || !subcity || !area || !pass) return showMessage("Please fill in all signup fields correctly");
+  if (!role || !name || !phone || !subcity || !area || !pass)
+    return showMessage("Fill all signup fields correctly");
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
@@ -77,27 +82,26 @@ async function signup() {
     const res = await fetch(`${BASE_URL}/send_otp.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: phone })
+      body: JSON.stringify({ phone })
     });
 
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`HTTP ${res.status}: ${text}`);
-    }
-
     const data = await res.json();
+
     if (data.success) {
-      successMessage("OTP sent! Check your phone (or console for testing)");
-      console.log("OTP (for testing):", data.otp);
+      successMessage("OTP sent!");
+      console.log("OTP (testing):", data.otp);
+
+      // prevent multiple OTP sends
+      const btn = document.querySelector("button[onclick='signup()']");
+      if (btn) btn.disabled = true;
 
       card.classList.add("otp-active");
       card.classList.remove("flipped");
-      document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
     } else {
-      showMessage("Failed to send OTP: " + data.message);
+      showMessage(data.message || "Failed to send OTP");
     }
   } catch (err) {
-    showMessage("Error sending OTP: " + err.message);
+    showMessage("OTP error: " + err.message);
   }
 }
 
@@ -106,37 +110,38 @@ async function signup() {
 // ===============================
 async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
-  const phone = signupData.phone;
-  if (!otp || !phone) return showMessage("OTP or phone missing");
+
+  if (!signupData.phone) {
+    showMessage("Session expired. Please sign up again.");
+    backToSignup();
+    return;
+  }
+
+  if (!otp) return showMessage("Enter the OTP");
 
   try {
     const res = await fetch(`${BASE_URL}/verify_otp.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: phone, otp: otp })
+      body: JSON.stringify({ phone: signupData.phone, otp })
     });
 
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`HTTP ${res.status}: ${text}`);
-    }
-
     const data = await res.json();
+
     if (data.success) {
-      successMessage("Account created successfully!");
+      successMessage("OTP verified!");
       resetOtp();
-      card.classList.remove("flipped");
-      window.location.href = "home.html"; 
+      window.location.href = "home.html";
     } else {
-      showMessage("Incorrect or expired OTP");
+      showMessage("Invalid or expired OTP");
     }
   } catch (err) {
-    showMessage("Error verifying OTP: " + err.message);
+    showMessage("Verification error: " + err.message);
   }
 }
 
 // ===============================
-// BACK TO SIGNUP
+// BACK / RESET OTP
 // ===============================
 function backToSignup() {
   resetOtp();
@@ -144,13 +149,14 @@ function backToSignup() {
   card.classList.add("flipped");
 }
 
-// ===============================
-// RESET OTP
-// ===============================
 function resetOtp() {
   signupData = {};
   const otpInput = document.getElementById("otpInput");
   if (otpInput) otpInput.value = "";
+
+  const btn = document.querySelector("button[onclick='signup()']");
+  if (btn) btn.disabled = false;
+
   card.classList.remove("otp-active");
 }
 
@@ -184,23 +190,18 @@ function loadAreas() {
 }
 
 // ===============================
-// SHOW/HIDE USTAZ FIELDS
+// ROLE TOGGLE
 // ===============================
 document.getElementById("role").addEventListener("change", function() {
-  const ustazFields = document.getElementById("ustazFields");
-  if (this.value === "ustaz") ustazFields.style.display = "block";
-  else ustazFields.style.display = "none";
+  document.getElementById("ustazFields").style.display =
+    this.value === "ustaz" ? "block" : "none";
 });
 
 // ===============================
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  card.classList.remove("flipped");
-  card.classList.remove("otp-active");
-  const otpInput = document.getElementById("otpInput");
-  if (otpInput) otpInput.value = "";
-
+  card.classList.remove("flipped", "otp-active");
   document.getElementById("subcity").addEventListener("change", loadAreas);
 
   if (window.Telegram?.WebApp) {
