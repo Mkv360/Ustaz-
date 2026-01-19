@@ -42,9 +42,6 @@
             <option value="ustaz">Ustaz / Ustaza</option>
           </select>
 
-          <!-- Ustaz extra fields -->
-          
-
           <input type="text" id="fullName" placeholder="Full name">
           <input type="text" id="signupPhone" placeholder="Phone number">
 
@@ -65,7 +62,8 @@
           <select id="area">
             <option value="">Select Area</option>
           </select>
-<div id="ustazFields" style="display:none; margin-top:10px;">
+
+          <div id="ustazFields" style="display:none; margin-top:10px;">
             <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50">
             <label style="margin-top:10px; font-size:13px;">Available days:</label>
             <select id="availableDays" multiple size="5">
@@ -79,6 +77,7 @@
             </select>
             <small>Hold Ctrl (or Cmd) to select multiple days</small>
           </div>
+
           <input type="password" id="signupPassword" placeholder="Password">
           <button onclick="signup()">Sign Up</button>
 
@@ -98,6 +97,18 @@
           <input type="text" id="otpInput" placeholder="Enter OTP">
           <button onclick="verifyOtp()">Verify OTP</button>
           <div class="back-btn" onclick="backToSignup()">← Back</div>
+        </div>
+      </div>
+
+      <!-- HOME -->
+      <div class="card-face home">
+        <div class="card-content">
+          <h2>Welcome!</h2>
+          <p>You are now logged in.</p>
+          <div id="homeContent">
+            <p>Search for Quran Ustaz, view profiles, and contact them here.</p>
+          </div>
+          <div class="back-btn" onclick="backToSignup()">← Logout</div>
         </div>
       </div>
 
