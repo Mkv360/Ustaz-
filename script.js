@@ -50,6 +50,7 @@ function login() {
 // SIGNUP → SEND OTP
 // ===============================
 let signupData = {};
+const BASE_URL = "https://ustaz-backend.hmdclent.repl.co"; // Replit backend URL
 
 function signup() {
   const role = document.getElementById("role").value;
@@ -77,7 +78,7 @@ function signup() {
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
   // ===== Call backend to send OTP =====
-  fetch("https://ustazapp.kesug.com/api/send_otp.php", {
+  fetch(`${BASE_URL}/send_otp.php`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ phone: phone })
@@ -108,8 +109,7 @@ function verifyOtp() {
 
   if (!otp || !phone) return showMessage("OTP or phone missing");
 
-  // ===== Call backend to verify OTP =====
-  fetch("https://ustazapp.kesug.com/api/verify_otp.php", {
+  fetch(`${BASE_URL}/verify_otp.php`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ phone: phone, otp: otp })
@@ -120,8 +120,7 @@ function verifyOtp() {
       successMessage("Account created successfully!");
       resetOtp();
       card.classList.remove("flipped");
-      // Redirect to home page or dashboard
-      window.location.href = "home.html"; 
+      window.location.href = "home.html"; // Redirect to dashboard
     } else {
       showMessage("Incorrect or expired OTP");
     }
