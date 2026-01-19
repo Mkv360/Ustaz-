@@ -50,9 +50,9 @@ function login() {
 // SIGNUP → SEND OTP
 // ===============================
 let signupData = {};
-const BASE_URL = "https://ustaz-backend.hmdclent.repl.co"; // Replit backend URL
+const BASE_URL = "https://ustaz-backend.hmdclent.repl.co/api"; // Replit backend API folder
 
-function signup() {
+async function signup() {
   const role = document.getElementById("role").value;
   const name = document.getElementById("fullName").value.trim();
   const phone = validateEthiopianPhone(document.getElementById("signupPhone").value.trim());
@@ -66,66 +66,73 @@ function signup() {
   if (role === "ustaz") {
     experience = document.getElementById("experience").value;
     availableDays = Array.from(document.getElementById("availableDays").selectedOptions).map(o => o.value);
-    if (!experience || availableDays.length === 0) {
-      return showMessage("Please fill in Ustaz experience and available days");
-    }
+    if (!experience || availableDays.length === 0) return showMessage("Please fill in Ustaz experience and available days");
   }
 
-  if (!role || !name || !phone || !subcity || !area || !pass) {
-    return showMessage("Please fill in all signup fields correctly");
-  }
+  if (!role || !name || !phone || !subcity || !area || !pass) return showMessage("Please fill in all signup fields correctly");
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
-  // ===== Call backend to send OTP =====
-  fetch(`${BASE_URL}/send_otp.php`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ phone: phone })
-  })
-  .then(res => res.json())
-  .then(data => {
+  try {
+    const res = await fetch(`${BASE_URL}/send_otp.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: phone })
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`HTTP ${res.status}: ${text}`);
+    }
+
+    const data = await res.json();
     if (data.success) {
       successMessage("OTP sent! Check your phone (or console for testing)");
       console.log("OTP (for testing):", data.otp);
 
-      // Show OTP card
       card.classList.add("otp-active");
       card.classList.remove("flipped");
       document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
     } else {
       showMessage("Failed to send OTP: " + data.message);
     }
-  })
-  .catch(err => showMessage("Error sending OTP: " + err));
+  } catch (err) {
+    showMessage("Error sending OTP: " + err);
+  }
 }
 
 // ===============================
 // VERIFY OTP
 // ===============================
-function verifyOtp() {
+async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
   const phone = signupData.phone;
-
   if (!otp || !phone) return showMessage("OTP or phone missing");
 
-  fetch(`${BASE_URL}/verify_otp.php`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ phone: phone, otp: otp })
-  })
-  .then(res => res.json())
-  .then(data => {
+  try {
+    const res = await fetch(`${BASE_URL}/verify_otp.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: phone, otp: otp })
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`HTTP ${res.status}: ${text}`);
+    }
+
+    const data = await res.json();
     if (data.success) {
       successMessage("Account created successfully!");
       resetOtp();
       card.classList.remove("flipped");
-      window.location.href = "home.html"; // Redirect to dashboard
+      window.location.href = "home.html"; 
     } else {
       showMessage("Incorrect or expired OTP");
     }
-  })
-  .catch(err => showMessage("Error verifying OTP: " + err));
+  } catch (err) {
+    showMessage("Error verifying OTP: " + err);
+  }
 }
 
 // ===============================
