@@ -43,7 +43,7 @@ function login() {
   const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
   const pass = document.getElementById("loginPassword").value.trim();
   if (!phone || !pass) return showMessage("Enter valid phone & password");
-  successMessage("Login successful (demo)"); // replace with backend call later
+  successMessage("Login successful (demo)"); // Replace with backend call later
 }
 
 // ===============================
@@ -79,12 +79,12 @@ function signup() {
   // ===== Call backend to send OTP =====
   fetch("https://ustazapp.kesug.com/api/send_otp.php", {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `phone=${encodeURIComponent(phone)}`
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ phone: phone })
   })
   .then(res => res.json())
   .then(data => {
-    if(data.success){
+    if (data.success) {
       successMessage("OTP sent! Check your phone (or console for testing)");
       console.log("OTP (for testing):", data.otp);
 
@@ -106,21 +106,21 @@ function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
   const phone = signupData.phone;
 
-  if(!otp || !phone) return showMessage("OTP or phone missing");
+  if (!otp || !phone) return showMessage("OTP or phone missing");
 
   // ===== Call backend to verify OTP =====
   fetch("https://ustazapp.kesug.com/api/verify_otp.php", {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `phone=${encodeURIComponent(phone)}&otp=${encodeURIComponent(otp)}`
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ phone: phone, otp: otp })
   })
   .then(res => res.json())
   .then(data => {
-    if(data.success){
+    if (data.success) {
       successMessage("Account created successfully!");
       resetOtp();
       card.classList.remove("flipped");
-      // TODO: redirect to home or dashboard
+      // Redirect to home page or dashboard
       window.location.href = "home.html"; 
     } else {
       showMessage("Incorrect or expired OTP");
