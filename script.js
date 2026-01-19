@@ -43,6 +43,7 @@ function login() {
   const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
   const pass = document.getElementById("loginPassword").value.trim();
   if (!phone || !pass) return showMessage("Enter valid phone & password");
+
   successMessage("Login successful (demo)");
   showHomeCard();
 }
@@ -61,6 +62,10 @@ async function signup() {
   const area = document.getElementById("area").value;
   const pass = document.getElementById("signupPassword").value.trim();
 
+  if (!role || !name || !phone || !subcity || !area || !pass) {
+    return showMessage("Fill all signup fields correctly");
+  }
+
   let experience = null;
   let availableDays = [];
 
@@ -73,9 +78,6 @@ async function signup() {
     if (!experience || availableDays.length === 0)
       return showMessage("Fill Ustaz experience and days");
   }
-
-  if (!role || !name || !phone || !subcity || !area || !pass)
-    return showMessage("Fill all signup fields correctly");
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
@@ -92,9 +94,7 @@ async function signup() {
       successMessage("OTP sent!");
       console.log("OTP (testing):", data.otp);
 
-      const btn = document.querySelector("button[onclick='signup()']");
-      if (btn) btn.disabled = true;
-
+      document.querySelector("button[onclick='signup()']").disabled = true;
       card.classList.add("otp-active");
       card.classList.remove("flipped");
     } else {
@@ -133,7 +133,7 @@ async function verifyOtp() {
       resetOtp();
       showHomeCard();
     } else {
-      showMessage("Invalid or expired OTP");
+      showMessage(data.message || "Invalid or expired OTP");
     }
   } catch (err) {
     showMessage("Verification error: " + err.message);
@@ -170,10 +170,8 @@ function resetOtp() {
   signupData = {};
   const otpInput = document.getElementById("otpInput");
   if (otpInput) otpInput.value = "";
-
   const btn = document.querySelector("button[onclick='signup()']");
   if (btn) btn.disabled = false;
-
   card.classList.remove("otp-active");
 }
 
