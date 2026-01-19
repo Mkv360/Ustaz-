@@ -91,7 +91,6 @@ async function signup() {
       successMessage("OTP sent!");
       console.log("OTP (testing):", data.otp);
 
-      // prevent multiple OTP sends
       const btn = document.querySelector("button[onclick='signup()']");
       if (btn) btn.disabled = true;
 
@@ -131,7 +130,13 @@ async function verifyOtp() {
     if (data.success) {
       successMessage("OTP verified!");
       resetOtp();
-      window.location.href = "home.html";
+
+      // Telegram WebApp-safe redirect
+      if (window.Telegram?.WebApp) {
+        Telegram.WebApp.openLink("home.html");
+      } else {
+        window.location.href = "home.html";
+      }
     } else {
       showMessage("Invalid or expired OTP");
     }
