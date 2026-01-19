@@ -1,5 +1,5 @@
 // ===============================
-// STATE
+// UI STATES
 // ===============================
 const UI_STATE = {
   LOGIN: "login",
@@ -12,13 +12,10 @@ let currentState = UI_STATE.LOGIN;
 // DOM REFERENCES
 // ===============================
 const card = document.getElementById("card");
-
 const goSignup = document.getElementById("goSignup");
 const goLogin = document.getElementById("goLogin");
-
 const roleSelect = document.getElementById("role");
 const ustazFields = document.getElementById("ustazFields");
-
 const subcitySelect = document.getElementById("subcity");
 const areaSelect = document.getElementById("area");
 
@@ -105,10 +102,13 @@ subcitySelect.addEventListener("change", loadAreas);
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
+  // Initial state
   setState(UI_STATE.LOGIN);
 
+  // Navigation
   attachNavEvents();
 
+  // Telegram WebApp ready
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
