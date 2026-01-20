@@ -43,8 +43,9 @@ body {
 .card {
   position: relative;
   width: 100%;
-  max-width: 340px;   /* same left/right gap for login & signup */
-  height: 420px;
+  max-width: 340px;
+  height: auto;          /* was 420px; now grows with content */
+  min-height: 380px;     /* ensures login page still looks good */
   margin: 0 auto;
   transform-style: preserve-3d;
   transition: transform 0.7s;
