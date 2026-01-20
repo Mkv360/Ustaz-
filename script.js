@@ -1,7 +1,7 @@
 // -------------------- Telegram WebApp Initialization --------------------
 if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
-    Telegram.WebApp.expand(); // expand iframe to fit content
+    Telegram.WebApp.expand();
 }
 
 // Replace this with your Replit project URL
@@ -74,11 +74,11 @@ function signup() {
     const signup_data = { name, phone, password, role, subcity, area, experience, available_days };
     localStorage.setItem('signup_data', JSON.stringify(signup_data));
 
-    // Call API send_otp.php
+    // Call API send_otp.php with encoded phone
     fetch(`${REPLIT_URL}/api/send_otp.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `phone=${phone}`
+        body: `phone=${encodeURIComponent(phone)}`
     })
     .then(r => r.json())
     .then(data => {
@@ -108,7 +108,7 @@ function verifyOtp() {
     fetch(`${REPLIT_URL}/api/verify_otp.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `phone=${signup_data.phone}&otp=${otp}`
+        body: `phone=${encodeURIComponent(signup_data.phone)}&otp=${encodeURIComponent(otp)}`
     })
     .then(r => r.json())
     .then(data => {
@@ -144,7 +144,7 @@ function resendOtp() {
     fetch(`${REPLIT_URL}/api/send_otp.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `phone=${signup_data.phone}`
+        body: `phone=${encodeURIComponent(signup_data.phone)}`
     })
     .then(r => r.json())
     .then(data => {
@@ -164,7 +164,7 @@ function login() {
     fetch(`${REPLIT_URL}/api/login.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `phone=${phone}&password=${password}`
+        body: `phone=${encodeURIComponent(phone)}&password=${encodeURIComponent(password)}`
     })
     .then(r => r.json())
     .then(data => {
