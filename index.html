@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Barakah Link</title>
-
+  <title>Quran Ustaz Finder</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -15,10 +14,9 @@
   <p class="subtitle">Find a trusted Quran teacher near you</p>
 
   <div class="card-container">
-    <!-- FLIP CARD INNER -->
     <div class="flip-card-inner" id="card">
 
-      <!-- LOGIN -->
+      <!-- LOGIN CARD -->
       <div class="card-face front">
         <div class="card-content">
           <h2>Login</h2>
@@ -26,13 +24,12 @@
           <input type="password" id="loginPassword" placeholder="Password">
           <button id="loginBtn">Login</button>
           <p class="link">
-            Don’t have an account?
-            <span class="flip-link" data-target="signup" id="showSignup">Sign up</span>
+            Don’t have an account? <span id="showSignup">Sign up</span>
           </p>
         </div>
       </div>
 
-      <!-- SIGNUP -->
+      <!-- SIGNUP CARD -->
       <div class="card-face back">
         <div class="card-content">
           <h2>Create Account</h2>
@@ -83,38 +80,12 @@
           <button id="signupBtn">Sign Up</button>
 
           <p class="link">
-            Already have an account?
-            <span class="flip-link" data-target="login" id="showLogin">Login</span>
+            Already have an account? <span id="showLogin">Login</span>
           </p>
-          <div class="back-btn" id="backToLogin">← Back</div>
         </div>
       </div>
 
-    </div> <!-- END FLIP CARD INNER -->
-
-    <!-- OTP -->
-    <div class="card-face otp">
-      <div class="card-content">
-        <h2>Enter OTP</h2>
-        <p>An OTP has been sent to your phone</p>
-        <input type="text" id="otpInput" placeholder="Enter OTP">
-        <button id="verifyOtpBtn">Verify OTP</button>
-        <div class="back-btn" id="otpBack">← Back</div>
-      </div>
     </div>
-
-    <!-- HOME -->
-    <div class="card-face home">
-      <div class="card-content">
-        <h2>Welcome!</h2>
-        <p>You are now logged in.</p>
-        <div id="homeContent">
-          <p>Search for Quran Ustaz, view profiles, and contact them here.</p>
-        </div>
-        <div class="back-btn" id="logoutBtn">← Logout</div>
-      </div>
-    </div>
-
   </div>
 </div>
 
