@@ -33,18 +33,19 @@ body {
 .card-container {
   perspective: 1000px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+  justify-content: center;   /* horizontal centering */
+  align-items: center;       /* vertical centering */
+  width: 100%;               /* full width */
   height: 100%;
 }
 
 .card {
   position: relative;
-  width: 90%;
-  max-width: 340px;      /* consistent spacing left & right */
-  height: auto;           /* auto for dynamic content */
-  min-height: 480px;      /* ensures login card looks fine */
+  width: 340px;              /* FIXED width */
+  max-width: 340px;          /* ensures same size on all devices */
+  height: auto;              /* dynamic height for signup scrolling */
+  min-height: 480px;         /* keeps login page good */
+  margin: 0 auto;            /* centers card horizontally */
   transform-style: preserve-3d;
   transition: transform 0.7s;
 }
