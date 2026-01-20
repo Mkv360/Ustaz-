@@ -88,6 +88,7 @@ body {
 .card-content > * {
   width: 300px;   /* ✅ not tiny, not large */
   max-width: 92%;
+  height: 42px;
 }
 /* ---------------- INPUTS & SELECTS ---------------- */
 input,
