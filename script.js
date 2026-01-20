@@ -8,7 +8,7 @@ const UI_STATE = {
 };
 
 let currentState = UI_STATE.LOGIN;
-let signupData = {}; // store form data for OTP verification
+let signupData = {};
 
 // ===============================
 // DOM REFERENCES
@@ -27,15 +27,13 @@ const otpInput = document.getElementById("otpInput");
 // ===============================
 function setState(state) {
   currentState = state;
-  card.dataset.state = state;
+  card.dataset.state = state; // flips card via CSS
   resetScroll();
   syncTelegramBackButton();
 }
 
 function resetScroll() {
-  document
-    .querySelectorAll(".card-content")
-    .forEach(c => (c.scrollTop = 0));
+  document.querySelectorAll(".card-content").forEach(c => (c.scrollTop = 0));
 }
 
 // ===============================
@@ -54,9 +52,7 @@ function syncTelegramBackButton() {
 }
 
 function handleBack() {
-  if (currentState === UI_STATE.OTP) {
-    setState(UI_STATE.SIGNUP);
-  } else if (currentState === UI_STATE.SIGNUP) {
+  if (currentState === UI_STATE.SIGNUP || currentState === UI_STATE.OTP) {
     setState(UI_STATE.LOGIN);
   }
 }
@@ -122,7 +118,7 @@ function attachNavEvents() {
 }
 
 // ===============================
-// SIGNUP → SEND OTP
+// SIGNUP → OTP (Demo Mode)
 // ===============================
 async function signup() {
   const role = roleSelect.value;
@@ -159,7 +155,9 @@ async function signup() {
     const data = await res.json();
 
     if (data.success) {
-      successMessage("OTP sent! Check the console for testing.");
+      console.log("Demo OTP:", data.otp); // check Replit logs
+      successMessage("OTP sent! Check console for OTP.");
+
       setState(UI_STATE.OTP);
     } else {
       showMessage(data.message || "Failed to send OTP");
@@ -189,8 +187,9 @@ async function verifyOtp() {
       successMessage("Account created successfully!");
       setState(UI_STATE.LOGIN);
       otpInput.value = "";
+      signupData = {};
     } else {
-      showMessage(data.message || "OTP verification failed");
+      showMessage(data.message || "Invalid OTP");
     }
   } catch (err) {
     console.error(err);
@@ -205,12 +204,12 @@ document.addEventListener("DOMContentLoaded", () => {
   setState(UI_STATE.LOGIN);
   attachNavEvents();
 
-  document.getElementById("signupBtn").addEventListener("click", signup);
-  document.getElementById("otpVerifyBtn")?.addEventListener("click", verifyOtp);
-
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
     Telegram.WebApp.BackButton.onClick(handleBack);
   }
+
+  const otpBtn = document.getElementById("verifyOtpBtn");
+  if (otpBtn) otpBtn.addEventListener("click", verifyOtp);
 });
