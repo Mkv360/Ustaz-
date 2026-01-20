@@ -62,9 +62,31 @@ body {
   align-items: center;
 }
 
-/* Flip state */
+/* ===============================
+   CARD FLIP (360°)
+================================ */
 .card.flipped {
+  transform: rotateY(360deg);
+}
+
+.front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
+.back {
   transform: rotateY(180deg);
+  z-index: 1;
+}
+
+.card.flipped .front {
+  transform: rotateY(360deg);
+  z-index: 1;
+}
+
+.card.flipped .back {
+  transform: rotateY(540deg); /* 180 + 360 */
+  z-index: 2;
 }
 
 /* ===============================
@@ -87,29 +109,7 @@ body {
   align-items: center;
   justify-content: center;
 
-  transition: transform 0.7s, opacity 0.3s ease;
-}
-
-/* Front & Back faces */
-.front {
-  transform: rotateY(0deg);
-  z-index: 2;
-}
-
-.back {
-  transform: rotateY(180deg);
-  z-index: 1;
-}
-
-/* When flipped */
-.card.flipped .front {
-  transform: rotateY(180deg);
-  z-index: 1;
-}
-
-.card.flipped .back {
-  transform: rotateY(0deg);
-  z-index: 2;
+  transition: transform 0.7s ease, opacity 0.3s ease;
 }
 
 /* ===============================
