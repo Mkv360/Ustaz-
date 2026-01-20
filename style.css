@@ -1,61 +1,172 @@
-/* General styles */
+{
+box-sizing: border-box;
+font-family: system-ui, sans-serif;
+}
+
+
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(120deg, #89f7fe, #66a6ff);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
+margin: 0;
+height: 100vh;
+background: linear-gradient(180deg, #0b132b, #1c2541);
+display: flex;
+justify-content: center;
+align-items: center;
+color: #fff;
+overflow: hidden; /* Telegram-safe */
+}
+
+.app {
+width: 100%;
+max-width: 380px;
+text-align: center;
+}
+
+.title {
+margin-bottom: 5px;
+}
+
+.subtitle {
+font-size: 14px;
+opacity: 0.8;
+margin-bottom: 20px;
 }
 
 .card-container {
-    width: 90%;
-    max-width: 360px;
-    perspective: 1000px;
+perspective: 1000px;
 }
 
 .card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    display: none; /* all cards hidden initially */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
+position: relative;
+width: 100%;
+height: 560px; /* fixed height for Telegram */
+transform-style: preserve-3d;
+transition: transform 0.7s;
 }
 
-.card input, .card select, .card button {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-    padding: 12px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
+/* Flip classes */
+.card.flipped { transform: rotateY(180deg); }
+
+/* Card faces */
+.card-face {
+position: absolute;
+width: 100%;
+height: 100%;
+padding: 25px;
+border-radius: 20px;
+backdrop-filter: blur(14px);
+background: rgba(255,255,255,0.08);
+box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+backface-visibility: hidden;
+overflow: hidden;
+transition: opacity 0.3s ease, transform 0.7s ease;
+opacity: 1;
+pointer-events: auto;
 }
 
-.card button {
-    background: #66a6ff;
-    color: white;
-    border: none;
-    cursor: pointer;
+/* OTP card hidden by default */
+.card-face.otp {
+transform: rotateY(0deg);
+opacity: 0;
+pointer-events: none;
+z-index: 10;
 }
 
-.card button:hover {
-    background: #89f7fe;
+/* OTP card visible */
+.card.otp-active .otp {
+opacity: 1;
+pointer-events: auto;
+z-index: 100;
 }
 
+/* Home card hidden by default */
+.card-face.home {
+transform: rotateY(0deg);
+opacity: 0;
+pointer-events: none;
+z-index: 5;
+}
+
+/* Home card active */
+.card.home-active .home {
+opacity: 1;
+pointer-events: auto;
+z-index: 200;
+}
+
+/* Card content scroll */
+.card-content {
+height: 100%;
+overflow-y: auto;
+padding-bottom: 20px;
+}
+
+/* Back face for flip */
+.back {
+transform: rotateY(180deg);
+}
+
+/* Inputs & selects */
+input, select {
+width: 85%;
+padding: 10px;
+margin: 10px auto;
+display: block;
+border-radius: 25px;
+border: none;
+outline: none;
+font-size: 14px;
+}
+
+select {
+appearance: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+background-repeat: no-repeat;
+background-position: right 15px center;
+background-size: 18px;
+padding-right: 40px;
+}
+
+/* Buttons */
+button {
+width: 70%;
+padding: 10px;
+margin: 15px auto 20px;
+border-radius: 25px;
+border: none;
+font-size: 14px;
+background: #2ecc71;
+color: #000;
+cursor: pointer;
+}
+
+button:active {
+transform: scale(0.98);
+}
+
+/* Links */
 .link {
-    color: #66a6ff;
-    cursor: pointer;
-    text-decoration: underline;
+margin-top: 15px;
+font-size: 13px;
 }
 
-#message {
-    text-align: center;
-    margin-bottom: 10px;
-    color: red;
-    font-weight: bold;
-    min-height: 20px;
+.link span {
+color: #2ecc71;
+cursor: pointer;
+}
+
+/* Back button */
+.back-btn {
+margin-top: 10px;
+font-size: 13px;
+opacity: 0.8;
+cursor: pointer;
+}
+
+/* Home content styling */
+#homeContent {
+margin-top: 20px;
+font-size: 14px;
+text-align: left;
 }
