@@ -1,4 +1,4 @@
-* {
+{
 box-sizing: border-box;
 font-family: system-ui, sans-serif;
 }
@@ -32,25 +32,21 @@ margin-bottom: 20px;
 }
 
 .card-container {
-  perspective: 1000px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  padding: 0 20px; /* 🔑 ensures same gap on left/right */
-  box-sizing: border-box;
+perspective: 1000px;
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+height: 100%;
 }
 
 .card {
-  position: relative;
-  width: 100%;
-  max-width: 340px;      /* card never exceeds this width */
-  height: auto;           /* card grows with content */
-  min-height: 380px;      /* ensures login page looks good */
-  transform-style: preserve-3d;
-  transition: transform 0.7s;
-  margin: 0 auto;         /* center horizontally */
+position: relative;
+width: 100%;
+max-width: 340px;      /* consistent spacing /
+height: 480px;         / or auto for dynamic content */
+transform-style: preserve-3d;
+transition: transform 0.7s;
 }
 
 /* Flip classes */
