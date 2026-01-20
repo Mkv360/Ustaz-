@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quran Ustaz Finder</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -17,7 +17,7 @@
   <div class="card-container">
     <div class="card" id="card" data-state="login">
 
-      <!-- LOGIN -->
+      <!-- LOGIN CARD -->
       <div class="card-face front">
         <div class="card-content">
           <h2>Login</h2>
@@ -26,12 +26,12 @@
           <button id="loginBtn">Login</button>
           <p class="link">
             Don’t have an account?
-            <a href="#" id="goSignup" class="inline-link">Sign up</a>
+            <a href="#" id="goSignup" class="inline-link">Signup</a>
           </p>
         </div>
       </div>
 
-      <!-- SIGNUP -->
+      <!-- SIGNUP CARD -->
       <div class="card-face back">
         <div class="card-content">
           <h2>Create Account</h2>
@@ -42,6 +42,7 @@
             <option value="ustaz">Ustaz / Ustaza</option>
           </select>
 
+          <!-- USTAZ EXTRA FIELDS -->
           <div id="ustazFields" class="hidden">
             <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50" />
             <label class="small-label">Available days</label>
@@ -83,6 +84,19 @@
           <p class="link">
             Already have an account?
             <a href="#" id="goLogin" class="inline-link">Login</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- OTP CARD -->
+      <div class="card-face otp">
+        <div class="card-content">
+          <h2>Enter OTP</h2>
+          <p>An OTP has been sent to <span id="otpPhone"></span></p>
+          <input type="text" id="otpInput" placeholder="Enter OTP" maxlength="4" />
+          <button id="verifyOtpBtn">Verify OTP</button>
+          <p class="link">
+            <a href="#" id="backToSignup" class="inline-link">Back to Signup</a>
           </p>
         </div>
       </div>
