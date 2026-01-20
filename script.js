@@ -1,5 +1,5 @@
 // ===============================
-// CARD FLIP
+// CARD FLIP & ELEMENTS
 // ===============================
 const card = document.getElementById("card");
 const signupBtn = document.getElementById("signupBtn");
@@ -8,6 +8,7 @@ const verifyOtpBtn = document.getElementById("verifyOtpBtn");
 const roleSelect = document.getElementById("role");
 const areaSelect = document.getElementById("area");
 
+// Flip card helper
 function flipCard() {
   card.classList.toggle("flipped");
   document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
@@ -54,12 +55,11 @@ function login() {
 }
 
 // ===============================
-// SIGNUP → SEND OTP
+// SIGNUP → SEND DEMO OTP
 // ===============================
 let signupData = {};
-const BASE_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/api";
 
-async function signup() {
+function signup() {
   const role = roleSelect.value;
   const name = document.getElementById("fullName").value.trim();
   const phone = validateEthiopianPhone(document.getElementById("signupPhone").value.trim());
@@ -86,25 +86,19 @@ async function signup() {
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
-  try {
-    // Demo OTP: simulate sending
-    const otp = Math.floor(1000 + Math.random() * 9000); // 4-digit OTP
-    console.log("Demo OTP:", otp);
-    signupData.otp = otp;
+  // Demo OTP
+  const otp = Math.floor(1000 + Math.random() * 9000);
+  signupData.otp = otp;
+  console.log("Demo OTP:", otp);
+  successMessage(`OTP sent! (Demo: ${otp})`);
 
-    successMessage(`OTP sent! (Demo: ${otp})`);
-
-    card.classList.add("otp-active");
-    card.classList.remove("flipped");
-    signupBtn.disabled = true;
-
-  } catch (err) {
-    showMessage("OTP error: " + err.message);
-  }
+  card.classList.add("otp-active");
+  card.classList.remove("flipped");
+  signupBtn.disabled = true;
 }
 
 // ===============================
-// VERIFY OTP → SHOW HOME CARD
+// VERIFY OTP → SHOW HOME
 // ===============================
 function verifyOtp() {
   const otpInput = document.getElementById("otpInput").value.trim();
@@ -116,7 +110,6 @@ function verifyOtp() {
 
   if (!otpInput) return showMessage("Enter the OTP");
 
-  // Demo check
   if (otpInput == signupData.otp) {
     successMessage("OTP verified!");
     resetOtp();
@@ -140,7 +133,7 @@ function showHomeCard() {
 // ===============================
 function logout() {
   card.classList.remove("home-active");
-  card.classList.add("flipped"); // back to signup/login
+  card.classList.add("flipped"); // back to login/signup
 }
 
 // ===============================
@@ -211,8 +204,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Flip toggle links
   document.querySelectorAll(".flip-link").forEach(el => {
-    el.addEventListener("click", flipCard);
+    el.addEventListener("click", () => {
+      flipCard();
+    });
   });
+
+  // Back buttons
+  document.getElementById("backToLogin").addEventListener("click", () => {
+    flipCard();
+  });
+  document.getElementById("otpBack").addEventListener("click", backToSignup);
+  document.getElementById("logoutBtn").addEventListener("click", logout);
 
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
