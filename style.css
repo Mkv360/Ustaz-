@@ -121,15 +121,19 @@ select {
 }
 
 /* ---------------- BUTTON ---------------- */
+/* ---------------- BUTTON ---------------- */
 button {
+  width: 180px;        /* smaller than input boxes */
+  max-width: 180px;    /* ensures button doesn’t grow on larger screens */
   height: 40px;
-  margin: 14px 0 16px;
+  margin: 14px auto 16px; /* auto centers the button */
   border-radius: 22px;
   border: none;
   font-size: 14px;
   background: #2ecc71;
   color: #000;
   cursor: pointer;
+  display: block;      /* ensures centering */
 }
 
 button:active {
