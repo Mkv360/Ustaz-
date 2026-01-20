@@ -1,7 +1,7 @@
 // -------------------- Telegram WebApp Initialization --------------------
 if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
-    Telegram.WebApp.expand();
+    Telegram.WebApp.expand(); // expand iframe to fit content
 }
 
 // -------------------- Show inline messages --------------------
@@ -47,7 +47,7 @@ function populateAreas() {
     }
 }
 
-// -------------------- Step 1: Signup → Send Demo OTP --------------------
+// -------------------- Step 1: Signup → Send OTP --------------------
 function signup() {
     const name = document.getElementById('signup-name').value.trim();
     const phone = document.getElementById('signup-phone').value.trim();
@@ -71,8 +71,8 @@ function signup() {
     const signup_data = { name, phone, password, role, subcity, area, experience, available_days };
     localStorage.setItem('signup_data', JSON.stringify(signup_data));
 
-    // Call API send_otp.php
-    fetch('api/send_otp.php', {
+    // Call API send_otp.php (CORS enabled in PHP)
+    fetch('/api/send_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${phone}`
@@ -80,7 +80,7 @@ function signup() {
     .then(r => r.json())
     .then(data => {
         if (data.success) {
-            showMessage('OTP sent! Check Replit logs for demo OTP.');
+            showMessage('OTP sent! Check Replit console for demo OTP.');
             document.getElementById('otp-phone').textContent = phone;
             showCard('otp-card');
         } else {
@@ -102,7 +102,7 @@ function verifyOtp() {
         return;
     }
 
-    fetch('api/verify_otp.php', {
+    fetch('/api/verify_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${signup_data.phone}&otp=${otp}`
@@ -112,7 +112,7 @@ function verifyOtp() {
         if (data.success) {
             // OTP verified → create user account
             const params = new URLSearchParams(signup_data).toString();
-            fetch('api/signup.php', {
+            fetch('/api/signup.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: params
@@ -138,14 +138,14 @@ function resendOtp() {
     const signup_data = JSON.parse(localStorage.getItem('signup_data'));
     if (!signup_data) { showMessage('Signup data missing'); return; }
 
-    fetch('api/send_otp.php', {
+    fetch('/api/send_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${signup_data.phone}`
     })
     .then(r => r.json())
     .then(data => {
-        if (data.success) showMessage('OTP resent! Check Replit logs.');
+        if (data.success) showMessage('OTP resent! Check Replit console.');
         else showMessage('Failed to resend OTP.');
     })
     .catch(err => showMessage('Error resending OTP.'));
@@ -158,7 +158,7 @@ function login() {
 
     if (!phone || !password) { showMessage('Please enter phone and password.'); return; }
 
-    fetch('api/login.php', {
+    fetch('/api/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${phone}&password=${password}`
@@ -167,7 +167,7 @@ function login() {
     .then(data => {
         if (data.success) {
             showMessage('Login Successful!');
-            // TODO: redirect to dashboard/main page
+            // TODO: redirect to dashboard or main page
         } else showMessage(data.message || 'Invalid credentials.');
     })
     .catch(err => showMessage('Error during login.'));
