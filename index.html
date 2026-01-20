@@ -10,7 +10,10 @@
 
 <div class="card-container">
 
-  <!-- Login Card (Default) -->
+  <!-- Message / Inline feedback -->
+  <p id="message" style="color:red; text-align:center;"></p>
+
+  <!-- Login Card -->
   <div class="card" id="login-card">
     <h2>Login</h2>
     <input type="text" id="login-phone" placeholder="Phone">
@@ -19,7 +22,7 @@
     <p>Don't have an account? <span class="link" onclick="showCard('signup-card')">Signup</span></p>
   </div>
 
-  <!-- Signup Card (Hidden initially) -->
+  <!-- Signup Card -->
   <div class="card" id="signup-card">
     <h2>Signup</h2>
     <select id="signup-role" onchange="toggleUstazFields()">
@@ -53,11 +56,12 @@
     <p>Already have an account? <span class="link" onclick="showCard('login-card')">Login</span></p>
   </div>
 
-  <!-- OTP Card (Hidden initially) -->
+  <!-- OTP Card -->
   <div class="card" id="otp-card">
-    <h2>Enter OTP</h2>
+    <h2>Enter OTP for <span id="otp-phone"></span></h2>
     <input type="text" id="otp-input" placeholder="4-digit OTP">
     <button onclick="verifyOtp()">Verify OTP</button>
+    <p><span class="link" onclick="resendOtp()">Resend OTP</span></p>
   </div>
 
 </div>
