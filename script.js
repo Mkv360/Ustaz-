@@ -1,28 +1,22 @@
-// Telegram WebApp init
-const tg = window.Telegram.WebApp;
-tg.ready();
-tg.expand();
+const card = document.getElementById("card");
 
-function showSignup() {
-  document.querySelector(".login-card").classList.remove("active");
-  document.querySelector(".signup-card").classList.add("active");
-}
-
-function showLogin() {
-  document.querySelector(".signup-card").classList.remove("active");
-  document.querySelector(".login-card").classList.add("active");
-}
-
-function toggleUstazFields() {
-  const type = document.getElementById("userType").value;
-  document.getElementById("ustazFields").style.display =
-    type === "ustaz" ? "block" : "none";
+function flipCard() {
+  card.classList.toggle("flipped");
 }
 
 function login() {
-  tg.showAlert("Login clicked (frontend demo)");
-}
+  const phone = document.getElementById("loginPhone").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
 
-function signup() {
-  tg.showAlert("Signup clicked (frontend demo)");
+  if (!phone || !password) {
+    alert("Please fill in all fields");
+    return;
+  }
+
+  // Telegram WebApp ready
+  if (window.Telegram?.WebApp) {
+    Telegram.WebApp.showAlert("Login successful (demo)");
+  } else {
+    alert("Login successful (demo)");
+  }
 }
