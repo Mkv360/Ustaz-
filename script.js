@@ -11,39 +11,27 @@ let currentState = UI_STATE.LOGIN;
 let signupData = {};
 
 // ===============================
-// DOM REFERENCES
+// DOM
 // ===============================
 const card = document.getElementById("card");
 const goSignup = document.getElementById("goSignup");
 const goLogin = document.getElementById("goLogin");
+const backToSignup = document.getElementById("backToSignup");
+const signupBtn = document.getElementById("signupBtn");
+const verifyOtpBtn = document.getElementById("verifyOtpBtn");
 const roleSelect = document.getElementById("role");
 const ustazFields = document.getElementById("ustazFields");
 const subcitySelect = document.getElementById("subcity");
 const areaSelect = document.getElementById("area");
+const otpPhone = document.getElementById("otpPhone");
 const otpInput = document.getElementById("otpInput");
-
-// ===============================
-// STATE RENDERER
-// ===============================
-function setState(state) {
-  currentState = state;
-  card.dataset.state = state; // flips card via CSS
-  resetScroll();
-  syncTelegramBackButton();
-}
-
-function resetScroll() {
-  document.querySelectorAll(".card-content").forEach(c => (c.scrollTop = 0));
-}
 
 // ===============================
 // TELEGRAM BACK BUTTON
 // ===============================
 function syncTelegramBackButton() {
   if (!window.Telegram?.WebApp) return;
-
   const BackButton = Telegram.WebApp.BackButton;
-
   if (currentState === UI_STATE.SIGNUP || currentState === UI_STATE.OTP) {
     BackButton.show();
   } else {
@@ -52,31 +40,40 @@ function syncTelegramBackButton() {
 }
 
 function handleBack() {
-  if (currentState === UI_STATE.SIGNUP || currentState === UI_STATE.OTP) {
-    setState(UI_STATE.LOGIN);
-  }
+  if (currentState === UI_STATE.SIGNUP) setState(UI_STATE.LOGIN);
+  if (currentState === UI_STATE.OTP) setState(UI_STATE.SIGNUP);
 }
 
 // ===============================
-// ALERTS
+// STATE MANAGEMENT
 // ===============================
-function showMessage(msg) {
-  if (window.Telegram?.WebApp) Telegram.WebApp.showAlert(msg);
-  else alert(msg);
-}
-
-function successMessage(msg) {
-  if (window.Telegram?.WebApp) {
-    Telegram.WebApp.showPopup({
-      title: "Success",
-      message: msg,
-      buttons: [{ type: "ok" }],
-    });
-  } else alert(msg);
+function setState(state) {
+  currentState = state;
+  card.dataset.state = state;
+  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+  syncTelegramBackButton();
 }
 
 // ===============================
-// ROLE-BASED FIELDS
+// NAVIGATION
+// ===============================
+goSignup.addEventListener("click", e => {
+  e.preventDefault();
+  setState(UI_STATE.SIGNUP);
+});
+
+goLogin.addEventListener("click", e => {
+  e.preventDefault();
+  setState(UI_STATE.LOGIN);
+});
+
+backToSignup.addEventListener("click", e => {
+  e.preventDefault();
+  setState(UI_STATE.SIGNUP);
+});
+
+// ===============================
+// ROLE BASED FIELDS
 // ===============================
 roleSelect.addEventListener("change", () => {
   const isUstaz = roleSelect.value === "ustaz";
@@ -93,123 +90,97 @@ const areas = {
   lideta: ["Lideta", "Abinet", "Tor Hailoch"],
 };
 
-function loadAreas() {
-  const subcity = subcitySelect.value;
+subcitySelect.addEventListener("change", () => {
   areaSelect.innerHTML = '<option value="">Select Area</option>';
-
+  const subcity = subcitySelect.value;
   if (!areas[subcity]) return;
-
-  areas[subcity].forEach(area => {
+  areas[subcity].forEach(a => {
     const opt = document.createElement("option");
-    opt.value = area;
-    opt.textContent = area;
+    opt.value = a;
+    opt.textContent = a;
     areaSelect.appendChild(opt);
   });
-}
-
-subcitySelect.addEventListener("change", loadAreas);
+});
 
 // ===============================
-// NAVIGATION EVENTS
+// SIGNUP & REQUEST OTP
 // ===============================
-function attachNavEvents() {
-  goSignup.addEventListener("click", () => setState(UI_STATE.SIGNUP));
-  goLogin.addEventListener("click", () => setState(UI_STATE.LOGIN));
-}
-
-// ===============================
-// SIGNUP → OTP (Demo Mode)
-// ===============================
-async function signup() {
+signupBtn.addEventListener("click", async () => {
+  // Validate
   const role = roleSelect.value;
   const name = document.getElementById("fullName").value.trim();
   const phone = document.getElementById("signupPhone").value.trim();
   const subcity = subcitySelect.value;
   const area = areaSelect.value;
   const pass = document.getElementById("signupPassword").value.trim();
-
-  if (!role || !name || !phone || !subcity || !area || !pass) {
-    return showMessage("Please fill all required fields");
-  }
-
   let experience = null;
   let availableDays = [];
+
   if (role === "ustaz") {
-    experience = document.getElementById("experience").value;
-    availableDays = Array.from(document.getElementById("availableDays").selectedOptions).map(
-      o => o.value
-    );
-    if (!experience || availableDays.length === 0) {
-      return showMessage("Please fill experience and available days");
-    }
+    experience = document.getElementById("experience").value.trim();
+    availableDays = Array.from(document.getElementById("availableDays").selectedOptions).map(o => o.value);
+  }
+
+  if (!role || !name || !phone || !subcity || !area || !pass || (role === "ustaz" && (!experience || availableDays.length === 0))) {
+    alert("Please fill all required fields correctly");
+    return;
   }
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
+  // Show OTP page
+  otpPhone.textContent = phone;
+  otpInput.value = "";
+
+  // Request OTP from backend
   try {
-    const res = await fetch("/api/send_otp.php", {
+    const res = await fetch("https://YOUR_REPLIT_URL/send_otp.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone }),
+      body: JSON.stringify({ phone })
     });
     const data = await res.json();
-
-    if (data.success) {
-      console.log("Demo OTP:", data.otp); // check Replit logs
-      successMessage("OTP sent! Check console for OTP.");
-
-      setState(UI_STATE.OTP);
-    } else {
-      showMessage(data.message || "Failed to send OTP");
-    }
+    if (!data.success) throw new Error(data.message);
+    console.log("OTP (for testing):", data.otp); // check Replit logs
+    setState(UI_STATE.OTP);
   } catch (err) {
-    console.error(err);
-    showMessage("Network error sending OTP");
+    alert("Error sending OTP: " + err.message);
   }
-}
+});
 
 // ===============================
 // VERIFY OTP
 // ===============================
-async function verifyOtp() {
+verifyOtpBtn.addEventListener("click", async () => {
   const otp = otpInput.value.trim();
-  if (!otp) return showMessage("Enter OTP");
+  if (!otp) return alert("Enter OTP");
 
   try {
-    const res = await fetch("/api/verify_otp.php", {
+    const res = await fetch("https://YOUR_REPLIT_URL/verify_otp.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: signupData.phone, otp }),
+      body: JSON.stringify({ phone: signupData.phone, otp })
     });
     const data = await res.json();
-
     if (data.success) {
-      successMessage("Account created successfully!");
+      alert("Account created successfully!");
       setState(UI_STATE.LOGIN);
-      otpInput.value = "";
-      signupData = {};
     } else {
-      showMessage(data.message || "Invalid OTP");
+      alert(data.message);
     }
   } catch (err) {
-    console.error(err);
-    showMessage("Network error verifying OTP");
+    alert("Error verifying OTP: " + err.message);
   }
-}
+});
 
 // ===============================
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
   setState(UI_STATE.LOGIN);
-  attachNavEvents();
-
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
     Telegram.WebApp.BackButton.onClick(handleBack);
   }
-
-  const otpBtn = document.getElementById("verifyOtpBtn");
-  if (otpBtn) otpBtn.addEventListener("click", verifyOtp);
 });
