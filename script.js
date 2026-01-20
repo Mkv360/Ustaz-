@@ -1,7 +1,7 @@
 // ===============================
 // UI STATES
 // ===============================
-const UI_STATE = { LOGIN: "login", SIGNUP: "signup" };
+const UI_STATE = { LOGIN: "login", SIGNUP: "signup", OTP: "otp" };
 let currentState = UI_STATE.LOGIN;
 let signupData = {};
 
@@ -12,10 +12,13 @@ const card = document.getElementById("card");
 const goSignup = document.getElementById("goSignup");
 const goLogin = document.getElementById("goLogin");
 const signupBtn = document.getElementById("signupBtn");
+const verifyOtpBtn = document.getElementById("verifyOtpBtn");
 const roleSelect = document.getElementById("role");
 const ustazFields = document.getElementById("ustazFields");
 const subcitySelect = document.getElementById("subcity");
 const areaSelect = document.getElementById("area");
+const otpPhone = document.getElementById("otpPhone");
+const otpInput = document.getElementById("otpInput");
 
 // ===============================
 // STATE MANAGEMENT
@@ -27,20 +30,19 @@ function setState(state) {
 }
 
 // ===============================
-// NAVIGATION EVENTS
+// NAVIGATION
 // ===============================
 goSignup.addEventListener("click", e => {
   e.preventDefault();
   setState(UI_STATE.SIGNUP);
 });
-
 goLogin.addEventListener("click", e => {
   e.preventDefault();
   setState(UI_STATE.LOGIN);
 });
 
 // ===============================
-// ROLE-BASED FIELDS
+// ROLE FIELDS
 // ===============================
 roleSelect.addEventListener("change", () => {
   ustazFields.classList.toggle("hidden", roleSelect.value !== "ustaz");
@@ -85,7 +87,7 @@ document.getElementById("loginBtn").addEventListener("click", () => {
 });
 
 // ===============================
-// SIGNUP
+// SIGNUP → GO TO OTP
 // ===============================
 signupBtn.addEventListener("click", () => {
   const role = roleSelect.value;
@@ -99,17 +101,39 @@ signupBtn.addEventListener("click", () => {
 
   if (role === "ustaz") {
     experience = document.getElementById("experience").value.trim();
-    availableDays = Array.from(document.getElementById("availableDays").selectedOptions).map(o => o.value);
+    availableDays = Array.from(
+      document.getElementById("availableDays").selectedOptions
+    ).map(o => o.value);
   }
 
-  if (!role || !name || !phone || !subcity || !area || !pass || (role === "ustaz" && (!experience || availableDays.length === 0))) {
-    return alert("Please fill all required fields");
+  if (
+    !role ||
+    !name ||
+    !phone ||
+    !subcity ||
+    !area ||
+    !pass ||
+    (role === "ustaz" && (!experience || availableDays.length === 0))
+  ) {
+    return alert("Please fill all required fields correctly");
   }
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
-  // Directly go back to login page
-  alert("Signup successful (demo)");
+  // Show OTP page
+  if (otpPhone) otpPhone.textContent = phone;
+  if (otpInput) otpInput.value = "";
+
+  setState(UI_STATE.OTP);
+});
+
+// ===============================
+// VERIFY OTP
+// ===============================
+verifyOtpBtn.addEventListener("click", () => {
+  const otp = otpInput.value.trim();
+  if (!otp) return alert("Enter OTP");
+  alert("OTP verified! Account created.");
   setState(UI_STATE.LOGIN);
 });
 
