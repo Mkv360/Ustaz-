@@ -16,7 +16,7 @@ overflow: hidden; /* Telegram-safe */
 }
 
 .app {
-width: 100%;
+width: 80%;
 max-width: 380px;
 text-align: center;
 }
