@@ -78,19 +78,32 @@ body {
 input,
 select {
   width: 85%;
-  padding: 10px;
+  padding: 10px 12px;
   margin: 10px auto;
   display: block;
   border-radius: 25px;
   border: none;
   outline: none;
   font-size: 14px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" stroke="%232ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 4 6 8 10 4"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
 }
 
 select[multiple] {
   border-radius: 12px;
+  background-image: none; /* remove arrow for multi-select */
+  cursor: auto;
 }
 
+/* BUTTONS */
 button {
   width: 70%;
   padding: 10px;
@@ -111,6 +124,7 @@ button:active {
 .link {
   margin-top: 15px;
   font-size: 13px;
+  text-decoration: none; /* parent link should not force underline */
 }
 
 /* INLINE LINKS (Signup/Login inside text) */
@@ -122,13 +136,12 @@ button:active {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   font-weight: 600;
-  text-decoration: none !important;   /* force no underline even in Telegram WebView */
+  text-decoration: none !important;   /* force no underline */
   pointer-events: auto;
 }
 
-/* Remove underline on hover for Telegram WebView */
 .inline-link:hover {
-  text-decoration: none !important;
+  text-decoration: none !important;   /* prevent underline on hover */
 }
 
 /* Ustaz extra fields label */
