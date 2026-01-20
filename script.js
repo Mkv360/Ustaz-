@@ -1,34 +1,34 @@
-// -------------------- Telegram WebApp Init --------------------
+// Telegram WebApp init
 if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
-    Telegram.WebApp.expand(); // make iframe adjust to content
+    Telegram.WebApp.expand();
 }
 
-// -------------------- Inline message function --------------------
+// Show inline message
 function showMessage(msg) {
     const messageEl = document.getElementById('message');
     if (messageEl) messageEl.textContent = msg;
 }
 
-// -------------------- Show specific card --------------------
+// Show specific card
 function showCard(cardId) {
     const cards = document.querySelectorAll('.card');
-    cards.forEach(c => c.style.display = 'none'); // hide all
+    cards.forEach(c => c.style.display = 'none');
     const card = document.getElementById(cardId);
-    card.style.display = 'block'; // show selected
+    card.style.display = 'block';
     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-// -------------------- Default: show Login card --------------------
+// Default: show Login card
 showCard('login-card');
 
-// -------------------- Toggle Ustaz fields --------------------
+// Toggle Ustaz fields
 function toggleUstazFields() {
     const role = document.getElementById('signup-role').value;
     document.getElementById('ustaz-fields').style.display = role === 'Ustaz' ? 'block' : 'none';
 }
 
-// -------------------- Populate area dropdown --------------------
+// Populate area dropdown
 function populateAreas() {
     const subcity = document.getElementById('subcity').value;
     const areaSelect = document.getElementById('area');
@@ -47,7 +47,7 @@ function populateAreas() {
     }
 }
 
-// -------------------- Step 1: Signup → Send OTP --------------------
+// Signup → send OTP
 function signup() {
     const name = document.getElementById('signup-name').value.trim();
     const phone = document.getElementById('signup-phone').value.trim();
@@ -71,7 +71,6 @@ function signup() {
     const signup_data = { name, phone, password, role, subcity, area, experience, available_days };
     localStorage.setItem('signup_data', JSON.stringify(signup_data));
 
-    // Send OTP
     fetch('backend/send_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -85,7 +84,7 @@ function signup() {
     }).catch(err => showMessage('Error sending OTP.'));
 }
 
-// -------------------- Step 2: Verify OTP → Create Account --------------------
+// Verify OTP → create account
 function verifyOtp() {
     const otp = document.getElementById('otp-input').value.trim();
     if (!otp) { showMessage('Please enter OTP.'); return; }
@@ -103,7 +102,6 @@ function verifyOtp() {
         body: `phone=${signup_data.phone}&otp=${otp}`
     }).then(r => r.json()).then(data => {
         if (data.success) {
-            // OTP verified → Create user
             const params = new URLSearchParams(signup_data).toString();
             fetch('backend/signup.php', {
                 method: 'POST',
@@ -119,7 +117,7 @@ function verifyOtp() {
     }).catch(err => showMessage('Error verifying OTP.'));
 }
 
-// -------------------- Resend OTP --------------------
+// Resend OTP
 function resendOtp() {
     const signup_data = JSON.parse(localStorage.getItem('signup_data'));
     if (!signup_data) { showMessage('Signup data missing'); return; }
@@ -134,7 +132,7 @@ function resendOtp() {
     }).catch(err => showMessage('Error resending OTP.'));
 }
 
-// -------------------- Login --------------------
+// Login
 function login() {
     const phone = document.getElementById('login-phone').value.trim();
     const password = document.getElementById('login-password').value.trim();
@@ -148,7 +146,7 @@ function login() {
     }).then(r => r.json()).then(data => {
         if (data.success) {
             showMessage('Login Successful!');
-            // TODO: Redirect to dashboard or main page
+            // TODO: redirect to dashboard or main page
         } else showMessage(data.message || 'Invalid credentials.');
     }).catch(err => showMessage('Error during login.'));
 }
