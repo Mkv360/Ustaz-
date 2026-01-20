@@ -46,15 +46,15 @@ body {
 .card-container {
   perspective: 1200px;
   display: flex;
-  justify-content: center; /* centers the card horizontally */
-  align-items: center;     /* centers the card vertically */
+  justify-content: center;
+  align-items: center;
 }
 
 .card {
   position: relative;
   width: 100%;
   max-width: 360px;
-  height: 560px; /* fixed for Telegram */
+  height: 560px;
   transform-style: preserve-3d;
   transition: transform 0.7s ease;
   display: flex;
@@ -82,22 +82,34 @@ body {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
   backface-visibility: hidden;
 
-  opacity: 1;
-  pointer-events: auto;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  transition:
-    opacity 0.25s ease,
-    transform 0.7s ease;
+  transition: transform 0.7s, opacity 0.3s ease;
 }
 
-/* Signup back face */
+/* Front & Back faces */
+.front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
 .back {
   transform: rotateY(180deg);
+  z-index: 1;
+}
+
+/* When flipped */
+.card.flipped .front {
+  transform: rotateY(180deg);
+  z-index: 1;
+}
+
+.card.flipped .back {
+  transform: rotateY(0deg);
+  z-index: 2;
 }
 
 /* ===============================
