@@ -39,8 +39,9 @@ function syncTelegramBackButton() {
 }
 
 function handleBack() {
-  if (currentState === UI_STATE.SIGNUP) setState(UI_STATE.LOGIN);
-  if (currentState === UI_STATE.OTP) {
+  if (currentState === UI_STATE.SIGNUP) {
+    setState(UI_STATE.LOGIN);
+  } else if (currentState === UI_STATE.OTP) {
     setState(UI_STATE.SIGNUP);
     if (otpInput) otpInput.value = "";
   }
@@ -202,10 +203,13 @@ verifyOtpBtn.addEventListener("click", async () => {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  setState(UI_STATE.LOGIN); // always start at login
+  // Always start at login page
+  setState(UI_STATE.LOGIN);
+
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
     Telegram.WebApp.BackButton.onClick(handleBack);
+    syncTelegramBackButton();
   }
 });
