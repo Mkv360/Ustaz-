@@ -144,7 +144,7 @@ signupBtn.addEventListener("click", async () => {
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.message);
-    console.log("OTP (for testing, check Replit logs):", data.otp);
+    console.log("OTP (for testing):", data.otp);
     setState(UI_STATE.OTP);
   } catch (err) {
     alert("Error sending OTP: " + err.message);
