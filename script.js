@@ -43,7 +43,9 @@ function login() {
   const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
   const pass = document.getElementById("loginPassword").value.trim();
   if (!phone || !pass) return showMessage("Enter valid phone & password");
+
   successMessage("Login successful (demo)");
+  showHomeCard();
 }
 
 // ===============================
@@ -60,6 +62,10 @@ async function signup() {
   const area = document.getElementById("area").value;
   const pass = document.getElementById("signupPassword").value.trim();
 
+  if (!role || !name || !phone || !subcity || !area || !pass) {
+    return showMessage("Fill all signup fields correctly");
+  }
+
   let experience = null;
   let availableDays = [];
 
@@ -72,9 +78,6 @@ async function signup() {
     if (!experience || availableDays.length === 0)
       return showMessage("Fill Ustaz experience and days");
   }
-
-  if (!role || !name || !phone || !subcity || !area || !pass)
-    return showMessage("Fill all signup fields correctly");
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
@@ -91,10 +94,7 @@ async function signup() {
       successMessage("OTP sent!");
       console.log("OTP (testing):", data.otp);
 
-      // prevent multiple OTP sends
-      const btn = document.querySelector("button[onclick='signup()']");
-      if (btn) btn.disabled = true;
-
+      document.querySelector("button[onclick='signup()']").disabled = true;
       card.classList.add("otp-active");
       card.classList.remove("flipped");
     } else {
@@ -106,7 +106,7 @@ async function signup() {
 }
 
 // ===============================
-// VERIFY OTP
+// VERIFY OTP → SHOW HOME CARD
 // ===============================
 async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
@@ -131,13 +131,30 @@ async function verifyOtp() {
     if (data.success) {
       successMessage("OTP verified!");
       resetOtp();
-      window.location.href = "home.html";
+      showHomeCard();
     } else {
-      showMessage("Invalid or expired OTP");
+      showMessage(data.message || "Invalid or expired OTP");
     }
   } catch (err) {
     showMessage("Verification error: " + err.message);
   }
+}
+
+// ===============================
+// SHOW HOME CARD
+// ===============================
+function showHomeCard() {
+  card.classList.add("home-active");
+  card.classList.remove("otp-active");
+  card.classList.remove("flipped");
+}
+
+// ===============================
+// LOGOUT → BACK TO LOGIN
+// ===============================
+function logout() {
+  card.classList.remove("home-active");
+  card.classList.add("flipped"); // back to signup/login
 }
 
 // ===============================
@@ -153,10 +170,8 @@ function resetOtp() {
   signupData = {};
   const otpInput = document.getElementById("otpInput");
   if (otpInput) otpInput.value = "";
-
   const btn = document.querySelector("button[onclick='signup()']");
   if (btn) btn.disabled = false;
-
   card.classList.remove("otp-active");
 }
 
@@ -201,7 +216,7 @@ document.getElementById("role").addEventListener("change", function() {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  card.classList.remove("flipped", "otp-active");
+  card.classList.remove("flipped", "otp-active", "home-active");
   document.getElementById("subcity").addEventListener("change", loadAreas);
 
   if (window.Telegram?.WebApp) {
