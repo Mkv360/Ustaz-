@@ -1,7 +1,7 @@
 // -------------------- Telegram WebApp Initialization --------------------
 if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
-    Telegram.WebApp.expand(); // ensure iframe adjusts to content height
+    Telegram.WebApp.expand();
 }
 
 // -------------------- Show inline messages --------------------
@@ -13,9 +13,9 @@ function showMessage(msg) {
 // -------------------- Show a specific card --------------------
 function showCard(cardId) {
     const cards = document.querySelectorAll('.card');
-    cards.forEach(c => c.style.display = 'none'); // hide all cards
+    cards.forEach(c => c.style.display = 'none');
     const card = document.getElementById(cardId);
-    card.style.display = 'block'; // show selected card
+    card.style.display = 'block';
     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
@@ -71,8 +71,8 @@ function signup() {
     const signup_data = { name, phone, password, role, subcity, area, experience, available_days };
     localStorage.setItem('signup_data', JSON.stringify(signup_data));
 
-    // Call send_otp.php
-    fetch('backend/send_otp.php', {
+    // Call API send_otp.php
+    fetch('api/send_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${phone}`
@@ -102,8 +102,7 @@ function verifyOtp() {
         return;
     }
 
-    // Verify OTP
-    fetch('backend/verify_otp.php', {
+    fetch('api/verify_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${signup_data.phone}&otp=${otp}`
@@ -113,7 +112,7 @@ function verifyOtp() {
         if (data.success) {
             // OTP verified → create user account
             const params = new URLSearchParams(signup_data).toString();
-            fetch('backend/signup.php', {
+            fetch('api/signup.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: params
@@ -139,7 +138,7 @@ function resendOtp() {
     const signup_data = JSON.parse(localStorage.getItem('signup_data'));
     if (!signup_data) { showMessage('Signup data missing'); return; }
 
-    fetch('backend/send_otp.php', {
+    fetch('api/send_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${signup_data.phone}`
@@ -159,7 +158,7 @@ function login() {
 
     if (!phone || !password) { showMessage('Please enter phone and password.'); return; }
 
-    fetch('backend/login.php', {
+    fetch('api/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${phone}&password=${password}`
@@ -168,7 +167,7 @@ function login() {
     .then(data => {
         if (data.success) {
             showMessage('Login Successful!');
-            // TODO: redirect to dashboard
+            // TODO: redirect to dashboard/main page
         } else showMessage(data.message || 'Invalid credentials.');
     })
     .catch(err => showMessage('Error during login.'));
