@@ -53,6 +53,8 @@ function handleBack() {
 function setState(state) {
   currentState = state;
   card.dataset.state = state;
+  // Clear OTP input when leaving OTP page
+  if (state !== UI_STATE.OTP && otpInput) otpInput.value = "";
   document.querySelectorAll(".card-content").forEach(c => (c.scrollTop = 0));
   syncTelegramBackButton();
 }
@@ -126,7 +128,6 @@ signupBtn.addEventListener("click", async () => {
     ).map(o => o.value);
   }
 
-  // VALIDATION
   if (
     !role ||
     !name ||
@@ -203,8 +204,11 @@ verifyOtpBtn.addEventListener("click", async () => {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  // Always start at login page
+  // Force login page on every load
   setState(UI_STATE.LOGIN);
+
+  // Clear OTP input if somehow it persisted
+  if (otpInput) otpInput.value = "";
 
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
