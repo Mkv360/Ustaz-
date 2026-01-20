@@ -10,8 +10,8 @@
 
 <div class="card-container">
 
-  <!-- Message / Inline feedback -->
-  <p id="message" style="color:red; text-align:center;"></p>
+  <!-- Inline message -->
+  <p id="message"></p>
 
   <!-- Login Card -->
   <div class="card" id="login-card">
@@ -19,32 +19,37 @@
     <input type="text" id="login-phone" placeholder="Phone">
     <input type="password" id="login-password" placeholder="Password">
     <button onclick="login()">Login</button>
-    <p>Don't have an account? <span class="link" onclick="showCard('signup-card')">Signup</span></p>
+    <p>Don't have an account? 
+      <span class="link" onclick="showCard('signup-card')">Signup</span>
+    </p>
   </div>
 
   <!-- Signup Card -->
   <div class="card" id="signup-card">
     <h2>Signup</h2>
+
     <select id="signup-role" onchange="toggleUstazFields()">
       <option value="Parent">Parent</option>
       <option value="Ustaz">Ustaz/Ustaza</option>
     </select>
+
     <input type="text" id="signup-name" placeholder="Full Name">
     <input type="text" id="signup-phone" placeholder="Phone">
     <input type="password" id="signup-password" placeholder="Password">
-    
+
     <select id="subcity" onchange="populateAreas()">
       <option value="">Select Subcity</option>
       <option value="Bole">Bole</option>
       <option value="Kirkos">Kirkos</option>
     </select>
+
     <select id="area">
       <option value="">Select Area</option>
     </select>
 
     <div id="ustaz-fields" style="display:none;">
       <input type="number" id="experience" placeholder="Years of Experience">
-      <label>Available Days:</label>
+      <label>Available Days:</label><br>
       <input type="checkbox" name="days" value="Mon">Mon
       <input type="checkbox" name="days" value="Tue">Tue
       <input type="checkbox" name="days" value="Wed">Wed
@@ -53,15 +58,21 @@
     </div>
 
     <button onclick="signup()">Create Account</button>
-    <p>Already have an account? <span class="link" onclick="showCard('login-card')">Login</span></p>
+
+    <p>Already have an account? 
+      <span class="link" onclick="showCard('login-card')">Login</span>
+    </p>
   </div>
 
   <!-- OTP Card -->
   <div class="card" id="otp-card">
-    <h2>Enter OTP for <span id="otp-phone"></span></h2>
+    <h2>Verify OTP</h2>
+    <p>OTP sent to <strong><span id="otp-phone"></span></strong></p>
     <input type="text" id="otp-input" placeholder="4-digit OTP">
     <button onclick="verifyOtp()">Verify OTP</button>
-    <p><span class="link" onclick="resendOtp()">Resend OTP</span></p>
+    <p>
+      <span class="link" onclick="resendOtp()">Resend OTP</span>
+    </p>
   </div>
 
 </div>
