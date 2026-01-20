@@ -43,7 +43,7 @@ function handleBack() {
   if (currentState === UI_STATE.SIGNUP) setState(UI_STATE.LOGIN);
   if (currentState === UI_STATE.OTP) {
     setState(UI_STATE.SIGNUP);
-    if (otpInput) otpInput.value = ""; // clear OTP
+    otpInput.value = ""; // clear OTP when going back
   }
 }
 
@@ -52,27 +52,23 @@ function handleBack() {
 // ===============================
 function setState(state) {
   currentState = state;
-  if (card) card.dataset.state = state;
+  card.dataset.state = state;
   document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
   syncTelegramBackButton();
 }
 
 // ===============================
-// NAVIGATION
+// NAVIGATION EVENTS
 // ===============================
-if (goSignup) {
-  goSignup.addEventListener("click", e => {
-    e.preventDefault();
-    setState(UI_STATE.SIGNUP);
-  });
-}
+goSignup.addEventListener("click", e => {
+  e.preventDefault();
+  setState(UI_STATE.SIGNUP);
+});
 
-if (goLogin) {
-  goLogin.addEventListener("click", e => {
-    e.preventDefault();
-    setState(UI_STATE.LOGIN);
-  });
-}
+goLogin.addEventListener("click", e => {
+  e.preventDefault();
+  setState(UI_STATE.LOGIN);
+});
 
 if (backToSignup) {
   backToSignup.addEventListener("click", e => {
@@ -84,12 +80,10 @@ if (backToSignup) {
 // ===============================
 // ROLE BASED FIELDS
 // ===============================
-if (roleSelect) {
-  roleSelect.addEventListener("change", () => {
-    const isUstaz = roleSelect.value === "ustaz";
-    if (ustazFields) ustazFields.classList.toggle("hidden", !isUstaz);
-  });
-}
+roleSelect.addEventListener("change", () => {
+  const isUstaz = roleSelect.value === "ustaz";
+  ustazFields.classList.toggle("hidden", !isUstaz);
+});
 
 // ===============================
 // SUBCITY → AREA
@@ -101,98 +95,92 @@ const areas = {
   lideta: ["Lideta", "Abinet", "Tor Hailoch"],
 };
 
-if (subcitySelect && areaSelect) {
-  subcitySelect.addEventListener("change", () => {
-    areaSelect.innerHTML = '<option value="">Select Area</option>';
-    const subcity = subcitySelect.value;
-    if (!areas[subcity]) return;
-    areas[subcity].forEach(a => {
-      const opt = document.createElement("option");
-      opt.value = a;
-      opt.textContent = a;
-      areaSelect.appendChild(opt);
-    });
+subcitySelect.addEventListener("change", () => {
+  areaSelect.innerHTML = '<option value="">Select Area</option>';
+  const subcity = subcitySelect.value;
+  if (!areas[subcity]) return;
+  areas[subcity].forEach(a => {
+    const opt = document.createElement("option");
+    opt.value = a;
+    opt.textContent = a;
+    areaSelect.appendChild(opt);
   });
-}
+});
 
 // ===============================
 // SIGNUP & REQUEST OTP
 // ===============================
-if (signupBtn) {
-  signupBtn.addEventListener("click", async () => {
-    const role = roleSelect?.value;
-    const name = document.getElementById("fullName")?.value.trim();
-    const phone = document.getElementById("signupPhone")?.value.trim();
-    const subcity = subcitySelect?.value;
-    const area = areaSelect?.value;
-    const pass = document.getElementById("signupPassword")?.value.trim();
-    let experience = null;
-    let availableDays = [];
+signupBtn.addEventListener("click", async () => {
+  const role = roleSelect.value;
+  const name = document.getElementById("fullName").value.trim();
+  const phone = document.getElementById("signupPhone").value.trim();
+  const subcity = subcitySelect.value;
+  const area = areaSelect.value;
+  const pass = document.getElementById("signupPassword").value.trim();
+  let experience = null;
+  let availableDays = [];
 
-    if (role === "ustaz") {
-      experience = document.getElementById("experience")?.value.trim();
-      availableDays = Array.from(document.getElementById("availableDays")?.selectedOptions || []).map(o => o.value);
-    }
+  if (role === "ustaz") {
+    experience = document.getElementById("experience").value.trim();
+    availableDays = Array.from(document.getElementById("availableDays").selectedOptions).map(o => o.value);
+  }
 
-    if (!role || !name || !phone || !subcity || !area || !pass || (role === "ustaz" && (!experience || availableDays.length === 0))) {
-      return alert("Please fill all required fields correctly");
-    }
+  if (!role || !name || !phone || !subcity || !area || !pass || (role === "ustaz" && (!experience || availableDays.length === 0))) {
+    return alert("Please fill all required fields correctly");
+  }
 
-    signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
+  signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
-    if (otpPhone) otpPhone.textContent = phone;
-    if (otpInput) otpInput.value = "";
+  // Show OTP screen
+  if (otpPhone) otpPhone.textContent = phone;
+  if (otpInput) otpInput.value = "";
 
-    // Request OTP from backend
-    try {
-      const res = await fetch("https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/send_otp.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone })
-      });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.message);
-      console.log("OTP (for testing):", data.otp);
-      setState(UI_STATE.OTP);
-    } catch (err) {
-      alert("Error sending OTP: " + err.message);
-    }
-  });
-}
+  // Request OTP from backend
+  try {
+    const res = await fetch("https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/send_otp.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message);
+    console.log("OTP (for testing, check Replit logs):", data.otp);
+    setState(UI_STATE.OTP);
+  } catch (err) {
+    alert("Error sending OTP: " + err.message);
+  }
+});
 
 // ===============================
 // VERIFY OTP
 // ===============================
-if (verifyOtpBtn) {
-  verifyOtpBtn.addEventListener("click", async () => {
-    const otp = otpInput?.value.trim();
-    if (!otp) return alert("Enter OTP");
+verifyOtpBtn.addEventListener("click", async () => {
+  const otp = otpInput.value.trim();
+  if (!otp) return alert("Enter OTP");
 
-    try {
-      const res = await fetch("https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/verify_otp.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: signupData.phone, otp })
-      });
-      const data = await res.json();
-      if (data.success) {
-        alert("Account created successfully!");
-        setState(UI_STATE.LOGIN);
-      } else {
-        alert(data.message);
-      }
-    } catch (err) {
-      alert("Error verifying OTP: " + err.message);
+  try {
+    const res = await fetch("https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/verify_otp.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: signupData.phone, otp })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert("Account created successfully!");
+      setState(UI_STATE.LOGIN);
+    } else {
+      alert(data.message);
     }
-  });
-}
+  } catch (err) {
+    alert("Error verifying OTP: " + err.message);
+  }
+});
 
 // ===============================
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  setState(UI_STATE.LOGIN); // always start at login page
-
+  setState(UI_STATE.LOGIN); // always start at login
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
