@@ -145,7 +145,7 @@ if (signupBtn) {
 
     // Request OTP from backend
     try {
-      const res = await fetch("https://YOUR_REPLIT_URL/send_otp.php", {
+      const res = await fetch("https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/send_otp.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone })
@@ -169,7 +169,7 @@ if (verifyOtpBtn) {
     if (!otp) return alert("Enter OTP");
 
     try {
-      const res = await fetch("https://YOUR_REPLIT_URL/verify_otp.php", {
+      const res = await fetch("https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/verify_otp.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone: signupData.phone, otp })
