@@ -43,7 +43,7 @@ body {
 .card {
   position: relative;
   width: 100%;
-  max-width: 340px;   /* SAME GAP LEFT & RIGHT */
+  max-width: 340px;   /* 🔑 SAME GAP LEFT & RIGHT */
   height: 420px;
   margin: 0 auto;
   transform-style: preserve-3d;
@@ -64,29 +64,37 @@ body {
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.3);
   backface-visibility: hidden;
   overflow: hidden;
-  padding: 20px 0; /* no side padding */
+  padding: 20px 0; /* 🔑 NO SIDE PADDING */
 }
 
+/* Back face */
 .back {
   transform: rotateY(180deg);
 }
 
-/* ---------------- INNER COLUMN ---------------- */
+/* ---------------- INNER COLUMN (THE FIX) ---------------- */
 .card-content {
   height: 100%;
   overflow-y: auto;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   width: 100%;
 }
 
-/* ---------------- LOGIN INPUTS ---------------- */
-#loginPhone,
-#loginPassword {
-  width: 85%;
-  height: 38px;          /* original thinner login */
-  padding: 0 12px;
+/* Fixed inner column */
+.card-content > * {
+  width: 260px;  /* 🔑 ALL CONTENT SAME WIDTH */
+  max-width: 90%;
+}
+
+/* ---------------- INPUTS & SELECTS ---------------- */
+input,
+select {
+  height: 40px;
+  padding: 0 14px;
   margin: 8px 0;
   border-radius: 22px;
   border: none;
@@ -94,35 +102,7 @@ body {
   font-size: 13.5px;
 }
 
-/* ---------------- SIGNUP INPUTS ---------------- */
-#fullName,
-#signupPhone,
-#signupPassword,
-#experience,
-#subcity,
-#area,
-#availableDays {
-  width: 100%;
-  max-width: 280px;      /* proportional inner width */
-  height: 42px;          /* slightly thicker than login */
-  padding: 0 14px;
-  margin: 8px 0;
-  border-radius: 24px;
-  border: none;
-  outline: none;
-  font-size: 14px;
-}
-
-/* Multi-select (ustaz days) */
-#availableDays {
-  height: auto;
-  min-height: 110px;
-  padding: 8px;
-  border-radius: 14px;
-  font-size: 13px;
-}
-
-/* ---------------- SELECT ARROW ---------------- */
+/* Select arrow */
 select {
   appearance: none;
   background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
@@ -130,6 +110,14 @@ select {
   background-position: right 14px center;
   background-size: 16px;
   padding-right: 38px;
+}
+
+/* Multi select (ustaz days) */
+#availableDays {
+  height: auto;
+  min-height: 110px;
+  border-radius: 14px;
+  padding: 8px;
 }
 
 /* ---------------- BUTTON ---------------- */
