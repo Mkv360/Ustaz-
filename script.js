@@ -39,9 +39,7 @@ function syncTelegramBackButton() {
 }
 
 function handleBack() {
-  if (currentState === UI_STATE.SIGNUP) {
-    setState(UI_STATE.LOGIN);
-  }
+  if (currentState === UI_STATE.SIGNUP) setState(UI_STATE.LOGIN);
   if (currentState === UI_STATE.OTP) {
     setState(UI_STATE.SIGNUP);
     if (otpInput) otpInput.value = "";
@@ -146,6 +144,8 @@ signupBtn.addEventListener("click", async () => {
   if (otpPhone) otpPhone.textContent = phone;
   if (otpInput) otpInput.value = "";
 
+  signupBtn.disabled = true;
+
   try {
     const res = await fetch(
       "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/send_otp.php",
@@ -157,10 +157,12 @@ signupBtn.addEventListener("click", async () => {
     );
     const data = await res.json();
     if (!data.success) throw new Error(data.message);
-    console.log("OTP (for testing):", data.otp); // Check Replit logs
+    console.log("OTP (for testing):", data.otp);
     setState(UI_STATE.OTP);
   } catch (err) {
     alert("Error sending OTP: " + err.message);
+  } finally {
+    signupBtn.disabled = false;
   }
 });
 
@@ -170,6 +172,8 @@ signupBtn.addEventListener("click", async () => {
 verifyOtpBtn.addEventListener("click", async () => {
   const otp = otpInput.value.trim();
   if (!otp) return alert("Enter OTP");
+
+  verifyOtpBtn.disabled = true;
 
   try {
     const res = await fetch(
@@ -189,6 +193,8 @@ verifyOtpBtn.addEventListener("click", async () => {
     }
   } catch (err) {
     alert("Error verifying OTP: " + err.message);
+  } finally {
+    verifyOtpBtn.disabled = false;
   }
 });
 
