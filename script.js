@@ -1,34 +1,34 @@
-// Telegram WebApp init
+// -------------------- Telegram WebApp Initialization --------------------
 if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
-    Telegram.WebApp.expand();
+    Telegram.WebApp.expand(); // ensure iframe adjusts to content height
 }
 
-// Show inline message
+// -------------------- Show inline messages --------------------
 function showMessage(msg) {
     const messageEl = document.getElementById('message');
     if (messageEl) messageEl.textContent = msg;
 }
 
-// Show specific card
+// -------------------- Show a specific card --------------------
 function showCard(cardId) {
     const cards = document.querySelectorAll('.card');
-    cards.forEach(c => c.style.display = 'none');
+    cards.forEach(c => c.style.display = 'none'); // hide all cards
     const card = document.getElementById(cardId);
-    card.style.display = 'block';
+    card.style.display = 'block'; // show selected card
     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-// Default: show Login card
+// -------------------- Default view --------------------
 showCard('login-card');
 
-// Toggle Ustaz fields
+// -------------------- Toggle Ustaz fields --------------------
 function toggleUstazFields() {
     const role = document.getElementById('signup-role').value;
     document.getElementById('ustaz-fields').style.display = role === 'Ustaz' ? 'block' : 'none';
 }
 
-// Populate area dropdown
+// -------------------- Populate area dropdown --------------------
 function populateAreas() {
     const subcity = document.getElementById('subcity').value;
     const areaSelect = document.getElementById('area');
@@ -47,7 +47,7 @@ function populateAreas() {
     }
 }
 
-// Signup → send OTP
+// -------------------- Step 1: Signup → Send Demo OTP --------------------
 function signup() {
     const name = document.getElementById('signup-name').value.trim();
     const phone = document.getElementById('signup-phone').value.trim();
@@ -71,20 +71,26 @@ function signup() {
     const signup_data = { name, phone, password, role, subcity, area, experience, available_days };
     localStorage.setItem('signup_data', JSON.stringify(signup_data));
 
+    // Call send_otp.php
     fetch('backend/send_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${phone}`
-    }).then(r => r.json()).then(data => {
+    })
+    .then(r => r.json())
+    .then(data => {
         if (data.success) {
-            showMessage('OTP sent! Check logs for testing.');
+            showMessage('OTP sent! Check Replit logs for demo OTP.');
             document.getElementById('otp-phone').textContent = phone;
             showCard('otp-card');
-        } else showMessage('Failed to send OTP.');
-    }).catch(err => showMessage('Error sending OTP.'));
+        } else {
+            showMessage(data.message || 'Failed to send OTP.');
+        }
+    })
+    .catch(err => showMessage('Error sending OTP.'));
 }
 
-// Verify OTP → create account
+// -------------------- Step 2: Verify OTP → Create Account --------------------
 function verifyOtp() {
     const otp = document.getElementById('otp-input').value.trim();
     if (!otp) { showMessage('Please enter OTP.'); return; }
@@ -96,28 +102,39 @@ function verifyOtp() {
         return;
     }
 
+    // Verify OTP
     fetch('backend/verify_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${signup_data.phone}&otp=${otp}`
-    }).then(r => r.json()).then(data => {
+    })
+    .then(r => r.json())
+    .then(data => {
         if (data.success) {
+            // OTP verified → create user account
             const params = new URLSearchParams(signup_data).toString();
             fetch('backend/signup.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: params
-            }).then(r => r.json()).then(res => {
+            })
+            .then(r => r.json())
+            .then(res => {
                 if (res.success) {
                     showMessage('Account created! Please login.');
                     showCard('login-card');
-                } else showMessage(res.message || 'Signup failed.');
+                } else {
+                    showMessage(res.message || 'Signup failed.');
+                }
             });
-        } else showMessage(data.message || 'Invalid or expired OTP.');
-    }).catch(err => showMessage('Error verifying OTP.'));
+        } else {
+            showMessage(data.message || 'Invalid or expired OTP.');
+        }
+    })
+    .catch(err => showMessage('Error verifying OTP.'));
 }
 
-// Resend OTP
+// -------------------- Resend OTP --------------------
 function resendOtp() {
     const signup_data = JSON.parse(localStorage.getItem('signup_data'));
     if (!signup_data) { showMessage('Signup data missing'); return; }
@@ -126,13 +143,16 @@ function resendOtp() {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${signup_data.phone}`
-    }).then(r => r.json()).then(data => {
-        if (data.success) showMessage('OTP resent!');
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) showMessage('OTP resent! Check Replit logs.');
         else showMessage('Failed to resend OTP.');
-    }).catch(err => showMessage('Error resending OTP.'));
+    })
+    .catch(err => showMessage('Error resending OTP.'));
 }
 
-// Login
+// -------------------- Login --------------------
 function login() {
     const phone = document.getElementById('login-phone').value.trim();
     const password = document.getElementById('login-password').value.trim();
@@ -143,10 +163,13 @@ function login() {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${phone}&password=${password}`
-    }).then(r => r.json()).then(data => {
+    })
+    .then(r => r.json())
+    .then(data => {
         if (data.success) {
             showMessage('Login Successful!');
-            // TODO: redirect to dashboard or main page
+            // TODO: redirect to dashboard
         } else showMessage(data.message || 'Invalid credentials.');
-    }).catch(err => showMessage('Error during login.'));
+    })
+    .catch(err => showMessage('Error during login.'));
 }
