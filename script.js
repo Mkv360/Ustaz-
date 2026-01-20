@@ -4,6 +4,9 @@ if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.expand(); // expand iframe to fit content
 }
 
+// Replace this with your Replit project URL
+const REPLIT_URL = 'https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev';
+
 // -------------------- Show inline messages --------------------
 function showMessage(msg) {
     const messageEl = document.getElementById('message');
@@ -71,8 +74,8 @@ function signup() {
     const signup_data = { name, phone, password, role, subcity, area, experience, available_days };
     localStorage.setItem('signup_data', JSON.stringify(signup_data));
 
-    // Call API send_otp.php (CORS enabled in PHP)
-    fetch('/api/send_otp.php', {
+    // Call API send_otp.php
+    fetch(`${REPLIT_URL}/api/send_otp.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${phone}`
@@ -102,7 +105,7 @@ function verifyOtp() {
         return;
     }
 
-    fetch('/api/verify_otp.php', {
+    fetch(`${REPLIT_URL}/api/verify_otp.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${signup_data.phone}&otp=${otp}`
@@ -112,7 +115,7 @@ function verifyOtp() {
         if (data.success) {
             // OTP verified → create user account
             const params = new URLSearchParams(signup_data).toString();
-            fetch('/api/signup.php', {
+            fetch(`${REPLIT_URL}/api/signup.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: params
@@ -138,7 +141,7 @@ function resendOtp() {
     const signup_data = JSON.parse(localStorage.getItem('signup_data'));
     if (!signup_data) { showMessage('Signup data missing'); return; }
 
-    fetch('/api/send_otp.php', {
+    fetch(`${REPLIT_URL}/api/send_otp.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${signup_data.phone}`
@@ -158,7 +161,7 @@ function login() {
 
     if (!phone || !password) { showMessage('Please enter phone and password.'); return; }
 
-    fetch('/api/login.php', {
+    fetch(`${REPLIT_URL}/api/login.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `phone=${phone}&password=${password}`
