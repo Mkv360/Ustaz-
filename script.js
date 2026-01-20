@@ -2,6 +2,11 @@
 // CARD FLIP
 // ===============================
 const card = document.getElementById("card");
+const signupBtn = document.getElementById("signupBtn");
+const loginBtn = document.getElementById("loginBtn");
+const verifyOtpBtn = document.getElementById("verifyOtpBtn");
+const roleSelect = document.getElementById("role");
+const areaSelect = document.getElementById("area");
 
 function flipCard() {
   card.classList.toggle("flipped");
@@ -55,11 +60,11 @@ let signupData = {};
 const BASE_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/api";
 
 async function signup() {
-  const role = document.getElementById("role").value;
+  const role = roleSelect.value;
   const name = document.getElementById("fullName").value.trim();
   const phone = validateEthiopianPhone(document.getElementById("signupPhone").value.trim());
   const subcity = document.getElementById("subcity").value;
-  const area = document.getElementById("area").value;
+  const area = areaSelect.value;
   const pass = document.getElementById("signupPassword").value.trim();
 
   if (!role || !name || !phone || !subcity || !area || !pass) {
@@ -82,24 +87,17 @@ async function signup() {
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
   try {
-    const res = await fetch(`${BASE_URL}/send_otp.php`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone })
-    });
+    // Demo OTP: simulate sending
+    const otp = Math.floor(1000 + Math.random() * 9000); // 4-digit OTP
+    console.log("Demo OTP:", otp);
+    signupData.otp = otp;
 
-    const data = await res.json();
+    successMessage(`OTP sent! (Demo: ${otp})`);
 
-    if (data.success) {
-      successMessage("OTP sent!");
-      console.log("OTP (testing):", data.otp);
+    card.classList.add("otp-active");
+    card.classList.remove("flipped");
+    signupBtn.disabled = true;
 
-      document.querySelector("button[onclick='signup()']").disabled = true;
-      card.classList.add("otp-active");
-      card.classList.remove("flipped");
-    } else {
-      showMessage(data.message || "Failed to send OTP");
-    }
   } catch (err) {
     showMessage("OTP error: " + err.message);
   }
@@ -108,35 +106,23 @@ async function signup() {
 // ===============================
 // VERIFY OTP → SHOW HOME CARD
 // ===============================
-async function verifyOtp() {
-  const otp = document.getElementById("otpInput").value.trim();
-
+function verifyOtp() {
+  const otpInput = document.getElementById("otpInput").value.trim();
   if (!signupData.phone) {
     showMessage("Session expired. Please sign up again.");
     backToSignup();
     return;
   }
 
-  if (!otp) return showMessage("Enter the OTP");
+  if (!otpInput) return showMessage("Enter the OTP");
 
-  try {
-    const res = await fetch(`${BASE_URL}/verify_otp.php`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: signupData.phone, otp })
-    });
-
-    const data = await res.json();
-
-    if (data.success) {
-      successMessage("OTP verified!");
-      resetOtp();
-      showHomeCard();
-    } else {
-      showMessage(data.message || "Invalid or expired OTP");
-    }
-  } catch (err) {
-    showMessage("Verification error: " + err.message);
+  // Demo check
+  if (otpInput == signupData.otp) {
+    successMessage("OTP verified!");
+    resetOtp();
+    showHomeCard();
+  } else {
+    showMessage("Invalid OTP (Demo)");
   }
 }
 
@@ -170,8 +156,7 @@ function resetOtp() {
   signupData = {};
   const otpInput = document.getElementById("otpInput");
   if (otpInput) otpInput.value = "";
-  const btn = document.querySelector("button[onclick='signup()']");
-  if (btn) btn.disabled = false;
+  signupBtn.disabled = false;
   card.classList.remove("otp-active");
 }
 
@@ -193,7 +178,6 @@ const areas = {
 
 function loadAreas() {
   const subcity = document.getElementById("subcity").value;
-  const areaSelect = document.getElementById("area");
   areaSelect.innerHTML = '<option value="">Select Area</option>';
   if (!areas[subcity]) return;
   areas[subcity].forEach(a => {
@@ -207,7 +191,7 @@ function loadAreas() {
 // ===============================
 // ROLE TOGGLE
 // ===============================
-document.getElementById("role").addEventListener("change", function() {
+roleSelect.addEventListener("change", function() {
   document.getElementById("ustazFields").style.display =
     this.value === "ustaz" ? "block" : "none";
 });
@@ -217,7 +201,18 @@ document.getElementById("role").addEventListener("change", function() {
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
   card.classList.remove("flipped", "otp-active", "home-active");
+
   document.getElementById("subcity").addEventListener("change", loadAreas);
+
+  // Button events
+  signupBtn.addEventListener("click", signup);
+  loginBtn.addEventListener("click", login);
+  verifyOtpBtn.addEventListener("click", verifyOtp);
+
+  // Flip toggle links
+  document.querySelectorAll(".flip-link").forEach(el => {
+    el.addEventListener("click", flipCard);
+  });
 
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
