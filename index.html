@@ -1,107 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quran Ustaz Finder</title>
-
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quran Ustaz Finder</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="app">
-  <h1 class="title">Quran Ustaz Finder</h1>
-  <p class="subtitle">Find a trusted Quran teacher near you</p>
+<div class="card-container">
 
-  <div class="card-container">
-    <div class="card" id="card" data-state="login">
-
-      <!-- LOGIN CARD -->
-      <div class="card-face front">
-        <div class="card-content">
-          <h2>Login</h2>
-          <input type="tel" id="loginPhone" placeholder="Phone number" />
-          <input type="password" id="loginPassword" placeholder="Password" />
-          <button id="loginBtn">Login</button>
-          <p class="link">
-            Don’t have an account?
-            <a href="#" id="goSignup" class="inline-link">Signup</a>
-          </p>
-        </div>
-      </div>
-
-      <!-- SIGNUP CARD -->
-      <div class="card-face back">
-        <div class="card-content">
-          <h2>Signup</h2>
-
-          <select id="role">
-            <option value="">Sign up as</option>
-            <option value="parent">Parent</option>
-            <option value="ustaz">Ustaz / Ustaza</option>
-          </select>
-
-          <div id="ustazFields" class="hidden">
-            <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50" />
-            <label class="small-label">Available days</label>
-            <select id="availableDays" multiple size="5">
-              <option value="monday">Monday</option>
-              <option value="tuesday">Tuesday</option>
-              <option value="wednesday">Wednesday</option>
-              <option value="thursday">Thursday</option>
-              <option value="friday">Friday</option>
-              <option value="saturday">Saturday</option>
-              <option value="sunday">Sunday</option>
-            </select>
-          </div>
-
-          <input type="text" id="fullName" placeholder="Full name" />
-          <input type="tel" id="signupPhone" placeholder="Phone number" />
-
-          <select id="subcity">
-            <option value="">Select Sub-City</option>
-            <option value="bole">Bole</option>
-            <option value="yeka">Yeka</option>
-            <option value="kirkos">Kirkos</option>
-            <option value="lideta">Lideta</option>
-            <option value="arada">Arada</option>
-            <option value="addisketema">Addis Ketema</option>
-            <option value="nifassilk">Nifas Silk</option>
-            <option value="kolfe">Kolfe Keranio</option>
-            <option value="akakikaliti">Akaki Kality</option>
-            <option value="gullele">Gullele</option>
-          </select>
-
-          <select id="area">
-            <option value="">Select Area</option>
-          </select>
-
-          <input type="password" id="signupPassword" placeholder="Password" />
-          <button id="signupBtn">Signup</button>
-
-          <p class="link">
-            Already have an account?
-            <a href="#" id="goLogin" class="inline-link">Login</a>
-          </p>
-        </div>
-      </div>
-
-      <!-- OTP CARD -->
-      <div class="card-face otp">
-        <div class="card-content">
-          <h2>Enter OTP</h2>
-          <p>An OTP has been sent to <span id="otpPhone"></span></p>
-          <input type="text" id="otpInput" placeholder="Enter OTP" maxlength="4" />
-          <button id="verifyOtpBtn">Verify OTP</button>
-          <p class="link">
-            <a href="#" id="backToSignup" class="inline-link">Back to Signup</a>
-          </p>
-        </div>
-      </div>
-
-    </div>
+  <!-- Login Card -->
+  <div class="card" id="login-card">
+    <h2>Login</h2>
+    <input type="text" id="login-phone" placeholder="Phone">
+    <input type="password" id="login-password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <p>New user? <span class="link" onclick="showCard('signup-card')">Signup</span></p>
   </div>
+
+  <!-- Signup Card -->
+  <div class="card" id="signup-card">
+    <h2>Signup</h2>
+    <select id="signup-role" onchange="toggleUstazFields()">
+      <option value="Parent">Parent</option>
+      <option value="Ustaz">Ustaz/Ustaza</option>
+    </select>
+    <input type="text" id="signup-name" placeholder="Full Name">
+    <input type="text" id="signup-phone" placeholder="Phone">
+    <input type="password" id="signup-password" placeholder="Password">
+    
+    <select id="subcity" onchange="populateAreas()">
+      <option value="">Select Subcity</option>
+      <option value="Bole">Bole</option>
+      <option value="Kirkos">Kirkos</option>
+    </select>
+    <select id="area">
+      <option value="">Select Area</option>
+    </select>
+
+    <div id="ustaz-fields" style="display:none;">
+      <input type="number" id="experience" placeholder="Years of Experience">
+      <label>Available Days:</label>
+      <input type="checkbox" name="days" value="Mon">Mon
+      <input type="checkbox" name="days" value="Tue">Tue
+      <input type="checkbox" name="days" value="Wed">Wed
+      <input type="checkbox" name="days" value="Thu">Thu
+      <input type="checkbox" name="days" value="Fri">Fri
+    </div>
+
+    <button onclick="signup()">Create Account</button>
+    <p>Already have an account? <span class="link" onclick="showCard('login-card')">Login</span></p>
+  </div>
+
+  <!-- OTP Card -->
+  <div class="card" id="otp-card">
+    <h2>Enter OTP</h2>
+    <input type="text" id="otp-input" placeholder="4-digit OTP">
+    <button onclick="verifyOtp()">Verify OTP</button>
+  </div>
+
 </div>
 
 <script src="script.js"></script>
