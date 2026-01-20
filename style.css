@@ -1,49 +1,61 @@
+/* General styles */
 body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(120deg, #89f7fe, #66a6ff);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(120deg, #89f7fe, #66a6ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
 }
 
 .card-container {
-  width: 320px;
-  perspective: 1000px;
+    width: 90%;
+    max-width: 360px;
+    perspective: 1000px;
 }
 
 .card {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  display: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transform-style: preserve-3d;
-  transition: transform 0.6s;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    display: none; /* all cards hidden initially */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
 }
 
 .card input, .card select, .card button {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
 }
 
 .card button {
-  background: #66a6ff;
-  color: white;
-  border: none;
-  cursor: pointer;
+    background: #66a6ff;
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 
 .card button:hover {
-  background: #89f7fe;
+    background: #89f7fe;
 }
 
 .link {
-  color: #66a6ff;
-  cursor: pointer;
-  text-decoration: underline;
+    color: #66a6ff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#message {
+    text-align: center;
+    margin-bottom: 10px;
+    color: red;
+    font-weight: bold;
+    min-height: 20px;
 }
