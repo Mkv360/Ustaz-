@@ -1,270 +1,77 @@
 /* ===============================
    GLOBAL RESET
 ================================ */
-* {
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
+* { box-sizing: border-box; font-family: system-ui, sans-serif; margin:0; padding:0; }
 body {
   height: 100vh;
+  display: flex; justify-content:center; align-items:center;
   background: linear-gradient(180deg, #0b132b, #1c2541);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #ffffff;
-  overflow: hidden; /* Telegram-safe */
+  color: #fff;
 }
 
 /* ===============================
    APP CONTAINER
 ================================ */
-.app {
-  width: 100%;
-  max-width: 380px;
-  text-align: center;
-  padding: 0 10px;
-}
-
-.title {
-  margin-bottom: 4px;
-  font-size: 22px;
-  font-weight: 600;
-}
-
-.subtitle {
-  font-size: 13px;
-  opacity: 0.8;
-  margin-bottom: 18px;
-}
+.app { width: 100%; max-width: 380px; text-align:center; padding:0 10px; }
+.title { font-size: 22px; margin-bottom:4px; }
+.subtitle { font-size:13px; opacity:0.8; margin-bottom:18px; }
 
 /* ===============================
    CARD CONTAINER
 ================================ */
-.card-container {
-  perspective: 1200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+.card-container { perspective:1200px; display:flex; justify-content:center; align-items:center; }
 
-.card {
-  position: relative;
-  width: 100%;
-  max-width: 360px;
-  height: 560px;
+/* ===============================
+   FLIP CARD INNER
+================================ */
+.flip-card-inner {
+  width:100%; max-width:360px; height:560px;
+  position:relative;
   transform-style: preserve-3d;
-  transition: transform 0.8s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  transition: transform 0.7s ease;
 }
 
-/* ===============================
-   CARD FLIP 360°
-================================ */
-.card.flipped {
-  transform: rotateY(360deg);
-}
-
-.front {
-  transform: rotateY(0deg);
-  z-index: 2;
-}
-
-.back {
-  transform: rotateY(180deg);
-  z-index: 1;
-}
-
-.card.flipped .front {
-  transform: rotateY(360deg);
-  z-index: 1;
-}
-
-.card.flipped .back {
-  transform: rotateY(540deg); /* 180 + 360 */
-  z-index: 2;
-}
-
-/* ===============================
-   CARD FACES
-================================ */
-.card-face {
-  position: absolute;
-  inset: 0;
-  padding: 24px;
-  border-radius: 20px;
-
-  background: rgba(255, 255, 255, 0.08);
+/* CARD FACES */
+.flip-card-inner .front,
+.flip-card-inner .back {
+  position:absolute; inset:0;
+  backface-visibility:hidden;
+  border-radius:20px;
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:center;
+  background: rgba(255,255,255,0.08);
   backdrop-filter: blur(14px);
-
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-  backface-visibility: hidden;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  transition: transform 0.8s ease, opacity 0.3s ease;
 }
+
+/* Front/back */
+.flip-card-inner .front { transform: rotateY(0deg); z-index:2; }
+.flip-card-inner .back { transform: rotateY(180deg); z-index:1; }
+
+/* FLIPPED STATE */
+.flip-card-inner.flipped { transform: rotateY(180deg); }
+.flip-card-inner.flipped .front { z-index:1; }
+.flip-card-inner.flipped .back { z-index:2; }
 
 /* ===============================
-   CARD CONTENT
+   INPUTS & BUTTONS
 ================================ */
-.card-content {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  padding-bottom: 20px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+input, select {
+  width:80%; max-width:280px; padding:8px 12px; margin:6px auto;
+  border-radius:20px; border:none; outline:none; font-size:13px;
 }
-
-/* Headings */
-.card-content h2 {
-  margin: 10px 0 16px;
-  font-size: 20px;
-  font-weight: 600;
-}
-
-/* ===============================
-   INPUTS & SELECTS
-================================ */
-input,
-select {
-  width: 80%;
-  max-width: 280px;
-  padding: 8px 12px;
-  margin: 6px auto;
-  display: block;
-  border-radius: 20px;
-  border: none;
-  outline: none;
-  font-size: 13px;
-  background: #ffffff;
-  color: #000;
-}
-
-/* Select dropdown arrow */
-select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 14px;
-  padding-right: 36px;
-}
-
-/* ===============================
-   BUTTONS
-================================ */
 button {
-  width: 60%;
-  max-width: 220px;
-  padding: 9px 0;
-  margin: 14px auto 16px;
-
-  border-radius: 22px;
-  border: none;
-
-  font-size: 14px;
-  font-weight: 500;
-
-  background: #2ecc71;
-  color: #000;
-  cursor: pointer;
-
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  width:60%; max-width:220px; padding:9px 0; margin:14px auto 16px;
+  border-radius:22px; border:none; font-size:14px; font-weight:500;
+  background:#2ecc71; color:#000; cursor:pointer;
 }
+button:active { transform: scale(0.97); }
 
-button:active {
-  transform: scale(0.97);
-}
+/* LINKS */
+.link { margin-top:12px; font-size:13px; }
+.link span { color:#2ecc71; cursor:pointer; }
 
-/* ===============================
-   LINKS & TEXT
-================================ */
-.link {
-  margin-top: 12px;
-  font-size: 13px;
-}
-
-.link span {
-  color: #2ecc71;
-  cursor: pointer;
-}
-
-/* Back button */
-.back-btn {
-  margin-top: 10px;
-  font-size: 13px;
-  opacity: 0.75;
-  cursor: pointer;
-}
-
-/* ===============================
-   OTP & HOME STATES
-================================ */
-
-/* OTP hidden */
-.card-face.otp {
-  opacity: 0;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* OTP active */
-.card.otp-active .otp {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 100;
-}
-
-/* Home hidden */
-.card-face.home {
-  opacity: 0;
-  pointer-events: none;
-  z-index: 5;
-}
-
-/* Home active */
-.card.home-active .home {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 200;
-}
-
-/* ===============================
-   HOME CONTENT
-================================ */
-#homeContent {
-  margin-top: 16px;
-  font-size: 14px;
-  text-align: left;
-  width: 90%;
-}
-
-/* ===============================
-   SMALL SCREENS SAFETY
-================================ */
-@media (max-height: 650px) {
-  .card {
-    height: 520px;
-  }
-}
-
-@media (max-width: 350px) {
-  input, select, button {
-    width: 90%;
-  }
-}
+/* USTAZ FIELDS */
+#ustazFields { display:none; }
