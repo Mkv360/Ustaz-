@@ -2,72 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quran Ustaz Finder</title>
 
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
-
-  <title>Quran Ustaz Finder</title>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Quran Ustaz Finder</h1>
-    <p class="subtitle">Find a trusted Quran teacher near you</p>
+<div class="app">
 
-    <div class="card login-card active">
-      <form>
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <button type="button" onclick="login()">Login</button>
-      </form>
+  <h1 class="title">Quran Ustaz Finder</h1>
+  <p class="subtitle">Find a trusted Quran teacher near you</p>
 
-      <p class="link">
-        Don’t have an account?
-        <span onclick="showSignup()">Sign up</span>
-      </p>
-    </div>
+  <div class="card-container">
+    <div class="card" id="card">
 
-    <div class="card signup-card">
-      <form>
-        <select id="userType" onchange="toggleUstazFields()">
+      <!-- LOGIN -->
+      <div class="card-face front">
+        <h2>Login</h2>
+
+        <input type="text" id="loginPhone" placeholder="Phone number">
+        <input type="password" id="loginPassword" placeholder="Password">
+
+        <button onclick="login()">Login</button>
+
+        <p class="link">
+          Don’t have an account?
+          <span onclick="flipCard()">Sign up</span>
+        </p>
+      </div>
+
+      <!-- SIGNUP -->
+      <div class="card-face back">
+        <h2>Create Account</h2>
+
+        <select id="role">
           <option value="">Sign up as</option>
           <option value="parent">Parent</option>
-          <option value="ustaz">Ustaz</option>
+          <option value="ustaz">Ustaz / Ustaza</option>
         </select>
 
-        <input type="text" placeholder="Full Name">
-        <input type="email" placeholder="Email">
-
+        <input type="text" placeholder="Full name">
+        <input type="text" placeholder="Phone number">
+        
         <select>
-          <option value="">Select Area</option>
-          <option>Addis Ababa - Bole</option>
-          <option>Addis Ababa - Yeka</option>
-          <option>Addis Ababa - Kirkos</option>
-          <option>Addis Ababa - Kolfe</option>
+          <option value="">City / Area</option>
+          <option>Addis Ababa</option>
           <option>Adama</option>
           <option>Dire Dawa</option>
           <option>Bahir Dar</option>
+          <option>Mekelle</option>
         </select>
 
-        <div id="ustazFields" class="hidden">
-          <input type="text" placeholder="Years of Experience">
-          <input type="text" placeholder="Available Days">
-        </div>
-
         <input type="password" placeholder="Password">
-        <button type="button" onclick="signup()">Sign Up</button>
-      </form>
 
-      <p class="link">
-        Already have an account?
-        <span onclick="showLogin()">Login</span>
-      </p>
+        <button>Sign Up</button>
+
+        <p class="link">
+          Already have an account?
+          <span onclick="flipCard()">Login</span>
+        </p>
+
+        <div class="back-btn" onclick="flipCard()">← Back</div>
+      </div>
+
     </div>
   </div>
 
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
