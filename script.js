@@ -53,8 +53,6 @@ function handleBack() {
 function setState(state) {
   currentState = state;
   card.dataset.state = state;
-  // Clear OTP input when leaving OTP page
-  if (state !== UI_STATE.OTP && otpInput) otpInput.value = "";
   document.querySelectorAll(".card-content").forEach(c => (c.scrollTop = 0));
   syncTelegramBackButton();
 }
@@ -142,7 +140,6 @@ signupBtn.addEventListener("click", async () => {
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
-  // Show OTP screen
   if (otpPhone) otpPhone.textContent = phone;
   if (otpInput) otpInput.value = "";
 
@@ -159,7 +156,7 @@ signupBtn.addEventListener("click", async () => {
     );
     const data = await res.json();
     if (!data.success) throw new Error(data.message);
-    console.log("OTP (for testing):", data.otp);
+    console.log("OTP (for testing):", data.otp); // check Replit logs
     setState(UI_STATE.OTP);
   } catch (err) {
     alert("Error sending OTP: " + err.message);
@@ -204,10 +201,10 @@ verifyOtpBtn.addEventListener("click", async () => {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  // Force login page on every load
+  // Force login page on first load
+  sessionStorage.setItem("visited", "true");
   setState(UI_STATE.LOGIN);
 
-  // Clear OTP input if somehow it persisted
   if (otpInput) otpInput.value = "";
 
   if (window.Telegram?.WebApp) {
