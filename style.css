@@ -56,14 +56,14 @@ body {
   max-width: 360px;
   height: 560px;
   transform-style: preserve-3d;
-  transition: transform 0.7s ease;
+  transition: transform 0.8s ease;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 /* ===============================
-   CARD FLIP (360°)
+   CARD FLIP 360°
 ================================ */
 .card.flipped {
   transform: rotateY(360deg);
@@ -109,7 +109,7 @@ body {
   align-items: center;
   justify-content: center;
 
-  transition: transform 0.7s ease, opacity 0.3s ease;
+  transition: transform 0.8s ease, opacity 0.3s ease;
 }
 
 /* ===============================
