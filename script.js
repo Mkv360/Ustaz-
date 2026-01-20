@@ -74,11 +74,11 @@ function signup() {
     const signup_data = { name, phone, password, role, subcity, area, experience, available_days };
     localStorage.setItem('signup_data', JSON.stringify(signup_data));
 
-    // Call API send_otp.php with encoded phone
+    // Call API send_otp.php with JSON
     fetch(`${REPLIT_URL}/api/send_otp.php`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `phone=${encodeURIComponent(phone)}`
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phone })
     })
     .then(r => r.json())
     .then(data => {
@@ -107,18 +107,17 @@ function verifyOtp() {
 
     fetch(`${REPLIT_URL}/api/verify_otp.php`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `phone=${encodeURIComponent(signup_data.phone)}&otp=${encodeURIComponent(otp)}`
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: signup_data.phone, otp: otp })
     })
     .then(r => r.json())
     .then(data => {
         if (data.success) {
             // OTP verified → create user account
-            const params = new URLSearchParams(signup_data).toString();
             fetch(`${REPLIT_URL}/api/signup.php`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: params
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(signup_data)
             })
             .then(r => r.json())
             .then(res => {
@@ -143,8 +142,8 @@ function resendOtp() {
 
     fetch(`${REPLIT_URL}/api/send_otp.php`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `phone=${encodeURIComponent(signup_data.phone)}`
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: signup_data.phone })
     })
     .then(r => r.json())
     .then(data => {
@@ -163,8 +162,8 @@ function login() {
 
     fetch(`${REPLIT_URL}/api/login.php`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `phone=${encodeURIComponent(phone)}&password=${encodeURIComponent(password)}`
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phone, password: password })
     })
     .then(r => r.json())
     .then(data => {
