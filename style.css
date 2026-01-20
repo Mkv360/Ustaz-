@@ -11,7 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   color: #fff;
-  overflow: hidden; /* Telegram-safe */
+  overflow: hidden;
 }
 
 .app {
@@ -21,16 +21,16 @@ body {
 }
 
 .title {
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .subtitle {
   font-size: 14px;
   opacity: 0.8;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
-/* ---------------- CARD CENTERING (FIXED) ---------------- */
+/* ---------------- CARD CENTERING ---------------- */
 .card-container {
   perspective: 1000px;
   display: flex;
@@ -38,99 +38,79 @@ body {
   width: 100%;
 }
 
-/* ---------------- CARD SIZE & SYMMETRY ---------------- */
+/* ---------------- CARD SIZE & PROPORTION ---------------- */
 .card {
   position: relative;
   width: 100%;
-  max-width: 340px;   /* equal left/right spacing */
-  height: 410px;      /* reduced & proportional */
+  max-width: 340px;
+  height: 420px;
   margin: 0 auto;
   transform-style: preserve-3d;
   transition: transform 0.7s;
 }
 
-/* Flip classes */
 .card.flipped {
   transform: rotateY(180deg);
 }
 
-/* Card faces */
+/* ---------------- CARD FACE ---------------- */
 .card-face {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  padding: 18px;     /* equal inner spacing */
+  inset: 0;
+  padding: 18px;
   border-radius: 20px;
   backdrop-filter: blur(14px);
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.3);
   backface-visibility: hidden;
   overflow: hidden;
-  transition: opacity 0.3s ease, transform 0.7s ease;
-  opacity: 1;
-  pointer-events: auto;
 }
 
-/* OTP card hidden by default */
-.card-face.otp {
-  opacity: 0;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* OTP card visible */
-.card.otp-active .otp {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 100;
-}
-
-/* Home card hidden by default */
-.card-face.home {
-  opacity: 0;
-  pointer-events: none;
-  z-index: 5;
-}
-
-/* Home card active */
-.card.home-active .home {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 200;
-}
-
-/* Card content scroll */
+/* ---------------- CARD CONTENT COLUMN ---------------- */
 .card-content {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 🔑 equal left/right spacing */
   overflow-y: auto;
-  padding-bottom: 12px;
+  padding-bottom: 10px;
 }
 
-/* Back face for flip */
+/* Back face */
 .back {
   transform: rotateY(180deg);
 }
 
-/* ---------------- INPUTS & SELECTS (UNIFIED SIZE) ---------------- */
+/* OTP & Home visibility */
+.card-face.otp,
+.card-face.home {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card.otp-active .otp,
+.card.home-active .home {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---------------- STANDARD INPUT SIZE ---------------- */
 input,
 select {
   width: 100%;
-  max-width: 280px;     /* same size everywhere */
-  height: 40px;         /* equal height */
+  max-width: 280px;
+  height: 40px;
   padding: 0 14px;
-  margin: 7px auto;
-  display: block;
+  margin: 7px 0;
   border-radius: 22px;
   border: none;
   outline: none;
   font-size: 13.5px;
 }
 
-/* Select arrow styling */
+/* ---------------- SELECT ARROW ---------------- */
 select {
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
   background-position: right 14px center;
@@ -138,12 +118,21 @@ select {
   padding-right: 38px;
 }
 
-/* ---------------- BUTTON PROPORTION ---------------- */
+/* ---------------- MULTI SELECT (USTAZ DAYS) ---------------- */
+#availableDays {
+  height: auto;
+  min-height: 110px;
+  border-radius: 14px;
+  padding: 8px;
+  font-size: 13px;
+}
+
+/* ---------------- BUTTON ---------------- */
 button {
-  width: 75%;
+  width: 100%;
   max-width: 240px;
   height: 40px;
-  margin: 14px auto 16px;
+  margin: 14px 0 16px;
   border-radius: 22px;
   border: none;
   font-size: 14px;
@@ -153,13 +142,13 @@ button {
 }
 
 button:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
-/* Links */
+/* ---------------- LINKS ---------------- */
 .link {
-  margin-top: 12px;
   font-size: 13px;
+  margin-top: 10px;
 }
 
 .link span {
@@ -167,7 +156,7 @@ button:active {
   cursor: pointer;
 }
 
-/* Back button */
+/* ---------------- BACK BUTTON ---------------- */
 .back-btn {
   margin-top: 6px;
   font-size: 13px;
@@ -175,9 +164,9 @@ button:active {
   cursor: pointer;
 }
 
-/* Home content styling */
+/* ---------------- HOME CONTENT ---------------- */
 #homeContent {
-  margin-top: 16px;
+  margin-top: 14px;
   font-size: 14px;
   text-align: left;
 }
