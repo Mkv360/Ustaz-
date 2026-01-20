@@ -11,7 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   color: #fff;
-  overflow: hidden;
+  overflow: hidden; /* Telegram-safe */
 }
 
 .app {
@@ -43,9 +43,9 @@ body {
 .card {
   position: relative;
   width: 100%;
-  max-width: 340px;
-  height: auto;          /* was 420px; now grows with content */
-  min-height: 380px;     /* ensures login page still looks good */
+  max-width: 340px;   /* keeps same gap left & right */
+  height: auto;       /* grows with content */
+  min-height: 380px;  /* login page looks good */
   margin: 0 auto;
   transform-style: preserve-3d;
   transition: transform 0.7s;
@@ -74,31 +74,50 @@ body {
 
 /* ---------------- CARD CONTENT ---------------- */
 .card-content {
-  height: 100%;
-  overflow-y: auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  overflow-y: auto;        /* scrollable if content too big */
+  max-height: 400px;       /* ensures scroll on small screens */
+  padding-bottom: 10px;
+  gap: 8px;                /* consistent spacing between elements */
 }
 
-/* ---------------- LOGIN INPUTS ---------------- */
-#loginPhone,
-#loginPassword {
-  width: 85%;
+/* ---------------- INPUTS ---------------- */
+/* Login and signup inputs now same size */
+input,
+select {
+  width: 85%;           /* same width as login inputs */
   max-width: 260px;
-  height: 38px;
+  height: 38px;         /* similar height to login */
   padding: 0 12px;
-  margin: 8px 0;
+  margin: 6px 0;
   border-radius: 22px;
   border: none;
   outline: none;
   font-size: 13.5px;
 }
 
-/* ---------------- LOGIN BUTTON ---------------- */
-.front button {
-  width: 160px;          /* smaller than login inputs */
+/* Multi-select (available days) */
+#availableDays {
+  height: auto;
+  min-height: 110px;
+  max-width: 260px;       /* aligns with other inputs */
+  border-radius: 14px;
+  padding: 8px;
+  font-size: 13px;
+  margin: 6px 0;
+  align-self: center;      /* centers multi-select */
+}
+
+/* ---------------- BUTTONS ---------------- */
+/* Login and Signup buttons same size */
+.front button,
+.back button,
+.card-face.otp button,
+.card-face.home button {
+  width: 160px;           /* same as login button */
   max-width: 160px;
   height: 38px;
   margin: 12px auto;
@@ -111,76 +130,6 @@ body {
   display: block;
 }
 
-/* ---------------- SIGNUP INPUTS ---------------- */
-#fullName,
-#signupPhone,
-#signupPassword,
-#experience,
-#subcity,
-#area,
-#availableDays {
-  width: 100%;
-  max-width: 280px;   /* slightly wider than login inputs */
-  height: 42px;       /* thicker */
-  padding: 0 14px;
-  margin: 8px 0;
-  border-radius: 24px;
-  border: none;
-  outline: none;
-  font-size: 14px;
-}
-
-/* Multi-select (available days) */
-#availableDays {
-  height: auto;
-  min-height: 110px;
-  border-radius: 14px;
-  padding: 8px;
-  font-size: 13px;
-}
-
-/* ---------------- SIGNUP BUTTON ---------------- */
-.back button {
-  width: 180px;       /* smaller than signup inputs */
-  max-width: 180px;
-  height: 40px;
-  margin: 14px auto 16px;
-  border-radius: 22px;
-  font-size: 14px;
-  background: #2ecc71;
-  color: #000;
-  border: none;
-  cursor: pointer;
-  display: block;
-}
-
-/* Select arrow */
-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  background-size: 16px;
-  padding-right: 38px;
-}
-
-/* ---------------- OTP / HOME BUTTONS ---------------- */
-.card-face.otp button,
-.card-face.home button {
-  width: 180px;
-  max-width: 180px;
-  height: 40px;
-  margin: 14px auto 16px;
-  border-radius: 22px;
-  font-size: 14px;
-  background: #2ecc71;
-  color: #000;
-  border: none;
-  cursor: pointer;
-  display: block;
-}
-
-/* BUTTON ACTIVE SCALE */
 button:active {
   transform: scale(0.97);
 }
@@ -214,4 +163,14 @@ button:active {
 .card.home-active .home {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* ---------------- SELECT ARROW ---------------- */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 38px;
 }
