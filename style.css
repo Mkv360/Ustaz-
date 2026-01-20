@@ -1,3 +1,4 @@
+/* ---------------- RESET & BODY ---------------- */
 * {
   box-sizing: border-box;
   font-family: system-ui, sans-serif;
@@ -14,12 +15,14 @@ body {
   overflow: hidden; /* Telegram-safe */
 }
 
+/* ---------------- APP WRAPPER ---------------- */
 .app {
   width: 100%;
   max-width: 380px;
   text-align: center;
 }
 
+/* ---------------- TITLES ---------------- */
 .title {
   margin-bottom: 5px;
 }
@@ -30,97 +33,90 @@ body {
   margin-bottom: 20px;
 }
 
-/* ---------------- CARD CENTERING FIX ---------------- */
+/* ---------------- CARD CONTAINER ---------------- */
 .card-container {
   perspective: 1000px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px; /* ensures equal left/right space */
+  box-sizing: border-box;
 }
 
-/* ---------------- CARD SIZE REFINED ---------------- */
+/* ---------------- CARD ---------------- */
 .card {
   position: relative;
-  width: 92%;
-  height: 420px; /* ↓ reduced from 480px */
+  width: 100%;
+  max-width: 340px;   /* consistent left/right gaps */
+  height: auto;        /* dynamic height for signup page */
+  min-height: 380px;   /* ensures login page looks fine */
   transform-style: preserve-3d;
   transition: transform 0.7s;
+  margin: 0 auto;
 }
 
-/* Flip classes */
 .card.flipped {
   transform: rotateY(180deg);
 }
 
-/* Card faces */
+/* ---------------- CARD FACE ---------------- */
 .card-face {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  padding: 22px; /* ↓ slightly reduced */
+  inset: 0;
   border-radius: 20px;
   backdrop-filter: blur(14px);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   backface-visibility: hidden;
   overflow: hidden;
+  padding: 20px 0;
   transition: opacity 0.3s ease, transform 0.7s ease;
   opacity: 1;
   pointer-events: auto;
 }
 
-/* OTP card hidden by default */
-.card-face.otp {
-  transform: rotateY(0deg);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* OTP card visible */
-.card.otp-active .otp {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 100;
-}
-
-/* Home card hidden by default */
-.card-face.home {
-  transform: rotateY(0deg);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 5;
-}
-
-/* Home card active */
-.card.home-active .home {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 200;
-}
-
-/* Card content scroll */
-.card-content {
-  height: 100%;
-  overflow-y: auto;
-  padding-bottom: 15px;
-}
-
-/* Back face for flip */
 .back {
   transform: rotateY(180deg);
 }
 
-/* ---------------- INPUTS & SELECTS FIX ---------------- */
+/* ---------------- CARD CONTENT ---------------- */
+.card-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;       /* scrollable for long content */
+  max-height: 400px;      /* adjust scroll area */
+  padding-bottom: 10px;
+  gap: 8px;               /* consistent spacing between inputs */
+}
+
+/* ---------------- INPUTS & SELECTS ---------------- */
 input,
 select {
-  width: 88%;
-  padding: 8px 12px;   /* ↓ reduced height */
-  margin: 8px auto;    /* ↓ tighter spacing */
-  display: block;
+  width: 85%;             /* same size for login and signup */
+  max-width: 260px;
+  height: 38px;           /* not too tiny, not too large */
+  padding: 0 12px;
+  margin: 6px 0;
   border-radius: 22px;
   border: none;
   outline: none;
-  font-size: 13.5px;   /* slightly refined */
+  font-size: 13.5px;
+  display: block;
+}
+
+/* Multi-select (Available Days) */
+#availableDays {
+  height: auto;
+  min-height: 110px;
+  max-width: 260px;        /* aligns with other inputs */
+  border-radius: 14px;
+  padding: 8px;
+  font-size: 13px;
+  margin: 6px 0;
+  align-self: center;       /* center in card */
 }
 
 /* Select arrow styling */
@@ -128,34 +124,40 @@ select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
   background-position: right 14px center;
   background-size: 16px;
-  padding-right: 36px;
+  padding-right: 38px;
 }
 
-/* ---------------- BUTTON PROPORTION ---------------- */
-button {
-  width: 75%;
-  padding: 9px; /* ↓ slimmer */
-  margin: 14px auto 18px;
-  border-radius: 24px;
-  border: none;
+/* ---------------- BUTTONS ---------------- */
+/* Login, Signup, OTP, Home buttons */
+.front button,
+.back button,
+.card-face.otp button,
+.card-face.home button {
+  width: 160px;          /* smaller than inputs */
+  max-width: 160px;
+  height: 38px;
+  margin: 12px auto;
+  border-radius: 22px;
   font-size: 14px;
   background: #2ecc71;
   color: #000;
+  border: none;
   cursor: pointer;
+  display: block;        /* centers button */
 }
 
 button:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
-/* Links */
+/* ---------------- LINKS ---------------- */
 .link {
-  margin-top: 12px;
   font-size: 13px;
+  margin-top: 10px;
 }
 
 .link span {
@@ -165,15 +167,21 @@ button:active {
 
 /* Back button */
 .back-btn {
-  margin-top: 8px;
+  margin-top: 6px;
   font-size: 13px;
   opacity: 0.8;
   cursor: pointer;
 }
 
-/* Home content styling */
-#homeContent {
-  margin-top: 20px;
-  font-size: 14px;
-  text-align: left;
+/* ---------------- OTP / HOME VISIBILITY ---------------- */
+.card-face.otp,
+.card-face.home {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card.otp-active .otp,
+.card.home-active .home {
+  opacity: 1;
+  pointer-events: auto;
 }
