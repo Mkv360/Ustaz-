@@ -107,6 +107,19 @@ signupBtn.addEventListener("click", () => {
   }
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
+
+  // Directly go back to login page
   alert("Signup successful (demo)");
   setState(UI_STATE.LOGIN);
+});
+
+// ===============================
+// INIT
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  setState(UI_STATE.LOGIN);
+  if (window.Telegram?.WebApp) {
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+  }
 });
