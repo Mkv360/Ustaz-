@@ -20,7 +20,6 @@ body {
   text-align: center;
 }
 
-/* ---------------- TITLES ---------------- */
 .title {
   margin-bottom: 4px;
 }
@@ -31,7 +30,6 @@ body {
   margin-bottom: 16px;
 }
 
-/* ---------------- CARD CONTAINER ---------------- */
 .card-container {
   perspective: 1000px;
   display: flex;
@@ -39,11 +37,10 @@ body {
   width: 100%;
 }
 
-/* ---------------- CARD ---------------- */
 .card {
   position: relative;
   width: 100%;
-  max-width: 340px;   /* 🔑 SAME GAP LEFT & RIGHT */
+  max-width: 340px;
   height: 420px;
   margin: 0 auto;
   transform-style: preserve-3d;
@@ -54,7 +51,6 @@ body {
   transform: rotateY(180deg);
 }
 
-/* ---------------- CARD FACE ---------------- */
 .card-face {
   position: absolute;
   inset: 0;
@@ -64,42 +60,62 @@ body {
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.3);
   backface-visibility: hidden;
   overflow: hidden;
-  padding: 20px 0; /* 🔑 NO SIDE PADDING */
+  padding: 20px 0;
 }
 
-/* Back face */
 .back {
   transform: rotateY(180deg);
 }
 
-/* ---------------- INNER COLUMN (THE FIX) ---------------- */
 .card-content {
   height: 100%;
   overflow-y: auto;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 100%;
 }
 
-/* Fixed inner column */
-.card-content > * {
-  width: 260px;  /* 🔑 ALL CONTENT SAME WIDTH */
-  max-width: 90%;
-}
-
-/* ---------------- INPUTS & SELECTS ---------------- */
-input,
-select {
-  height: 40px;
-  padding: 0 14px;
+/* LOGIN INPUTS */
+#loginPhone,
+#loginPassword {
+  width: 85%;
+  max-width: 260px;
+  height: 38px;
+  padding: 0 12px;
   margin: 8px 0;
   border-radius: 22px;
   border: none;
   outline: none;
   font-size: 13.5px;
+}
+
+/* SIGNUP INPUTS */
+#fullName,
+#signupPhone,
+#signupPassword,
+#experience,
+#subcity,
+#area,
+#availableDays {
+  width: 100%;
+  max-width: 280px;
+  height: 42px;
+  padding: 0 14px;
+  margin: 8px 0;
+  border-radius: 24px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+/* Multi-select */
+#availableDays {
+  height: auto;
+  min-height: 110px;
+  border-radius: 14px;
+  padding: 8px;
+  font-size: 13px;
 }
 
 /* Select arrow */
@@ -112,35 +128,26 @@ select {
   padding-right: 38px;
 }
 
-/* Multi select (ustaz days) */
-#availableDays {
-  height: auto;
-  min-height: 110px;
-  border-radius: 14px;
-  padding: 8px;
-}
-
-/* ---------------- BUTTON ---------------- */
-/* ---------------- BUTTON ---------------- */
+/* BUTTONS */
 button {
-  width: 180px;        /* smaller than input boxes */
-  max-width: 180px;    /* ensures button doesn’t grow on larger screens */
+  width: 180px;
+  max-width: 180px;
   height: 40px;
-  margin: 14px auto 16px; /* auto centers the button */
+  margin: 14px auto 16px;
   border-radius: 22px;
   border: none;
   font-size: 14px;
   background: #2ecc71;
   color: #000;
   cursor: pointer;
-  display: block;      /* ensures centering */
+  display: block;
 }
 
 button:active {
   transform: scale(0.97);
 }
 
-/* ---------------- LINKS ---------------- */
+/* LINKS */
 .link {
   font-size: 13px;
   margin-top: 10px;
@@ -158,7 +165,7 @@ button:active {
   cursor: pointer;
 }
 
-/* ---------------- OTP / HOME VISIBILITY ---------------- */
+/* OTP / HOME VISIBILITY */
 .card-face.otp,
 .card-face.home {
   opacity: 0;
@@ -169,4 +176,4 @@ button:active {
 .card.home-active .home {
   opacity: 1;
   pointer-events: auto;
-} 
+}
