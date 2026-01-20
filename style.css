@@ -11,7 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   color: #fff;
-  overflow: hidden; /* safe for Telegram WebView */
+  overflow: hidden;
 }
 
 .app {
@@ -30,12 +30,10 @@ body {
   margin-bottom: 20px;
 }
 
-/* CARD CONTAINER */
 .card-container {
   perspective: 1000px;
 }
 
-/* CARD */
 .card {
   position: relative;
   width: 100%;
@@ -46,15 +44,10 @@ body {
   transition: transform 0.7s ease;
 }
 
-/* FLIP STATES */
 .card[data-state="signup"] {
   transform: rotateY(180deg);
 }
-.card[data-state="otp"] {
-  transform: rotateY(360deg);
-}
 
-/* CARD FACES */
 .card-face {
   position: absolute;
   inset: 0;
@@ -71,18 +64,12 @@ body {
   transform: rotateY(180deg);
 }
 
-.card-face.otp {
-  transform: rotateY(360deg);
-}
-
-/* CARD CONTENT SCROLL */
 .card-content {
   height: 100%;
   overflow-y: auto;
   padding-bottom: 20px;
 }
 
-/* INPUTS & SELECTS */
 input,
 select {
   width: 85%;
@@ -95,13 +82,11 @@ select {
   font-size: 14px;
 }
 
-/* Multiple select adjustments */
 select[multiple] {
   border-radius: 12px;
   padding: 6px;
 }
 
-/* BUTTONS */
 button {
   width: 70%;
   padding: 10px;
@@ -119,30 +104,24 @@ button:active {
   transform: scale(0.97);
 }
 
-/* LINKS */
 .link {
   margin-top: 15px;
   font-size: 13px;
 }
 
-/* INLINE LINKS (Signup/Login/Back) */
 .inline-link {
   color: #2ecc71;
   cursor: pointer;
   display: inline-block;
-  padding: 0 2px; /* tap area */
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  padding: 0 2px;
   font-weight: 600;
-  text-decoration: none !important; /* no underline */
-  pointer-events: auto;
+  text-decoration: none !important;
 }
 
 .inline-link:hover {
   text-decoration: none !important;
 }
 
-/* Ustaz extra fields */
 .small-label {
   display: block;
   margin-top: 10px;
@@ -150,13 +129,6 @@ button:active {
   opacity: 0.85;
 }
 
-/* VISIBILITY */
 .hidden {
   display: none;
-}
-
-/* TELEGRAM / MOBILE POLISH */
-button,
-.inline-link {
-  -webkit-tap-highlight-color: transparent;
 }
