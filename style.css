@@ -84,12 +84,11 @@ body {
   width: 100%;
 }
 
-/* Fixed inner column */
+/* Fixed inner column – balanced for Telegram */
 .card-content > * {
-  width: 260px;  /* 🔑 ALL CONTENT SAME WIDTH */
-  max-width: 90%;
+  width: 300px;   /* ✅ not tiny, not large */
+  max-width: 92%;
 }
-
 /* ---------------- INPUTS & SELECTS ---------------- */
 input,
 select {
