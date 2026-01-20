@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quran Ustaz Finder</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Barakah Link</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,24 +15,23 @@
   <p class="subtitle">Find a trusted Quran teacher near you</p>
 
   <div class="card-container">
-
-    <!-- LOGIN & SIGNUP FLIP CARD -->
     <div class="card" id="card">
 
-      <!-- LOGIN CARD -->
+      <!-- LOGIN -->
       <div class="card-face front">
         <div class="card-content">
           <h2>Login</h2>
           <input type="text" id="loginPhone" placeholder="Phone number">
           <input type="password" id="loginPassword" placeholder="Password">
-          <button id="loginBtn">Login</button>
+          <button onclick="login()">Login</button>
           <p class="link">
-            Don’t have an account? <span id="showSignup">Sign up</span>
+            Don’t have an account?
+            <span onclick="flipCard()">Sign up</span>
           </p>
         </div>
       </div>
 
-      <!-- SIGNUP CARD -->
+      <!-- SIGNUP -->
       <div class="card-face back">
         <div class="card-content">
           <h2>Create Account</h2>
@@ -78,27 +79,28 @@
           </div>
 
           <input type="password" id="signupPassword" placeholder="Password">
-          <button id="signupBtn">Sign Up</button>
+          <button onclick="signup()">Sign Up</button>
 
           <p class="link">
-            Already have an account? <span id="showLogin">Login</span>
+            Already have an account?
+            <span onclick="flipCard()">Login</span>
           </p>
-          <div class="back-btn" id="backToLogin">← Back</div>
+          <div class="back-btn" onclick="flipCard()">← Back</div>
         </div>
       </div>
 
-      <!-- OTP CARD -->
+      <!-- OTP -->
       <div class="card-face otp">
         <div class="card-content">
           <h2>Enter OTP</h2>
           <p>An OTP has been sent to your phone</p>
           <input type="text" id="otpInput" placeholder="Enter OTP">
-          <button id="verifyOtpBtn">Verify OTP</button>
-          <div class="back-btn" id="otpBack">← Back</div>
+          <button onclick="verifyOtp()">Verify OTP</button>
+          <div class="back-btn" onclick="backToSignup()">← Back</div>
         </div>
       </div>
 
-      <!-- HOME CARD -->
+      <!-- HOME (inside card, no external redirect) -->
       <div class="card-face home">
         <div class="card-content">
           <h2>Welcome!</h2>
@@ -106,12 +108,11 @@
           <div id="homeContent">
             <p>Search for Quran Ustaz, view profiles, and contact them here.</p>
           </div>
-          <div class="back-btn" id="logoutBtn">← Logout</div>
+          <div class="back-btn" onclick="logout()">← Logout</div>
         </div>
       </div>
 
     </div>
-
   </div>
 </div>
 
