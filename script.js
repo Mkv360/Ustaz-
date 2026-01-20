@@ -9,6 +9,7 @@ const UI_STATE = {
 
 let currentState = UI_STATE.LOGIN;
 let signupData = {};
+let generatedOtp = "";
 
 // ===============================
 // DOM REFERENCES
@@ -106,12 +107,32 @@ subcitySelect.addEventListener("change", () => {
 });
 
 // ===============================
-// SIGNUP & REQUEST OTP
+// ETHIOPIAN PHONE VALIDATION
+// ===============================
+function validateEthiopianPhone(phone) {
+  const p = phone.replace(/\s+/g, "");
+  if (/^0[79]\d{8}$/.test(p)) return "+251" + p.slice(1);
+  if (/^\+251[79]\d{8}$/.test(p)) return p;
+  return null;
+}
+
+// ===============================
+// LOGIN
+// ===============================
+document.getElementById("loginBtn").addEventListener("click", () => {
+  const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
+  const pass = document.getElementById("loginPassword").value.trim();
+  if (!phone || !pass) return alert("Enter valid phone & password");
+  alert("Login successful (demo)");
+});
+
+// ===============================
+// SIGNUP → OTP
 // ===============================
 signupBtn.addEventListener("click", async () => {
   const role = roleSelect.value;
   const name = document.getElementById("fullName").value.trim();
-  const phone = document.getElementById("signupPhone").value.trim();
+  const phone = validateEthiopianPhone(document.getElementById("signupPhone").value.trim());
   const subcity = subcitySelect.value;
   const area = areaSelect.value;
   const pass = document.getElementById("signupPassword").value.trim();
@@ -120,20 +141,10 @@ signupBtn.addEventListener("click", async () => {
 
   if (role === "ustaz") {
     experience = document.getElementById("experience").value.trim();
-    availableDays = Array.from(
-      document.getElementById("availableDays").selectedOptions
-    ).map(o => o.value);
+    availableDays = Array.from(document.getElementById("availableDays").selectedOptions).map(o => o.value);
   }
 
-  if (
-    !role ||
-    !name ||
-    !phone ||
-    !subcity ||
-    !area ||
-    !pass ||
-    (role === "ustaz" && (!experience || availableDays.length === 0))
-  ) {
+  if (!role || !name || !phone || !subcity || !area || !pass || (role === "ustaz" && (!experience || availableDays.length === 0))) {
     return alert("Please fill all required fields correctly");
   }
 
@@ -145,18 +156,11 @@ signupBtn.addEventListener("click", async () => {
   signupBtn.disabled = true;
 
   try {
-    // Use your OTP API endpoint
-    const res = await fetch(
-      "https://your-api/send_otp.php",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone }),
-      }
-    );
-    const data = await res.json();
-    if (!data.success) throw new Error(data.message);
-    console.log("OTP (for testing):", data.otp); // for debug
+    // Simulate OTP generation (replace with your backend)
+    generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
+    console.log("Demo OTP:", generatedOtp);
+
+    // Show OTP page
     setState(UI_STATE.OTP);
   } catch (err) {
     alert("Error sending OTP: " + err.message);
@@ -168,52 +172,43 @@ signupBtn.addEventListener("click", async () => {
 // ===============================
 // VERIFY OTP
 // ===============================
-verifyOtpBtn.addEventListener("click", async () => {
+verifyOtpBtn.addEventListener("click", () => {
   const otp = otpInput.value.trim();
   if (!otp) return alert("Enter OTP");
 
-  verifyOtpBtn.disabled = true;
-
-  try {
-    const res = await fetch(
-      "https://your-api/verify_otp.php",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: signupData.phone, otp }),
-      }
-    );
-    const data = await res.json();
-    if (data.success) {
-      alert("Account created successfully!");
-      setState(UI_STATE.LOGIN);
-      // Reset signup form
-      roleSelect.value = "";
-      ustazFields.classList.add("hidden");
-      document.getElementById("fullName").value = "";
-      document.getElementById("signupPhone").value = "";
-      subcitySelect.value = "";
-      areaSelect.innerHTML = '<option value="">Select Area</option>';
-      document.getElementById("signupPassword").value = "";
-      document.getElementById("experience").value = "";
-      Array.from(document.getElementById("availableDays").options).forEach(opt => opt.selected = false);
-    } else {
-      alert(data.message);
-    }
-  } catch (err) {
-    alert("Error verifying OTP: " + err.message);
-  } finally {
-    verifyOtpBtn.disabled = false;
+  if (otp === generatedOtp) {
+    alert("Account created successfully!");
+    resetSignup();
+    setState(UI_STATE.LOGIN);
+  } else {
+    alert("Incorrect OTP");
   }
 });
+
+// ===============================
+// RESET SIGNUP / OTP FIELDS
+// ===============================
+function resetSignup() {
+  signupData = {};
+  generatedOtp = "";
+  otpInput.value = "";
+  roleSelect.value = "";
+  ustazFields.classList.add("hidden");
+  document.getElementById("fullName").value = "";
+  document.getElementById("signupPhone").value = "";
+  subcitySelect.value = "";
+  areaSelect.innerHTML = '<option value="">Select Area</option>';
+  document.getElementById("signupPassword").value = "";
+  document.getElementById("experience").value = "";
+  Array.from(document.getElementById("availableDays").options).forEach(opt => opt.selected = false);
+}
 
 // ===============================
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
   setState(UI_STATE.LOGIN);
-
-  if (otpInput) otpInput.value = "";
+  resetSignup();
 
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
