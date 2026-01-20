@@ -9,8 +9,9 @@ const roleSelect = document.getElementById("role");
 const areaSelect = document.getElementById("area");
 
 // Flip card helper
-function flipCard() {
-  card.classList.toggle("flipped");
+function flipCard(toBack = true) {
+  if (toBack) card.classList.add("flipped"); // show back (signup)
+  else card.classList.remove("flipped");    // show front (login)
   document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
 }
 
@@ -93,7 +94,7 @@ function signup() {
   successMessage(`OTP sent! (Demo: ${otp})`);
 
   card.classList.add("otp-active");
-  card.classList.remove("flipped");
+  flipCard(false); // show front card in OTP mode
   signupBtn.disabled = true;
 }
 
@@ -125,7 +126,7 @@ function verifyOtp() {
 function showHomeCard() {
   card.classList.add("home-active");
   card.classList.remove("otp-active");
-  card.classList.remove("flipped");
+  flipCard(false); // ensure front is shown behind home
 }
 
 // ===============================
@@ -133,7 +134,7 @@ function showHomeCard() {
 // ===============================
 function logout() {
   card.classList.remove("home-active");
-  card.classList.add("flipped"); // back to login/signup
+  flipCard(false); // back to login
 }
 
 // ===============================
@@ -142,7 +143,7 @@ function logout() {
 function backToSignup() {
   resetOtp();
   card.classList.remove("otp-active");
-  card.classList.add("flipped");
+  flipCard(true); // back to signup
 }
 
 function resetOtp() {
@@ -202,17 +203,12 @@ document.addEventListener("DOMContentLoaded", () => {
   loginBtn.addEventListener("click", login);
   verifyOtpBtn.addEventListener("click", verifyOtp);
 
-  // Flip toggle links
-  document.querySelectorAll(".flip-link").forEach(el => {
-    el.addEventListener("click", () => {
-      flipCard();
-    });
-  });
+  // Flip toggle links (Sign up / Login spans)
+  document.getElementById("showSignup").addEventListener("click", () => flipCard(true));
+  document.getElementById("showLogin").addEventListener("click", () => flipCard(false));
 
   // Back buttons
-  document.getElementById("backToLogin").addEventListener("click", () => {
-    flipCard();
-  });
+  document.getElementById("backToLogin").addEventListener("click", () => flipCard(false));
   document.getElementById("otpBack").addEventListener("click", backToSignup);
   document.getElementById("logoutBtn").addEventListener("click", logout);
 
