@@ -93,13 +93,13 @@ body {
 /* ---------------- INPUTS & SELECTS ---------------- */
 input,
 select {
-  height: 50px;
-  padding: 0 14px;
+  height: 44px;           /* 🔑 thicker than before */
+  padding: 0 16px;        /* 🔑 more internal space */
   margin: 8px 0;
-  border-radius: 22px;
+  border-radius: 24px;    /* 🔑 smoother pill feel */
   border: none;
   outline: none;
-  font-size: 13.5px;
+  font-size: 14px;        /* closer to login weight */
 }
 
 /* Select arrow */
