@@ -21,13 +21,15 @@ body {
    APP CONTAINER
 ================================ */
 .app {
-  width: 90%;
-  max-width: 380px;
+  width: 95%;
+  max-width: 400px; /* proportional width */
   text-align: center;
 }
 
 .title {
   margin-bottom: 5px;
+  font-size: 22px;
+  font-weight: 600;
 }
 
 .subtitle {
@@ -44,20 +46,23 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 /* ===============================
-   CARD
+   FLIP CARD
 ================================ */
 .card {
   position: relative;
-  width: 320px;   /* fixed width for symmetry */
-  height: 520px;  /* fixed height for Telegram */
+  width: 100%;           /* fill container */
+  max-width: 360px;      /* maintain proportions */
+  height: 560px;         /* fixed height for Telegram WebApp */
   transform-style: preserve-3d;
   transition: transform 0.7s ease;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
 }
 
 /* Flip classes */
@@ -96,24 +101,24 @@ body {
 input,
 select,
 button {
-  width: 80%;      /* equal width for all elements */
-  max-width: 280px;
-  padding: 10px;
-  margin: 8px auto;
+  width: 75%;         /* smaller and consistent */
+  max-width: 250px;   /* limit width */
+  padding: 8px;
+  margin: 6px auto;   /* tighter spacing */
   display: block;
-  border-radius: 25px;
-  font-size: 14px;
+  border-radius: 20px;
+  font-size: 13px;
 }
 
 select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
-  background-position: right 15px center;
-  background-size: 18px;
-  padding-right: 40px;
+  background-position: right 12px center;
+  background-size: 14px;
+  padding-right: 36px;
 }
 
 button {
@@ -131,7 +136,7 @@ button:active {
    LINKS & BACK BUTTON
 ================================ */
 .link {
-  margin-top: 12px;
+  margin-top: 10px;
   font-size: 13px;
 }
 
@@ -141,7 +146,7 @@ button:active {
 }
 
 .back-btn {
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 13px;
   opacity: 0.8;
   cursor: pointer;
@@ -177,6 +182,6 @@ button:active {
 
 @media (max-height: 600px) {
   .card {
-    height: 480px;
+    height: 500px;
   }
 }
