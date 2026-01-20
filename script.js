@@ -11,7 +11,7 @@ let currentState = UI_STATE.LOGIN;
 let signupData = {};
 
 // ===============================
-// DOM
+// DOM REFERENCES
 // ===============================
 const card = document.getElementById("card");
 const goSignup = document.getElementById("goSignup");
@@ -41,7 +41,10 @@ function syncTelegramBackButton() {
 
 function handleBack() {
   if (currentState === UI_STATE.SIGNUP) setState(UI_STATE.LOGIN);
-  if (currentState === UI_STATE.OTP) setState(UI_STATE.SIGNUP);
+  if (currentState === UI_STATE.OTP) {
+    setState(UI_STATE.SIGNUP);
+    otpInput.value = ""; // clear OTP when going back
+  }
 }
 
 // ===============================
@@ -55,7 +58,7 @@ function setState(state) {
 }
 
 // ===============================
-// NAVIGATION
+// NAVIGATION EVENTS
 // ===============================
 goSignup.addEventListener("click", e => {
   e.preventDefault();
@@ -67,10 +70,12 @@ goLogin.addEventListener("click", e => {
   setState(UI_STATE.LOGIN);
 });
 
-backToSignup.addEventListener("click", e => {
-  e.preventDefault();
-  setState(UI_STATE.SIGNUP);
-});
+if (backToSignup) {
+  backToSignup.addEventListener("click", e => {
+    e.preventDefault();
+    setState(UI_STATE.SIGNUP);
+  });
+}
 
 // ===============================
 // ROLE BASED FIELDS
@@ -106,7 +111,6 @@ subcitySelect.addEventListener("change", () => {
 // SIGNUP & REQUEST OTP
 // ===============================
 signupBtn.addEventListener("click", async () => {
-  // Validate
   const role = roleSelect.value;
   const name = document.getElementById("fullName").value.trim();
   const phone = document.getElementById("signupPhone").value.trim();
@@ -122,15 +126,14 @@ signupBtn.addEventListener("click", async () => {
   }
 
   if (!role || !name || !phone || !subcity || !area || !pass || (role === "ustaz" && (!experience || availableDays.length === 0))) {
-    alert("Please fill all required fields correctly");
-    return;
+    return alert("Please fill all required fields correctly");
   }
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
-  // Show OTP page
-  otpPhone.textContent = phone;
-  otpInput.value = "";
+  // Show OTP screen
+  if (otpPhone) otpPhone.textContent = phone;
+  if (otpInput) otpInput.value = "";
 
   // Request OTP from backend
   try {
@@ -141,7 +144,7 @@ signupBtn.addEventListener("click", async () => {
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.message);
-    console.log("OTP (for testing):", data.otp); // check Replit logs
+    console.log("OTP (for testing):", data.otp);
     setState(UI_STATE.OTP);
   } catch (err) {
     alert("Error sending OTP: " + err.message);
@@ -177,7 +180,7 @@ verifyOtpBtn.addEventListener("click", async () => {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  setState(UI_STATE.LOGIN);
+  setState(UI_STATE.LOGIN); // always start at login
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
