@@ -10,34 +10,34 @@ const areaSelect = document.getElementById("area");
 
 // Flip card helper
 function flipCard(toBack = true) {
-  if (toBack) card.classList.add("flipped"); // show back (signup)
-  else card.classList.remove("flipped");    // show front (login)
+  if (toBack) card.classList.add("flipped");   // show signup
+  else card.classList.remove("flipped");       // show login
   document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
 }
 
 // ===============================
 // ALERTS
 // ===============================
-function showMessage(msg) { 
-  if (window.Telegram?.WebApp) Telegram.WebApp.showAlert(msg); 
-  else alert(msg); 
+function showMessage(msg) {
+  if (window.Telegram?.WebApp) Telegram.WebApp.showAlert(msg);
+  else alert(msg);
 }
 
-function successMessage(msg) { 
+function successMessage(msg) {
   if (window.Telegram?.WebApp) {
-    Telegram.WebApp.showPopup({ 
-      title: "Success", 
-      message: msg, 
-      buttons: [{ type: "ok" }] 
-    }); 
-  } else alert(msg); 
+    Telegram.WebApp.showPopup({
+      title: "Success",
+      message: msg,
+      buttons: [{ type: "ok" }]
+    });
+  } else alert(msg);
 }
 
 // ===============================
 // ETHIOPIAN PHONE VALIDATION
 // ===============================
 function validateEthiopianPhone(phone) {
-  const p = phone.replace(/\s+/g,'');
+  const p = phone.replace(/\s+/g, '');
   if (/^0[79]\d{8}$/.test(p)) return "+251" + p.slice(1);
   if (/^\+251[79]\d{8}$/.test(p)) return p;
   return null;
@@ -94,7 +94,7 @@ function signup() {
   successMessage(`OTP sent! (Demo: ${otp})`);
 
   card.classList.add("otp-active");
-  flipCard(false); // show front card in OTP mode
+  flipCard(false); // show front card during OTP
   signupBtn.disabled = true;
 }
 
@@ -126,7 +126,7 @@ function verifyOtp() {
 function showHomeCard() {
   card.classList.add("home-active");
   card.classList.remove("otp-active");
-  flipCard(false); // ensure front is shown behind home
+  flipCard(false); // ensure front card is in place
 }
 
 // ===============================
@@ -134,7 +134,7 @@ function showHomeCard() {
 // ===============================
 function logout() {
   card.classList.remove("home-active");
-  flipCard(false); // back to login
+  flipCard(false);
 }
 
 // ===============================
@@ -143,7 +143,7 @@ function logout() {
 function backToSignup() {
   resetOtp();
   card.classList.remove("otp-active");
-  flipCard(true); // back to signup
+  flipCard(true);
 }
 
 function resetOtp() {
@@ -203,9 +203,13 @@ document.addEventListener("DOMContentLoaded", () => {
   loginBtn.addEventListener("click", login);
   verifyOtpBtn.addEventListener("click", verifyOtp);
 
-  // Flip toggle links (Sign up / Login spans)
-  document.getElementById("showSignup").addEventListener("click", () => flipCard(true));
-  document.getElementById("showLogin").addEventListener("click", () => flipCard(false));
+  // Flip toggle links (Sign up / Login)
+  document.querySelectorAll(".flip-link").forEach(el => {
+    el.addEventListener("click", () => {
+      if (el.dataset.target === "signup") flipCard(true);
+      else flipCard(false);
+    });
+  });
 
   // Back buttons
   document.getElementById("backToLogin").addEventListener("click", () => flipCard(false));
