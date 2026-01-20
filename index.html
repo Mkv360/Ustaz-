@@ -10,16 +10,16 @@
 
 <div class="card-container">
 
-  <!-- Login Card -->
+  <!-- Login Card (Default) -->
   <div class="card" id="login-card">
     <h2>Login</h2>
     <input type="text" id="login-phone" placeholder="Phone">
     <input type="password" id="login-password" placeholder="Password">
     <button onclick="login()">Login</button>
-    <p>New user? <span class="link" onclick="showCard('signup-card')">Signup</span></p>
+    <p>Don't have an account? <span class="link" onclick="showCard('signup-card')">Signup</span></p>
   </div>
 
-  <!-- Signup Card -->
+  <!-- Signup Card (Hidden initially) -->
   <div class="card" id="signup-card">
     <h2>Signup</h2>
     <select id="signup-role" onchange="toggleUstazFields()">
@@ -53,7 +53,7 @@
     <p>Already have an account? <span class="link" onclick="showCard('login-card')">Login</span></p>
   </div>
 
-  <!-- OTP Card -->
+  <!-- OTP Card (Hidden initially) -->
   <div class="card" id="otp-card">
     <h2>Enter OTP</h2>
     <input type="text" id="otp-input" placeholder="4-digit OTP">
