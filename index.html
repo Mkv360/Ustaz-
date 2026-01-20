@@ -24,7 +24,6 @@
           <input type="tel" id="loginPhone" placeholder="Phone number" />
           <input type="password" id="loginPassword" placeholder="Password" />
           <button id="loginBtn">Login</button>
-
           <p class="link">
             Don’t have an account?
             <a href="#" id="goSignup" class="inline-link">Signup</a>
@@ -36,7 +35,6 @@
       <div class="card-face back">
         <div class="card-content">
           <h2>Create Account</h2>
-
           <select id="role">
             <option value="">Sign up as</option>
             <option value="parent">Parent</option>
@@ -45,7 +43,6 @@
 
           <input type="text" id="fullName" placeholder="Full name" />
           <input type="tel" id="signupPhone" placeholder="Phone number" />
-
           <select id="subcity">
             <option value="">Select Sub-City</option>
             <option value="bole">Bole</option>
@@ -64,6 +61,7 @@
             <option value="">Select Area</option>
           </select>
 
+          <!-- Ustaz extra fields -->
           <div id="ustazFields" class="hidden">
             <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50" />
             <label class="small-label">Available days</label>
@@ -91,13 +89,12 @@
       <!-- OTP -->
       <div class="card-face otp">
         <div class="card-content">
-          <h2>Enter OTP</h2>
-          <p>OTP sent to <span id="otpPhone"></span></p>
+          <h2>Verify OTP</h2>
+          <p>Enter the OTP sent to <span id="otpPhone"></span></p>
           <input type="text" id="otpInput" placeholder="Enter OTP" />
           <button id="verifyOtpBtn">Verify OTP</button>
-
           <p class="link">
-            <a href="#" id="backToSignup" class="inline-link">Back</a>
+            <a href="#" id="backToSignup" class="inline-link">Back to Signup</a>
           </p>
         </div>
       </div>
