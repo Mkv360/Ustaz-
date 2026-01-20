@@ -21,10 +21,8 @@
       <div class="card-face front">
         <div class="card-content">
           <h2>Login</h2>
-
           <input type="tel" id="loginPhone" placeholder="Phone number" />
           <input type="password" id="loginPassword" placeholder="Password" />
-
           <button id="loginBtn">Login</button>
 
           <p class="link">
@@ -66,10 +64,8 @@
             <option value="">Select Area</option>
           </select>
 
-          <!-- Ustaz extra fields -->
           <div id="ustazFields" class="hidden">
             <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50" />
-
             <label class="small-label">Available days</label>
             <select id="availableDays" multiple size="5">
               <option value="monday">Monday</option>
@@ -83,7 +79,6 @@
           </div>
 
           <input type="password" id="signupPassword" placeholder="Password" />
-
           <button id="signupBtn">Create Account</button>
 
           <p class="link">
@@ -97,11 +92,12 @@
       <div class="card-face otp">
         <div class="card-content">
           <h2>Enter OTP</h2>
-          <p>An OTP has been sent to your phone (check console for demo)</p>
+          <p>OTP sent to <span id="otpPhone"></span></p>
           <input type="text" id="otpInput" placeholder="Enter OTP" />
           <button id="verifyOtpBtn">Verify OTP</button>
+
           <p class="link">
-            <a href="#" id="backToSignup" class="inline-link">← Back to Signup</a>
+            <a href="#" id="backToSignup" class="inline-link">Back</a>
           </p>
         </div>
       </div>
