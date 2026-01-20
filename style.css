@@ -111,20 +111,24 @@ button:active {
 .link {
   margin-top: 15px;
   font-size: 13px;
-  text-decoration: none; /* ensure parent doesn't underline */
 }
 
 /* INLINE LINKS (Signup/Login inside text) */
 .inline-link {
   color: #2ecc71;
   cursor: pointer;
-  display: inline-block;              /* Telegram tap safe */
-  padding: 2px 4px;                   /* tap area */
+  display: inline-block;              /* inline but tappable */
+  padding: 0 2px;                     /* tap area */
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   font-weight: 600;
-  text-decoration: none !important;   /* force no underline */
+  text-decoration: none !important;   /* force no underline even in Telegram WebView */
   pointer-events: auto;
+}
+
+/* Remove underline on hover for Telegram WebView */
+.inline-link:hover {
+  text-decoration: none !important;
 }
 
 /* Ustaz extra fields label */
