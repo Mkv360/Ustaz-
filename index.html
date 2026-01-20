@@ -2,93 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quran Ustaz Finder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+
+  <title>Quran Ustaz Finder</title>
 </head>
 <body>
 
-<div class="app">
-  <h1 class="title">Quran Ustaz Finder</h1>
-  <p class="subtitle">Find a trusted Quran teacher near you</p>
+  <div class="container">
+    <h1>Quran Ustaz Finder</h1>
+    <p class="subtitle">Find a trusted Quran teacher near you</p>
 
-  <div class="card-container">
-    <div class="flip-card-inner" id="card">
+    <div class="card login-card active">
+      <form>
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button type="button" onclick="login()">Login</button>
+      </form>
 
-      <!-- LOGIN CARD -->
-      <div class="card-face front">
-        <div class="card-content">
-          <h2>Login</h2>
-          <input type="text" id="loginPhone" placeholder="Phone number">
-          <input type="password" id="loginPassword" placeholder="Password">
-          <button id="loginBtn">Login</button>
-          <p class="link">
-            Don’t have an account? <span id="showSignup">Sign up</span>
-          </p>
+      <p class="link">
+        Don’t have an account?
+        <span onclick="showSignup()">Sign up</span>
+      </p>
+    </div>
+
+    <div class="card signup-card">
+      <form>
+        <select id="userType" onchange="toggleUstazFields()">
+          <option value="">Sign up as</option>
+          <option value="parent">Parent</option>
+          <option value="ustaz">Ustaz</option>
+        </select>
+
+        <input type="text" placeholder="Full Name">
+        <input type="email" placeholder="Email">
+
+        <select>
+          <option value="">Select Area</option>
+          <option>Addis Ababa - Bole</option>
+          <option>Addis Ababa - Yeka</option>
+          <option>Addis Ababa - Kirkos</option>
+          <option>Addis Ababa - Kolfe</option>
+          <option>Adama</option>
+          <option>Dire Dawa</option>
+          <option>Bahir Dar</option>
+        </select>
+
+        <div id="ustazFields" class="hidden">
+          <input type="text" placeholder="Years of Experience">
+          <input type="text" placeholder="Available Days">
         </div>
-      </div>
 
-      <!-- SIGNUP CARD -->
-      <div class="card-face back">
-        <div class="card-content">
-          <h2>Create Account</h2>
+        <input type="password" placeholder="Password">
+        <button type="button" onclick="signup()">Sign Up</button>
+      </form>
 
-          <select id="role">
-            <option value="">Sign up as</option>
-            <option value="parent">Parent</option>
-            <option value="ustaz">Ustaz / Ustaza</option>
-          </select>
-
-          <input type="text" id="fullName" placeholder="Full name">
-          <input type="text" id="signupPhone" placeholder="Phone number">
-
-          <select id="subcity">
-            <option value="">Select Sub-City</option>
-            <option value="bole">Bole</option>
-            <option value="yeka">Yeka</option>
-            <option value="kirkos">Kirkos</option>
-            <option value="lideta">Lideta</option>
-            <option value="arada">Arada</option>
-            <option value="addisketema">Addis Ketema</option>
-            <option value="nifassilk">Nifas Silk</option>
-            <option value="kolfe">Kolfe Keranio</option>
-            <option value="akakikaliti">Akaki Kality</option>
-            <option value="gullele">Gullele</option>
-          </select>
-
-          <select id="area">
-            <option value="">Select Area</option>
-          </select>
-
-          <div id="ustazFields" style="display:none; margin-top:10px;">
-            <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50">
-            <label style="margin-top:10px; font-size:13px;">Available days:</label>
-            <select id="availableDays" multiple size="5">
-              <option value="monday">Monday</option>
-              <option value="tuesday">Tuesday</option>
-              <option value="wednesday">Wednesday</option>
-              <option value="thursday">Thursday</option>
-              <option value="friday">Friday</option>
-              <option value="saturday">Saturday</option>
-              <option value="sunday">Sunday</option>
-            </select>
-            <small>Hold Ctrl (or Cmd) to select multiple days</small>
-          </div>
-
-          <input type="password" id="signupPassword" placeholder="Password">
-          <button id="signupBtn">Sign Up</button>
-
-          <p class="link">
-            Already have an account? <span id="showLogin">Login</span>
-          </p>
-        </div>
-      </div>
-
+      <p class="link">
+        Already have an account?
+        <span onclick="showLogin()">Login</span>
+      </p>
     </div>
   </div>
-</div>
 
-<script src="script.js"></script>
 </body>
 </html>
