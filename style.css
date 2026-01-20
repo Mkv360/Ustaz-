@@ -4,10 +4,11 @@
 * {
   box-sizing: border-box;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
   height: 100vh;
   background: linear-gradient(180deg, #0b132b, #1c2541);
   display: flex;
@@ -44,14 +45,21 @@ body {
 ================================ */
 .card-container {
   perspective: 1200px;
+  display: flex;
+  justify-content: center; /* centers the card horizontally */
+  align-items: center;     /* centers the card vertically */
 }
 
 .card {
   position: relative;
   width: 100%;
+  max-width: 360px;
   height: 560px; /* fixed for Telegram */
   transform-style: preserve-3d;
   transition: transform 0.7s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Flip state */
@@ -77,6 +85,11 @@ body {
   opacity: 1;
   pointer-events: auto;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   transition:
     opacity 0.25s ease,
     transform 0.7s ease;
@@ -91,6 +104,7 @@ body {
    CARD CONTENT
 ================================ */
 .card-content {
+  width: 100%;
   height: 100%;
   overflow-y: auto;
   padding-bottom: 20px;
@@ -98,6 +112,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
 }
 
 /* Headings */
@@ -112,16 +127,15 @@ body {
 ================================ */
 input,
 select {
-  width: 78%;
-  padding: 10px 14px;
-  margin: 8px auto;
-
+  width: 80%;
+  max-width: 280px;
+  padding: 8px 12px;
+  margin: 6px auto;
   display: block;
-  border-radius: 22px;
+  border-radius: 20px;
   border: none;
   outline: none;
-
-  font-size: 14px;
+  font-size: 13px;
   background: #ffffff;
   color: #000;
 }
@@ -132,22 +146,23 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
 
-  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
-  background-position: right 14px center;
-  background-size: 16px;
-  padding-right: 38px;
+  background-position: right 12px center;
+  background-size: 14px;
+  padding-right: 36px;
 }
 
 /* ===============================
    BUTTONS
 ================================ */
 button {
-  width: 65%;
-  padding: 10px;
-  margin: 16px auto 18px;
+  width: 60%;
+  max-width: 220px;
+  padding: 9px 0;
+  margin: 14px auto 16px;
 
-  border-radius: 24px;
+  border-radius: 22px;
   border: none;
 
   font-size: 14px;
@@ -168,7 +183,7 @@ button:active {
    LINKS & TEXT
 ================================ */
 .link {
-  margin-top: 14px;
+  margin-top: 12px;
   font-size: 13px;
 }
 
@@ -179,7 +194,7 @@ button:active {
 
 /* Back button */
 .back-btn {
-  margin-top: 12px;
+  margin-top: 10px;
   font-size: 13px;
   opacity: 0.75;
   cursor: pointer;
@@ -221,7 +236,7 @@ button:active {
    HOME CONTENT
 ================================ */
 #homeContent {
-  margin-top: 18px;
+  margin-top: 16px;
   font-size: 14px;
   text-align: left;
   width: 90%;
@@ -233,5 +248,11 @@ button:active {
 @media (max-height: 650px) {
   .card {
     height: 520px;
+  }
+}
+
+@media (max-width: 350px) {
+  input, select, button {
+    width: 90%;
   }
 }
