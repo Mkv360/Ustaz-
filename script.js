@@ -34,14 +34,19 @@ function populateAreas(){
     }
 }
 
-// Signup → Send OTP
+// Step 1: Send OTP (on Create Account click)
 function signup(){
-    const name = document.getElementById('signup-name').value;
-    const phone = document.getElementById('signup-phone').value;
-    const password = document.getElementById('signup-password').value;
+    const name = document.getElementById('signup-name').value.trim();
+    const phone = document.getElementById('signup-phone').value.trim();
+    const password = document.getElementById('signup-password').value.trim();
     const role = document.getElementById('signup-role').value;
     const subcity = document.getElementById('subcity').value;
     const area = document.getElementById('area').value;
+
+    if(!name || !phone || !password || !subcity || !area){
+        alert('Please fill all required fields.');
+        return;
+    }
 
     let experience = null, available_days = null;
     if(role==='Ustaz'){
@@ -49,29 +54,42 @@ function signup(){
         available_days = Array.from(document.querySelectorAll('input[name="days"]:checked')).map(d=>d.value).join(',');
     }
 
+    // Save user data temporarily in localStorage
+    localStorage.setItem('signup_data', JSON.stringify({name, phone, password, role, subcity, area, experience, available_days}));
+
+    // Send OTP request
     fetch('backend/send_otp.php',{
         method:'POST',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
         body:`phone=${phone}`
     }).then(r=>r.json()).then(data=>{
         if(data.success){
-            localStorage.setItem('signup_data', JSON.stringify({name, phone, password, role, subcity, area, experience, available_days}));
+            alert('OTP sent! Check logs for testing.');
             showCard('otp-card');
+        } else {
+            alert('Failed to send OTP.');
         }
     });
 }
 
-// Verify OTP & save user
+// Step 2: Verify OTP and create account
 function verifyOtp(){
-    const otp = document.getElementById('otp-input').value;
+    const otp = document.getElementById('otp-input').value.trim();
+    if(!otp){
+        alert('Please enter OTP.');
+        return;
+    }
+
     const signup_data = JSON.parse(localStorage.getItem('signup_data'));
+
+    // Verify OTP
     fetch('backend/verify_otp.php',{
         method:'POST',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
         body:`phone=${signup_data.phone}&otp=${otp}`
     }).then(r=>r.json()).then(data=>{
         if(data.success){
-            // Save user to DB
+            // OTP verified → Create account
             const params = new URLSearchParams(signup_data).toString();
             fetch('backend/signup.php',{
                 method:'POST',
@@ -79,20 +97,28 @@ function verifyOtp(){
                 body: params
             }).then(r=>r.json()).then(res=>{
                 if(res.success){
-                    alert('Signup successful! Login now.');
-                    showCard('login-card'); // Go back to login
+                    alert('Account created successfully! You can now login.');
+                    showCard('login-card');
+                } else {
+                    alert(res.message || 'Signup failed.');
                 }
             });
         } else {
-            alert(data.message || 'Invalid OTP');
+            alert(data.message || 'Invalid or expired OTP.');
         }
     });
 }
 
 // Login
 function login(){
-    const phone = document.getElementById('login-phone').value;
-    const password = document.getElementById('login-password').value;
+    const phone = document.getElementById('login-phone').value.trim();
+    const password = document.getElementById('login-password').value.trim();
+
+    if(!phone || !password){
+        alert('Please enter phone and password.');
+        return;
+    }
+
     fetch('backend/login.php',{
         method:'POST',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
@@ -100,6 +126,7 @@ function login(){
     }).then(r=>r.json()).then(data=>{
         if(data.success){
             alert('Login Successful!');
+            // TODO: redirect to dashboard or main page
         } else {
             alert(data.message);
         }
