@@ -1,77 +1,87 @@
-/* ===============================
-   GLOBAL RESET
-================================ */
-* { box-sizing: border-box; font-family: system-ui, sans-serif; margin:0; padding:0; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, sans-serif;
+}
+
 body {
-  height: 100vh;
-  display: flex; justify-content:center; align-items:center;
-  background: linear-gradient(180deg, #0b132b, #1c2541);
-  color: #fff;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #020617, #020617);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  color: white;
 }
 
-/* ===============================
-   APP CONTAINER
-================================ */
-.app { width: 100%; max-width: 380px; text-align:center; padding:0 10px; }
-.title { font-size: 22px; margin-bottom:4px; }
-.subtitle { font-size:13px; opacity:0.8; margin-bottom:18px; }
-
-/* ===============================
-   CARD CONTAINER
-================================ */
-.card-container { perspective:1200px; display:flex; justify-content:center; align-items:center; }
-
-/* ===============================
-   FLIP CARD INNER
-================================ */
-.flip-card-inner {
-  width:100%; max-width:360px; height:560px;
-  position:relative;
-  transform-style: preserve-3d;
-  transition: transform 0.7s ease;
+.container {
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
 }
 
-/* CARD FACES */
-.flip-card-inner .front,
-.flip-card-inner .back {
-  position:absolute; inset:0;
-  backface-visibility:hidden;
-  border-radius:20px;
-  padding:24px;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-  align-items:center;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(14px);
+.subtitle {
+  font-size: 13px;
+  color: #cbd5f5;
+  margin-bottom: 14px;
 }
 
-/* Front/back */
-.flip-card-inner .front { transform: rotateY(0deg); z-index:2; }
-.flip-card-inner .back { transform: rotateY(180deg); z-index:1; }
-
-/* FLIPPED STATE */
-.flip-card-inner.flipped { transform: rotateY(180deg); }
-.flip-card-inner.flipped .front { z-index:1; }
-.flip-card-inner.flipped .back { z-index:2; }
-
-/* ===============================
-   INPUTS & BUTTONS
-================================ */
-input, select {
-  width:80%; max-width:280px; padding:8px 12px; margin:6px auto;
-  border-radius:20px; border:none; outline:none; font-size:13px;
+/* Glass card */
+.card {
+  display: none;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
 }
+
+.card.active {
+  display: block;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input,
+select {
+  width: 92%;
+  height: 46px;
+  margin-bottom: 12px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(30, 41, 59, 0.9);
+  color: white;
+  font-size: 14px;
+}
+
 button {
-  width:60%; max-width:220px; padding:9px 0; margin:14px auto 16px;
-  border-radius:22px; border:none; font-size:14px; font-weight:500;
-  background:#2ecc71; color:#000; cursor:pointer;
+  width: 92%;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  background: #38bdf8;
+  color: #020617;
+  font-weight: 600;
+  cursor: pointer;
 }
-button:active { transform: scale(0.97); }
 
-/* LINKS */
-.link { margin-top:12px; font-size:13px; }
-.link span { color:#2ecc71; cursor:pointer; }
+.link {
+  margin-top: 12px;
+  font-size: 13px;
+}
 
-/* USTAZ FIELDS */
-#ustazFields { display:none; }
+.link span {
+  color: #38bdf8;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
