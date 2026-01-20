@@ -30,11 +30,10 @@ const otpInput = document.getElementById("otpInput");
 // ===============================
 function syncTelegramBackButton() {
   if (!window.Telegram?.WebApp) return;
-  const BackButton = Telegram.WebApp.BackButton;
   if (currentState === UI_STATE.SIGNUP || currentState === UI_STATE.OTP) {
-    BackButton.show();
+    Telegram.WebApp.BackButton.show();
   } else {
-    BackButton.hide();
+    Telegram.WebApp.BackButton.hide();
   }
 }
 
@@ -146,8 +145,9 @@ signupBtn.addEventListener("click", async () => {
   signupBtn.disabled = true;
 
   try {
+    // Use your OTP API endpoint
     const res = await fetch(
-      "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/send_otp.php",
+      "https://your-api/send_otp.php",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -156,7 +156,7 @@ signupBtn.addEventListener("click", async () => {
     );
     const data = await res.json();
     if (!data.success) throw new Error(data.message);
-    console.log("OTP (for testing):", data.otp); // check Replit logs
+    console.log("OTP (for testing):", data.otp); // for debug
     setState(UI_STATE.OTP);
   } catch (err) {
     alert("Error sending OTP: " + err.message);
@@ -176,7 +176,7 @@ verifyOtpBtn.addEventListener("click", async () => {
 
   try {
     const res = await fetch(
-      "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/verify_otp.php",
+      "https://your-api/verify_otp.php",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -187,6 +187,16 @@ verifyOtpBtn.addEventListener("click", async () => {
     if (data.success) {
       alert("Account created successfully!");
       setState(UI_STATE.LOGIN);
+      // Reset signup form
+      roleSelect.value = "";
+      ustazFields.classList.add("hidden");
+      document.getElementById("fullName").value = "";
+      document.getElementById("signupPhone").value = "";
+      subcitySelect.value = "";
+      areaSelect.innerHTML = '<option value="">Select Area</option>';
+      document.getElementById("signupPassword").value = "";
+      document.getElementById("experience").value = "";
+      Array.from(document.getElementById("availableDays").options).forEach(opt => opt.selected = false);
     } else {
       alert(data.message);
     }
@@ -201,8 +211,6 @@ verifyOtpBtn.addEventListener("click", async () => {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  // Force login page on first load
-  sessionStorage.setItem("visited", "true");
   setState(UI_STATE.LOGIN);
 
   if (otpInput) otpInput.value = "";
