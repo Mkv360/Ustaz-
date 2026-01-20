@@ -1,176 +1,211 @@
-// -------------------- Telegram WebApp Initialization --------------------
-if (window.Telegram && Telegram.WebApp) {
+// ===============================
+// CARD FLIP
+// ===============================
+const card = document.getElementById("card");
+
+function flipCard() {
+  card.classList.toggle("flipped");
+  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+}
+
+// ===============================
+// ALERTS
+// ===============================
+function showMessage(msg) { 
+  if (window.Telegram?.WebApp) Telegram.WebApp.showAlert(msg); 
+  else alert(msg); 
+}
+
+function successMessage(msg) { 
+  if (window.Telegram?.WebApp) {
+    Telegram.WebApp.showPopup({ 
+      title: "Success", 
+      message: msg, 
+      buttons: [{ type: "ok" }] 
+    }); 
+  } else alert(msg); 
+}
+
+// ===============================
+// ETHIOPIAN PHONE VALIDATION
+// ===============================
+function validateEthiopianPhone(phone) {
+  const p = phone.replace(/\s+/g,'');
+  if (/^0[79]\d{8}$/.test(p)) return "+251" + p.slice(1);
+  if (/^\+251[79]\d{8}$/.test(p)) return p;
+  return null;
+}
+
+// ===============================
+// LOGIN (demo)
+// ===============================
+function login() {
+  const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
+  const pass = document.getElementById("loginPassword").value.trim();
+  if (!phone || !pass) return showMessage("Enter valid phone & password");
+  successMessage("Login successful (demo)");
+}
+
+// ===============================
+// SIGNUP → SEND OTP
+// ===============================
+let signupData = {};
+const BASE_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/api";
+
+async function signup() {
+  const role = document.getElementById("role").value;
+  const name = document.getElementById("fullName").value.trim();
+  const phone = validateEthiopianPhone(document.getElementById("signupPhone").value.trim());
+  const subcity = document.getElementById("subcity").value;
+  const area = document.getElementById("area").value;
+  const pass = document.getElementById("signupPassword").value.trim();
+
+  let experience = null;
+  let availableDays = [];
+
+  if (role === "ustaz") {
+    experience = document.getElementById("experience").value;
+    availableDays = Array.from(
+      document.getElementById("availableDays").selectedOptions
+    ).map(o => o.value);
+
+    if (!experience || availableDays.length === 0)
+      return showMessage("Fill Ustaz experience and days");
+  }
+
+  if (!role || !name || !phone || !subcity || !area || !pass)
+    return showMessage("Fill all signup fields correctly");
+
+  signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
+
+  try {
+    const res = await fetch(`${BASE_URL}/send_otp.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      successMessage("OTP sent!");
+      console.log("OTP (testing):", data.otp);
+
+      // prevent multiple OTP sends
+      const btn = document.querySelector("button[onclick='signup()']");
+      if (btn) btn.disabled = true;
+
+      card.classList.add("otp-active");
+      card.classList.remove("flipped");
+    } else {
+      showMessage(data.message || "Failed to send OTP");
+    }
+  } catch (err) {
+    showMessage("OTP error: " + err.message);
+  }
+}
+
+// ===============================
+// VERIFY OTP
+// ===============================
+async function verifyOtp() {
+  const otp = document.getElementById("otpInput").value.trim();
+
+  if (!signupData.phone) {
+    showMessage("Session expired. Please sign up again.");
+    backToSignup();
+    return;
+  }
+
+  if (!otp) return showMessage("Enter the OTP");
+
+  try {
+    const res = await fetch(`${BASE_URL}/verify_otp.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: signupData.phone, otp })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      successMessage("OTP verified!");
+      resetOtp();
+      window.location.href = "home.html";
+    } else {
+      showMessage("Invalid or expired OTP");
+    }
+  } catch (err) {
+    showMessage("Verification error: " + err.message);
+  }
+}
+
+// ===============================
+// BACK / RESET OTP
+// ===============================
+function backToSignup() {
+  resetOtp();
+  card.classList.remove("otp-active");
+  card.classList.add("flipped");
+}
+
+function resetOtp() {
+  signupData = {};
+  const otpInput = document.getElementById("otpInput");
+  if (otpInput) otpInput.value = "";
+
+  const btn = document.querySelector("button[onclick='signup()']");
+  if (btn) btn.disabled = false;
+
+  card.classList.remove("otp-active");
+}
+
+// ===============================
+// SUBCITY → AREA
+// ===============================
+const areas = {
+  bole: ["Bole Medhanealem","Gerji","Edna Mall","Welo Sefer","Japan","Rwanda","Michael","CMC","Bulbula"],
+  yeka: ["Megenagna","Kotebe","Summit","Ayat","Shola"],
+  kirkos: ["Kazanchis","Mexico","Meskel Flower","Sar Bet"],
+  lideta: ["Lideta","Abinet","Tor Hailoch","Balcha Hospital"],
+  arada: ["Piazza","Arat Kilo","Sidist Kilo"],
+  addisketema: ["Merkato","Sebategna","Alem Bank"],
+  nifassilk: ["Jemo","Lancha","Sar Bet"],
+  kolfe: ["Kolfe","Asko","Alem Bank"],
+  akakikaliti: ["Akaki","Kality"],
+  gullele: ["Shiro Meda","Entoto"]
+};
+
+function loadAreas() {
+  const subcity = document.getElementById("subcity").value;
+  const areaSelect = document.getElementById("area");
+  areaSelect.innerHTML = '<option value="">Select Area</option>';
+  if (!areas[subcity]) return;
+  areas[subcity].forEach(a => {
+    const opt = document.createElement("option");
+    opt.value = a;
+    opt.textContent = a;
+    areaSelect.appendChild(opt);
+  });
+}
+
+// ===============================
+// ROLE TOGGLE
+// ===============================
+document.getElementById("role").addEventListener("change", function() {
+  document.getElementById("ustazFields").style.display =
+    this.value === "ustaz" ? "block" : "none";
+});
+
+// ===============================
+// INIT
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  card.classList.remove("flipped", "otp-active");
+  document.getElementById("subcity").addEventListener("change", loadAreas);
+
+  if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
-}
-
-// Replace this with your Replit project URL
-const REPLIT_URL = 'https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev';
-
-// -------------------- Show inline messages --------------------
-function showMessage(msg) {
-    const messageEl = document.getElementById('message');
-    if (messageEl) messageEl.textContent = msg;
-}
-
-// -------------------- Show a specific card --------------------
-function showCard(cardId) {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(c => c.style.display = 'none');
-    const card = document.getElementById(cardId);
-    card.style.display = 'block';
-    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-// -------------------- Default view --------------------
-showCard('login-card');
-
-// -------------------- Toggle Ustaz fields --------------------
-function toggleUstazFields() {
-    const role = document.getElementById('signup-role').value;
-    document.getElementById('ustaz-fields').style.display = role === 'Ustaz' ? 'block' : 'none';
-}
-
-// -------------------- Populate area dropdown --------------------
-function populateAreas() {
-    const subcity = document.getElementById('subcity').value;
-    const areaSelect = document.getElementById('area');
-    areaSelect.innerHTML = '<option value="">Select Area</option>';
-    const areas = {
-        'Bole': ['Area 1', 'Area 2', 'Area 3'],
-        'Kirkos': ['Area A', 'Area B']
-    };
-    if (areas[subcity]) {
-        areas[subcity].forEach(a => {
-            const option = document.createElement('option');
-            option.value = a;
-            option.textContent = a;
-            areaSelect.appendChild(option);
-        });
-    }
-}
-
-// -------------------- Step 1: Signup → Send OTP --------------------
-function signup() {
-    const name = document.getElementById('signup-name').value.trim();
-    const phone = document.getElementById('signup-phone').value.trim();
-    const password = document.getElementById('signup-password').value.trim();
-    const role = document.getElementById('signup-role').value;
-    const subcity = document.getElementById('subcity').value;
-    const area = document.getElementById('area').value;
-
-    if (!name || !phone || !password || !subcity || !area) {
-        showMessage('Please fill all required fields.');
-        return;
-    }
-
-    let experience = null, available_days = null;
-    if (role === 'Ustaz') {
-        experience = document.getElementById('experience').value;
-        available_days = Array.from(document.querySelectorAll('input[name="days"]:checked'))
-            .map(d => d.value).join(',');
-    }
-
-    const signup_data = { name, phone, password, role, subcity, area, experience, available_days };
-    localStorage.setItem('signup_data', JSON.stringify(signup_data));
-
-    // Call API send_otp.php with JSON
-    fetch(`${REPLIT_URL}/api/send_otp.php`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: phone })
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.success) {
-            showMessage('OTP sent! Check Replit console for demo OTP.');
-            document.getElementById('otp-phone').textContent = phone;
-            showCard('otp-card');
-        } else {
-            showMessage(data.message || 'Failed to send OTP.');
-        }
-    })
-    .catch(err => showMessage('Error sending OTP.'));
-}
-
-// -------------------- Step 2: Verify OTP → Create Account --------------------
-function verifyOtp() {
-    const otp = document.getElementById('otp-input').value.trim();
-    if (!otp) { showMessage('Please enter OTP.'); return; }
-
-    const signup_data = JSON.parse(localStorage.getItem('signup_data'));
-    if (!signup_data) {
-        showMessage('Signup data missing. Please start again.');
-        showCard('signup-card');
-        return;
-    }
-
-    fetch(`${REPLIT_URL}/api/verify_otp.php`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: signup_data.phone, otp: otp })
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.success) {
-            // OTP verified → create user account
-            fetch(`${REPLIT_URL}/api/signup.php`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(signup_data)
-            })
-            .then(r => r.json())
-            .then(res => {
-                if (res.success) {
-                    showMessage('Account created! Please login.');
-                    showCard('login-card');
-                } else {
-                    showMessage(res.message || 'Signup failed.');
-                }
-            });
-        } else {
-            showMessage(data.message || 'Invalid or expired OTP.');
-        }
-    })
-    .catch(err => showMessage('Error verifying OTP.'));
-}
-
-// -------------------- Resend OTP --------------------
-function resendOtp() {
-    const signup_data = JSON.parse(localStorage.getItem('signup_data'));
-    if (!signup_data) { showMessage('Signup data missing'); return; }
-
-    fetch(`${REPLIT_URL}/api/send_otp.php`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: signup_data.phone })
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.success) showMessage('OTP resent! Check Replit console.');
-        else showMessage('Failed to resend OTP.');
-    })
-    .catch(err => showMessage('Error resending OTP.'));
-}
-
-// -------------------- Login --------------------
-function login() {
-    const phone = document.getElementById('login-phone').value.trim();
-    const password = document.getElementById('login-password').value.trim();
-
-    if (!phone || !password) { showMessage('Please enter phone and password.'); return; }
-
-    fetch(`${REPLIT_URL}/api/login.php`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: phone, password: password })
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.success) {
-            showMessage('Login Successful!');
-            // TODO: redirect to dashboard or main page
-        } else showMessage(data.message || 'Invalid credentials.');
-    })
-    .catch(err => showMessage('Error during login.'));
-}
+  }
+});
