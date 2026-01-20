@@ -11,12 +11,6 @@ let currentState = UI_STATE.LOGIN;
 let signupData = {};
 
 // ===============================
-// BACKEND URLs
-// ===============================
-const OTP_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/send_otp.php";
-const VERIFY_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/verify_otp.php";
-
-// ===============================
 // DOM REFERENCES
 // ===============================
 const card = document.getElementById("card");
@@ -45,10 +39,12 @@ function syncTelegramBackButton() {
 }
 
 function handleBack() {
-  if (currentState === UI_STATE.SIGNUP) setState(UI_STATE.LOGIN);
+  if (currentState === UI_STATE.SIGNUP) {
+    setState(UI_STATE.LOGIN);
+  }
   if (currentState === UI_STATE.OTP) {
     setState(UI_STATE.SIGNUP);
-    if (otpInput) otpInput.value = ""; // clear OTP when going back
+    if (otpInput) otpInput.value = "";
   }
 }
 
@@ -76,7 +72,7 @@ goLogin.addEventListener("click", e => {
 });
 
 // ===============================
-// ROLE BASED FIELDS
+// ROLE-BASED FIELDS
 // ===============================
 roleSelect.addEventListener("change", () => {
   const isUstaz = roleSelect.value === "ustaz";
@@ -91,6 +87,12 @@ const areas = {
   yeka: ["Megenagna", "Kotebe", "Summit", "Ayat"],
   kirkos: ["Kazanchis", "Mexico", "Meskel Flower"],
   lideta: ["Lideta", "Abinet", "Tor Hailoch"],
+  arada: ["Arada 1", "Arada 2"],
+  addisketema: ["Addis Ketema 1", "Addis Ketema 2"],
+  nifassilk: ["Nifas Silk 1", "Nifas Silk 2"],
+  kolfe: ["Kolfe 1", "Kolfe 2"],
+  akakikaliti: ["Akaki Kality 1", "Akaki Kality 2"],
+  gullele: ["Gullele 1", "Gullele 2"],
 };
 
 subcitySelect.addEventListener("change", () => {
@@ -120,10 +122,21 @@ signupBtn.addEventListener("click", async () => {
 
   if (role === "ustaz") {
     experience = document.getElementById("experience").value.trim();
-    availableDays = Array.from(document.getElementById("availableDays").selectedOptions).map(o => o.value);
+    availableDays = Array.from(
+      document.getElementById("availableDays").selectedOptions
+    ).map(o => o.value);
   }
 
-  if (!role || !name || !phone || !subcity || !area || !pass || (role === "ustaz" && (!experience || availableDays.length === 0))) {
+  // VALIDATION
+  if (
+    !role ||
+    !name ||
+    !phone ||
+    !subcity ||
+    !area ||
+    !pass ||
+    (role === "ustaz" && (!experience || availableDays.length === 0))
+  ) {
     return alert("Please fill all required fields correctly");
   }
 
@@ -133,16 +146,18 @@ signupBtn.addEventListener("click", async () => {
   if (otpPhone) otpPhone.textContent = phone;
   if (otpInput) otpInput.value = "";
 
-  // Request OTP from backend
   try {
-    const res = await fetch(OTP_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone })
-    });
+    const res = await fetch(
+      "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/send_otp.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone }),
+      }
+    );
     const data = await res.json();
     if (!data.success) throw new Error(data.message);
-    console.log("OTP (for testing):", data.otp); // Replit logs
+    console.log("OTP (for testing):", data.otp); // Check Replit logs
     setState(UI_STATE.OTP);
   } catch (err) {
     alert("Error sending OTP: " + err.message);
@@ -157,11 +172,14 @@ verifyOtpBtn.addEventListener("click", async () => {
   if (!otp) return alert("Enter OTP");
 
   try {
-    const res = await fetch(VERIFY_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: signupData.phone, otp })
-    });
+    const res = await fetch(
+      "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/verify_otp.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: signupData.phone, otp }),
+      }
+    );
     const data = await res.json();
     if (data.success) {
       alert("Account created successfully!");
@@ -179,7 +197,6 @@ verifyOtpBtn.addEventListener("click", async () => {
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
   setState(UI_STATE.LOGIN); // always start at login
-
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
