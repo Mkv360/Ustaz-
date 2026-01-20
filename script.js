@@ -1,17 +1,28 @@
-const flipCardInner = document.getElementById("card");
-const roleSelect = document.getElementById("role");
+// Telegram WebApp init
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
 
-// Flip buttons
-document.getElementById("showSignup").addEventListener("click", () => {
-  flipCardInner.classList.add("flipped");
-});
+function showSignup() {
+  document.querySelector(".login-card").classList.remove("active");
+  document.querySelector(".signup-card").classList.add("active");
+}
 
-document.getElementById("showLogin").addEventListener("click", () => {
-  flipCardInner.classList.remove("flipped");
-});
+function showLogin() {
+  document.querySelector(".signup-card").classList.remove("active");
+  document.querySelector(".login-card").classList.add("active");
+}
 
-// Show/hide Ustaz fields
-roleSelect.addEventListener("change", () => {
+function toggleUstazFields() {
+  const type = document.getElementById("userType").value;
   document.getElementById("ustazFields").style.display =
-    roleSelect.value === "ustaz" ? "block" : "none";
-});
+    type === "ustaz" ? "block" : "none";
+}
+
+function login() {
+  tg.showAlert("Login clicked (frontend demo)");
+}
+
+function signup() {
+  tg.showAlert("Signup clicked (frontend demo)");
+}
