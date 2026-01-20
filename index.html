@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quran Ustaz Finder</title>
+  <title>Barakah Link</title>
 
-  <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,24 +17,21 @@
   <div class="card-container">
     <div class="card" id="card">
 
-      <!-- ================= LOGIN ================= -->
+      <!-- LOGIN -->
       <div class="card-face front">
         <div class="card-content">
           <h2>Login</h2>
-
           <input type="text" id="loginPhone" placeholder="Phone number">
           <input type="password" id="loginPassword" placeholder="Password">
-
-          <button onclick="login()">Login</button>
-
+          <button id="loginBtn">Login</button>
           <p class="link">
             Don’t have an account?
-            <span onclick="showSignup()">Sign up</span>
+            <span id="showSignup">Sign up</span>
           </p>
         </div>
       </div>
 
-      <!-- ================= SIGNUP ================= -->
+      <!-- SIGNUP -->
       <div class="card-face back">
         <div class="card-content">
           <h2>Create Account</h2>
@@ -69,11 +63,9 @@
             <option value="">Select Area</option>
           </select>
 
-          <!-- USTAZ ONLY -->
           <div id="ustazFields" style="display:none; margin-top:10px;">
             <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50">
-
-            <label style="margin-top:10px; font-size:13px;">Available days</label>
+            <label style="margin-top:10px; font-size:13px;">Available days:</label>
             <select id="availableDays" multiple size="5">
               <option value="monday">Monday</option>
               <option value="tuesday">Tuesday</option>
@@ -83,48 +75,40 @@
               <option value="saturday">Saturday</option>
               <option value="sunday">Sunday</option>
             </select>
-
-            <small>Hold to select multiple days</small>
+            <small>Hold Ctrl (or Cmd) to select multiple days</small>
           </div>
 
           <input type="password" id="signupPassword" placeholder="Password">
-
-          <button onclick="signup()">Sign Up</button>
+          <button id="signupBtn">Sign Up</button>
 
           <p class="link">
             Already have an account?
-            <span onclick="showLogin()">Login</span>
+            <span id="showLogin">Login</span>
           </p>
-
-          <div class="back-btn" onclick="showLogin()">← Back</div>
+          <div class="back-btn" id="backToLogin">← Back</div>
         </div>
       </div>
 
-      <!-- ================= OTP ================= -->
+      <!-- OTP -->
       <div class="card-face otp">
         <div class="card-content">
           <h2>Enter OTP</h2>
           <p>An OTP has been sent to your phone</p>
-
           <input type="text" id="otpInput" placeholder="Enter OTP">
-
-          <button onclick="verifyOtp()">Verify OTP</button>
-
-          <div class="back-btn" onclick="backToSignup()">← Back</div>
+          <button id="verifyOtpBtn">Verify OTP</button>
+          <div class="back-btn" id="otpBack">← Back</div>
         </div>
       </div>
 
-      <!-- ================= HOME ================= -->
+      <!-- HOME -->
       <div class="card-face home">
         <div class="card-content">
-          <h2>Welcome</h2>
-          <p>You are now logged in</p>
-
+          <h2>Welcome!</h2>
+          <p>You are now logged in.</p>
           <div id="homeContent">
             <p>Search for Quran Ustaz, view profiles, and contact them here.</p>
           </div>
-
-          <div class="back-btn" onclick="logout()">← Logout</div>
+          <div class="back-btn" id="logoutBtn">← Logout</div>
         </div>
       </div>
 
@@ -132,7 +116,6 @@
   </div>
 </div>
 
-<!-- Script -->
 <script src="script.js"></script>
 </body>
 </html>
