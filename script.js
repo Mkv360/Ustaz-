@@ -3,7 +3,9 @@ function showCard(cardId) {
     document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
     document.getElementById(cardId).style.display = 'block';
 }
-showCard('login-card'); // default
+
+// Default → Login card
+showCard('login-card');
 
 // Toggle Ustaz fields
 function toggleUstazFields(){
@@ -32,7 +34,7 @@ function populateAreas(){
     }
 }
 
-// Signup
+// Signup → Send OTP
 function signup(){
     const name = document.getElementById('signup-name').value;
     const phone = document.getElementById('signup-phone').value;
@@ -59,7 +61,7 @@ function signup(){
     });
 }
 
-// Verify OTP
+// Verify OTP & save user
 function verifyOtp(){
     const otp = document.getElementById('otp-input').value;
     const signup_data = JSON.parse(localStorage.getItem('signup_data'));
@@ -78,7 +80,7 @@ function verifyOtp(){
             }).then(r=>r.json()).then(res=>{
                 if(res.success){
                     alert('Signup successful! Login now.');
-                    showCard('login-card');
+                    showCard('login-card'); // Go back to login
                 }
             });
         } else {
