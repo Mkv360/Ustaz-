@@ -30,9 +30,7 @@ function setState(state) {
 }
 
 function resetScroll() {
-  document
-    .querySelectorAll(".card-content")
-    .forEach(c => (c.scrollTop = 0));
+  document.querySelectorAll(".card-content").forEach(c => (c.scrollTop = 0));
 }
 
 // ===============================
@@ -94,6 +92,7 @@ subcitySelect.addEventListener("change", loadAreas);
 // NAVIGATION EVENTS
 // ===============================
 function attachNavEvents() {
+  // Inline clickable links
   goSignup.addEventListener("click", () => setState(UI_STATE.SIGNUP));
   goLogin.addEventListener("click", () => setState(UI_STATE.LOGIN));
 }
