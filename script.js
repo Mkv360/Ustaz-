@@ -11,12 +11,17 @@ let currentState = UI_STATE.LOGIN;
 let signupData = {};
 
 // ===============================
+// BACKEND URLs
+// ===============================
+const OTP_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/send_otp.php";
+const VERIFY_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/verify_otp.php";
+
+// ===============================
 // DOM REFERENCES
 // ===============================
 const card = document.getElementById("card");
 const goSignup = document.getElementById("goSignup");
 const goLogin = document.getElementById("goLogin");
-const backToSignup = document.getElementById("backToSignup");
 const signupBtn = document.getElementById("signupBtn");
 const verifyOtpBtn = document.getElementById("verifyOtpBtn");
 const roleSelect = document.getElementById("role");
@@ -43,7 +48,7 @@ function handleBack() {
   if (currentState === UI_STATE.SIGNUP) setState(UI_STATE.LOGIN);
   if (currentState === UI_STATE.OTP) {
     setState(UI_STATE.SIGNUP);
-    otpInput.value = ""; // clear OTP when going back
+    if (otpInput) otpInput.value = ""; // clear OTP when going back
   }
 }
 
@@ -53,7 +58,7 @@ function handleBack() {
 function setState(state) {
   currentState = state;
   card.dataset.state = state;
-  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+  document.querySelectorAll(".card-content").forEach(c => (c.scrollTop = 0));
   syncTelegramBackButton();
 }
 
@@ -69,13 +74,6 @@ goLogin.addEventListener("click", e => {
   e.preventDefault();
   setState(UI_STATE.LOGIN);
 });
-
-if (backToSignup) {
-  backToSignup.addEventListener("click", e => {
-    e.preventDefault();
-    setState(UI_STATE.SIGNUP);
-  });
-}
 
 // ===============================
 // ROLE BASED FIELDS
@@ -137,14 +135,14 @@ signupBtn.addEventListener("click", async () => {
 
   // Request OTP from backend
   try {
-    const res = await fetch("https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/send_otp.php", {
+    const res = await fetch(OTP_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone })
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.message);
-    console.log("OTP (for testing):", data.otp);
+    console.log("OTP (for testing):", data.otp); // Replit logs
     setState(UI_STATE.OTP);
   } catch (err) {
     alert("Error sending OTP: " + err.message);
@@ -159,7 +157,7 @@ verifyOtpBtn.addEventListener("click", async () => {
   if (!otp) return alert("Enter OTP");
 
   try {
-    const res = await fetch("https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/verify_otp.php", {
+    const res = await fetch(VERIFY_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone: signupData.phone, otp })
@@ -181,6 +179,7 @@ verifyOtpBtn.addEventListener("click", async () => {
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
   setState(UI_STATE.LOGIN); // always start at login
+
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
