@@ -11,7 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   color: #fff;
-  overflow: hidden; /* Telegram-safe */
+  overflow: hidden; /* safe for Telegram WebView */
 }
 
 .app {
@@ -30,11 +30,12 @@ body {
   margin-bottom: 20px;
 }
 
-/* CARD */
+/* CARD CONTAINER */
 .card-container {
   perspective: 1000px;
 }
 
+/* CARD */
 .card {
   position: relative;
   width: 100%;
@@ -45,9 +46,12 @@ body {
   transition: transform 0.7s ease;
 }
 
-/* Flip card for signup */
+/* FLIP STATES */
 .card[data-state="signup"] {
   transform: rotateY(180deg);
+}
+.card[data-state="otp"] {
+  transform: rotateY(360deg);
 }
 
 /* CARD FACES */
@@ -60,47 +64,41 @@ body {
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   backface-visibility: hidden;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .card-face.back {
   transform: rotateY(180deg);
 }
 
-/* CONTENT SCROLL */
+.card-face.otp {
+  transform: rotateY(360deg);
+}
+
+/* CARD CONTENT SCROLL */
 .card-content {
   height: 100%;
   overflow-y: auto;
   padding-bottom: 20px;
 }
 
-/* FORM ELEMENTS */
+/* INPUTS & SELECTS */
 input,
 select {
   width: 85%;
-  padding: 10px 44px 10px 12px;  /* extra right padding for arrow breathing room */
+  padding: 10px;
   margin: 10px auto;
   display: block;
   border-radius: 25px;
   border: none;
   outline: none;
   font-size: 14px;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  cursor: pointer;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" stroke="%232ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 4 6 8 10 4"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 20px center; /* arrow slightly away from edge */
-  background-size: 12px;
 }
 
+/* Multiple select adjustments */
 select[multiple] {
   border-radius: 12px;
-  background-image: none; /* remove arrow for multi-select */
-  cursor: auto;
+  padding: 6px;
 }
 
 /* BUTTONS */
@@ -114,6 +112,7 @@ button {
   background: #2ecc71;
   color: #000;
   cursor: pointer;
+  display: block;
 }
 
 button:active {
@@ -124,27 +123,26 @@ button:active {
 .link {
   margin-top: 15px;
   font-size: 13px;
-  text-decoration: none; /* parent link should not force underline */
 }
 
-/* INLINE LINKS (Signup/Login inside text) */
+/* INLINE LINKS (Signup/Login/Back) */
 .inline-link {
   color: #2ecc71;
   cursor: pointer;
-  display: inline-block;              /* inline but tappable */
-  padding: 0 2px;                     /* tap area */
+  display: inline-block;
+  padding: 0 2px; /* tap area */
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   font-weight: 600;
-  text-decoration: none !important;   /* force no underline */
+  text-decoration: none !important; /* no underline */
   pointer-events: auto;
 }
 
 .inline-link:hover {
-  text-decoration: none !important;   /* prevent underline on hover */
+  text-decoration: none !important;
 }
 
-/* Ustaz extra fields label */
+/* Ustaz extra fields */
 .small-label {
   display: block;
   margin-top: 10px;
@@ -157,7 +155,7 @@ button:active {
   display: none;
 }
 
-/* MOBILE / TELEGRAM POLISH */
+/* TELEGRAM / MOBILE POLISH */
 button,
 .inline-link {
   -webkit-tap-highlight-color: transparent;
