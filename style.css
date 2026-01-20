@@ -1,114 +1,172 @@
-* {
-  box-sizing: border-box;
-  font-family: system-ui, sans-serif;
+{
+box-sizing: border-box;
+font-family: system-ui, sans-serif;
 }
 
+
 body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(180deg, #0b132b, #1c2541);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
+margin: 0;
+height: 100vh;
+background: linear-gradient(180deg, #0b132b, #1c2541);
+display: flex;
+justify-content: center;
+align-items: center;
+color: #fff;
+overflow: hidden; /* Telegram-safe */
 }
 
 .app {
-  width: 100%;
-  max-width: 380px;
-  text-align: center;
+width: 100%;
+max-width: 380px;
+text-align: center;
 }
 
 .title {
-  margin-bottom: 5px;
+margin-bottom: 5px;
 }
 
 .subtitle {
-  font-size: 14px;
-  opacity: 0.8;
-  margin-bottom: 20px;
+font-size: 14px;
+opacity: 0.8;
+margin-bottom: 20px;
 }
 
-/* Card container */
 .card-container {
-  perspective: 1000px;
+perspective: 1000px;
 }
 
 .card {
-  position: relative;
-  width: 100%;
-  height: 420px;
-  transform-style: preserve-3d;
-  transition: transform 0.7s;
+position: relative;
+width: 100%;
+height: 560px; /* fixed height for Telegram */
+transform-style: preserve-3d;
+transition: transform 0.7s;
 }
 
-/* Flip */
-.card.flipped {
-  transform: rotateY(180deg);
-}
+/* Flip classes */
+.card.flipped { transform: rotateY(180deg); }
 
 /* Card faces */
 .card-face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  padding: 25px;
-  border-radius: 20px;
-  backdrop-filter: blur(14px);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  backface-visibility: hidden;
+position: absolute;
+width: 100%;
+height: 100%;
+padding: 25px;
+border-radius: 20px;
+backdrop-filter: blur(14px);
+background: rgba(255,255,255,0.08);
+box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+backface-visibility: hidden;
+overflow: hidden;
+transition: opacity 0.3s ease, transform 0.7s ease;
+opacity: 1;
+pointer-events: auto;
 }
 
-/* Back */
+/* OTP card hidden by default */
+.card-face.otp {
+transform: rotateY(0deg);
+opacity: 0;
+pointer-events: none;
+z-index: 10;
+}
+
+/* OTP card visible */
+.card.otp-active .otp {
+opacity: 1;
+pointer-events: auto;
+z-index: 100;
+}
+
+/* Home card hidden by default */
+.card-face.home {
+transform: rotateY(0deg);
+opacity: 0;
+pointer-events: none;
+z-index: 5;
+}
+
+/* Home card active */
+.card.home-active .home {
+opacity: 1;
+pointer-events: auto;
+z-index: 200;
+}
+
+/* Card content scroll */
+.card-content {
+height: 100%;
+overflow-y: auto;
+padding-bottom: 20px;
+}
+
+/* Back face for flip */
 .back {
-  transform: rotateY(180deg);
+transform: rotateY(180deg);
 }
 
-/* Inputs */
+/* Inputs & selects */
 input, select {
-  width: 85%;
-  padding: 10px;
-  margin: 10px auto;
-  display: block;
-  border-radius: 25px;
-  border: none;
-  outline: none;
-  font-size: 14px;
+width: 85%;
+padding: 10px;
+margin: 10px auto;
+display: block;
+border-radius: 25px;
+border: none;
+outline: none;
+font-size: 14px;
+}
+
+select {
+appearance: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+background-repeat: no-repeat;
+background-position: right 15px center;
+background-size: 18px;
+padding-right: 40px;
 }
 
 /* Buttons */
 button {
-  width: 70%;
-  padding: 10px;
-  margin-top: 15px;
-  border-radius: 25px;
-  border: none;
-  font-size: 14px;
-  background: #2ecc71;
-  color: #000;
-  cursor: pointer;
+width: 70%;
+padding: 10px;
+margin: 15px auto 20px;
+border-radius: 25px;
+border: none;
+font-size: 14px;
+background: #2ecc71;
+color: #000;
+cursor: pointer;
 }
 
 button:active {
-  transform: scale(0.98);
+transform: scale(0.98);
 }
 
 /* Links */
 .link {
-  margin-top: 15px;
-  font-size: 13px;
+margin-top: 15px;
+font-size: 13px;
 }
 
 .link span {
-  color: #2ecc71;
-  cursor: pointer;
+color: #2ecc71;
+cursor: pointer;
 }
 
-/* Back arrow */
+/* Back button */
 .back-btn {
-  margin-top: 10px;
-  font-size: 13px;
-  opacity: 0.8;
-  cursor: pointer;
+margin-top: 10px;
+font-size: 13px;
+opacity: 0.8;
+cursor: pointer;
+}
+
+/* Home content styling */
+#homeContent {
+margin-top: 20px;
+font-size: 14px;
+text-align: left;
 }
