@@ -4,10 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Barakah Link</title>
-
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <!-- cache busting is IMPORTANT for Telegram -->
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -22,21 +20,10 @@
       <div class="card-face front">
         <div class="card-content">
           <h2>Login</h2>
-
-          <div class="form-group">
-            <input type="text" id="loginPhone" class="form-input" placeholder="Phone number">
-          </div>
-
-          <div class="form-group">
-            <input type="password" id="loginPassword" class="form-input" placeholder="Password">
-          </div>
-
-          <button onclick="login()">Login</button>
-
-          <p class="link">
-            Don’t have an account?
-            <span onclick="flipCard()">Sign up</span>
-          </p>
+          <input type="text" class="form-input" placeholder="Phone number">
+          <input type="password" class="form-input" placeholder="Password">
+          <button class="form-button" onclick="login()">Login</button>
+          <p class="link">Don’t have an account? <span onclick="flipCard()">Sign up</span></p>
         </div>
       </div>
 
@@ -45,79 +32,51 @@
         <div class="card-content">
           <h2>Create Account</h2>
 
-          <div class="form-group">
-            <select id="role" class="form-input">
-              <option value="">Sign up as</option>
-              <option value="parent">Parent</option>
-              <option value="ustaz">Ustaz / Ustaza</option>
+          <select class="form-input" id="role">
+            <option value="">Sign up as</option>
+            <option value="parent">Parent</option>
+            <option value="ustaz">Ustaz / Ustaza</option>
+          </select>
+
+          <input type="text" class="form-input" placeholder="Full name">
+          <input type="text" class="form-input" placeholder="Phone number">
+
+          <select class="form-input" id="subcity">
+            <option value="">Select Sub-City</option>
+            <option value="bole">Bole</option>
+            <option value="yeka">Yeka</option>
+            <option value="kirkos">Kirkos</option>
+            <option value="lideta">Lideta</option>
+            <option value="arada">Arada</option>
+            <option value="addisketema">Addis Ketema</option>
+            <option value="nifassilk">Nifas Silk</option>
+            <option value="kolfe">Kolfe Keranio</option>
+            <option value="akakikaliti">Akaki Kality</option>
+            <option value="gullele">Gullele</option>
+          </select>
+
+          <select class="form-input" id="area">
+            <option value="">Select Area</option>
+          </select>
+
+          <div id="ustazFields" style="display:none; width:100%; text-align:center;">
+            <input type="number" class="form-input" placeholder="Years of Experience" min="0" max="50">
+            <label style="font-size:13px; margin-top:4px;">Available days:</label>
+            <select id="availableDays" multiple size="5" class="form-input-multi">
+              <option value="monday">Monday</option>
+              <option value="tuesday">Tuesday</option>
+              <option value="wednesday">Wednesday</option>
+              <option value="thursday">Thursday</option>
+              <option value="friday">Friday</option>
+              <option value="saturday">Saturday</option>
+              <option value="sunday">Sunday</option>
             </select>
+            <small>Hold Ctrl/Cmd to select multiple days</small>
           </div>
 
-          <div class="form-group">
-            <input type="text" id="fullName" class="form-input" placeholder="Full name">
-          </div>
-
-          <div class="form-group">
-            <input type="text" id="signupPhone" class="form-input" placeholder="Phone number">
-          </div>
-
-          <div class="form-group">
-            <select id="subcity" class="form-input">
-              <option value="">Select Sub-City</option>
-              <option value="bole">Bole</option>
-              <option value="yeka">Yeka</option>
-              <option value="kirkos">Kirkos</option>
-              <option value="lideta">Lideta</option>
-              <option value="arada">Arada</option>
-              <option value="addisketema">Addis Ketema</option>
-              <option value="nifassilk">Nifas Silk</option>
-              <option value="kolfe">Kolfe Keranio</option>
-              <option value="akakikaliti">Akaki Kality</option>
-              <option value="gullele">Gullele</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <select id="area" class="form-input">
-              <option value="">Select Area</option>
-            </select>
-          </div>
-
-          <!-- USTAZ EXTRA FIELDS -->
-          <div id="ustazFields" style="display:none; margin-top:10px; width:100%;">
-
-            <div class="form-group">
-              <input type="number" id="experience" class="form-input" placeholder="Years of Experience" min="0" max="50">
-            </div>
-
-            <label style="font-size:13px; margin-top:6px;">Available days:</label>
-
-            <div class="form-group">
-              <select id="availableDays" multiple size="5">
-                <option value="monday">Monday</option>
-                <option value="tuesday">Tuesday</option>
-                <option value="wednesday">Wednesday</option>
-                <option value="thursday">Thursday</option>
-                <option value="friday">Friday</option>
-                <option value="saturday">Saturday</option>
-                <option value="sunday">Sunday</option>
-              </select>
-            </div>
-
-            <small>Hold Ctrl (or Cmd) to select multiple days</small>
-          </div>
-
-          <div class="form-group">
-            <input type="password" id="signupPassword" class="form-input" placeholder="Password">
-          </div>
-
-          <button onclick="signup()">Sign Up</button>
-
-          <p class="link">
-            Already have an account?
-            <span onclick="flipCard()">Login</span>
-          </p>
-
+          <input type="password" class="form-input" placeholder="Password">
+          <button class="form-button" onclick="signup()">Sign Up</button>
+          <p class="link">Already have an account? <span onclick="flipCard()">Login</span></p>
           <div class="back-btn" onclick="flipCard()">← Back</div>
         </div>
       </div>
@@ -127,12 +86,8 @@
         <div class="card-content">
           <h2>Enter OTP</h2>
           <p>An OTP has been sent to your phone</p>
-
-          <div class="form-group">
-            <input type="text" id="otpInput" class="form-input" placeholder="Enter OTP">
-          </div>
-
-          <button onclick="verifyOtp()">Verify OTP</button>
+          <input type="text" class="form-input" placeholder="Enter OTP">
+          <button class="form-button" onclick="verifyOtp()">Verify OTP</button>
           <div class="back-btn" onclick="backToSignup()">← Back</div>
         </div>
       </div>
@@ -142,11 +97,9 @@
         <div class="card-content">
           <h2>Welcome!</h2>
           <p>You are now logged in.</p>
-
           <div id="homeContent">
             <p>Search for Quran Ustaz, view profiles, and contact them here.</p>
           </div>
-
           <div class="back-btn" onclick="logout()">← Logout</div>
         </div>
       </div>
