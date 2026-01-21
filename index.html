@@ -21,9 +21,12 @@
       <div class="card-face front">
         <div class="card-content">
           <h2>Login</h2>
-          <input type="text" id="loginPhone" placeholder="Phone number">
-          <input type="password" id="loginPassword" placeholder="Password">
+
+          <input type="text" id="loginPhone" class="form-input" placeholder="Phone number">
+          <input type="password" id="loginPassword" class="form-input" placeholder="Password">
+
           <button onclick="login()">Login</button>
+
           <p class="link">
             Don’t have an account?
             <span onclick="flipCard()">Sign up</span>
@@ -36,16 +39,16 @@
         <div class="card-content">
           <h2>Create Account</h2>
 
-          <select id="role">
+          <select id="role" class="form-input">
             <option value="">Sign up as</option>
             <option value="parent">Parent</option>
             <option value="ustaz">Ustaz / Ustaza</option>
           </select>
 
-          <input type="text" id="fullName" placeholder="Full name">
-          <input type="text" id="signupPhone" placeholder="Phone number">
+          <input type="text" id="fullName" class="form-input" placeholder="Full name">
+          <input type="text" id="signupPhone" class="form-input" placeholder="Phone number">
 
-          <select id="subcity">
+          <select id="subcity" class="form-input">
             <option value="">Select Sub-City</option>
             <option value="bole">Bole</option>
             <option value="yeka">Yeka</option>
@@ -59,13 +62,15 @@
             <option value="gullele">Gullele</option>
           </select>
 
-          <select id="area">
+          <select id="area" class="form-input">
             <option value="">Select Area</option>
           </select>
 
           <div id="ustazFields" style="display:none; margin-top:10px;">
-            <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50">
+            <input type="number" id="experience" class="form-input" placeholder="Years of Experience" min="0" max="50">
+
             <label style="margin-top:10px; font-size:13px;">Available days:</label>
+
             <select id="availableDays" multiple size="5">
               <option value="monday">Monday</option>
               <option value="tuesday">Tuesday</option>
@@ -75,16 +80,19 @@
               <option value="saturday">Saturday</option>
               <option value="sunday">Sunday</option>
             </select>
+
             <small>Hold Ctrl (or Cmd) to select multiple days</small>
           </div>
 
-          <input type="password" id="signupPassword" placeholder="Password">
+          <input type="password" id="signupPassword" class="form-input" placeholder="Password">
+
           <button onclick="signup()">Sign Up</button>
 
           <p class="link">
             Already have an account?
             <span onclick="flipCard()">Login</span>
           </p>
+
           <div class="back-btn" onclick="flipCard()">← Back</div>
         </div>
       </div>
@@ -94,20 +102,24 @@
         <div class="card-content">
           <h2>Enter OTP</h2>
           <p>An OTP has been sent to your phone</p>
-          <input type="text" id="otpInput" placeholder="Enter OTP">
+
+          <input type="text" id="otpInput" class="form-input" placeholder="Enter OTP">
           <button onclick="verifyOtp()">Verify OTP</button>
+
           <div class="back-btn" onclick="backToSignup()">← Back</div>
         </div>
       </div>
 
-      <!-- HOME (inside card, no external redirect) -->
+      <!-- HOME -->
       <div class="card-face home">
         <div class="card-content">
           <h2>Welcome!</h2>
           <p>You are now logged in.</p>
+
           <div id="homeContent">
             <p>Search for Quran Ustaz, view profiles, and contact them here.</p>
           </div>
+
           <div class="back-btn" onclick="logout()">← Logout</div>
         </div>
       </div>
