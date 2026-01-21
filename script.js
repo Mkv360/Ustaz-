@@ -45,6 +45,8 @@ function login() {
   if (!phone || !pass) return showMessage("Enter valid phone & password");
 
   successMessage("Login successful (demo)");
+  localStorage.setItem("role", "parent"); // demo login as parent
+  localStorage.setItem("profileCompleted", "true");
   showHomeCard();
 }
 
@@ -62,7 +64,7 @@ async function signup() {
   const area = document.getElementById("area").value;
   const pass = document.getElementById("signupPassword").value.trim();
 
-  if (!role  !name  !phone  !subcity  !area || !pass) {
+  if (!role || !name || !phone || !subcity || !area || !pass) {
     return showMessage("Fill all signup fields correctly");
   }
 
@@ -82,7 +84,7 @@ async function signup() {
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
   try {
-    const res = await fetch(${BASE_URL}/send_otp.php, {
+    const res = await fetch(`${BASE_URL}/send_otp.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone })
@@ -104,6 +106,7 @@ async function signup() {
     showMessage("OTP error: " + err.message);
   }
 }
+
 // ===============================
 // VERIFY OTP → SHOW PROFILE OR HOME
 // ===============================
@@ -131,12 +134,15 @@ async function verifyOtp() {
       successMessage("OTP verified!");
       resetOtp();
 
-      // Show profile completion card if Ustaz, else go home
+      localStorage.setItem("role", signupData.role);
       if (signupData.role === "ustaz") {
+        localStorage.setItem("profileCompleted", "false");
         showProfileCard();
       } else {
+        localStorage.setItem("profileCompleted", "true");
         showHomeCard();
       }
+
     } else {
       showMessage(data.message || "Invalid or expired OTP");
     }
@@ -168,21 +174,18 @@ function submitProfile() {
   const certification = document.getElementById("certification").value.trim();
   const landmark = document.getElementById("landmark").value.trim();
 
-  // REQUIRED FIELD VALIDATION
   if (!gender || subjects.length === 0 || !bio || !languages || !mode) {
     return showMessage("Please fill all required fields in your profile");
   }
 
-  // Save profile info inside signupData
   signupData.profile = { gender, subjects, bio, photo, languages, mode, certification, landmark };
   console.log("Ustaz profile completed:", signupData.profile);
+
+  localStorage.setItem("profileCompleted", "true");
 
   successMessage("Profile completed successfully!");
   card.classList.remove("profile-active");
   showHomeCard();
-
-  // OPTIONAL: Here you can also send the profile data to your backend
-  // sendProfileToBackend(signupData);
 }
 
 // ===============================
@@ -195,12 +198,15 @@ function showHomeCard() {
   card.classList.remove("flipped");
   document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
 }
+
 // ===============================
 // LOGOUT → BACK TO LOGIN
 // ===============================
 function logout() {
   card.classList.remove("home-active");
-  card.classList.add("flipped"); // back to signup/login
+  card.classList.add("flipped");
+  localStorage.removeItem("role");
+  localStorage.removeItem("profileCompleted");
 }
 
 // ===============================
@@ -262,8 +268,19 @@ document.getElementById("role").addEventListener("change", function() {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  card.classList.remove("flipped", "otp-active", "home-active");
   document.getElementById("subcity").addEventListener("change", loadAreas);
+
+  // Restore last state
+  const role = localStorage.getItem("role");
+  const profileCompleted = localStorage.getItem("profileCompleted");
+
+  if (role === "ustaz" && profileCompleted === "false") {
+    showProfileCard();
+  } else if (role) {
+    showHomeCard();
+  } else {
+    card.classList.remove("flipped", "otp-active", "home-active", "profile-active");
+  }
 
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
