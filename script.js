@@ -62,7 +62,7 @@ async function signup() {
   const area = document.getElementById("area").value;
   const pass = document.getElementById("signupPassword").value.trim();
 
-  if (!role || !name || !phone || !subcity || !area || !pass) {
+  if (!role  !name  !phone  !subcity  !area || !pass) {
     return showMessage("Fill all signup fields correctly");
   }
 
@@ -82,7 +82,7 @@ async function signup() {
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
 
   try {
-    const res = await fetch(`${BASE_URL}/send_otp.php`, {
+    const res = await fetch(${BASE_URL}/send_otp.php, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone })
@@ -106,7 +106,7 @@ async function signup() {
 }
 
 // ===============================
-// VERIFY OTP → SHOW PROFILE OR HOME CARD
+// VERIFY OTP → SHOW HOME CARD
 // ===============================
 async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
@@ -120,7 +120,7 @@ async function verifyOtp() {
   if (!otp) return showMessage("Enter the OTP");
 
   try {
-    const res = await fetch(`${BASE_URL}/verify_otp.php`, {
+    const res = await fetch(${BASE_URL}/verify_otp.php, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone: signupData.phone, otp })
@@ -128,16 +128,10 @@ async function verifyOtp() {
 
     const data = await res.json();
 
-    if (data.success) {
+if (data.success) {
       successMessage("OTP verified!");
       resetOtp();
-
-      // If role is ustaz → show profile completion, else → home
-      if (signupData.role === "ustaz") {
-        showProfileCard();
-      } else {
-        showHomeCard();
-      }
+      showHomeCard();
     } else {
       showMessage(data.message || "Invalid or expired OTP");
     }
@@ -152,38 +146,7 @@ async function verifyOtp() {
 function showHomeCard() {
   card.classList.add("home-active");
   card.classList.remove("otp-active");
-  card.classList.remove("profile-active");
   card.classList.remove("flipped");
-}
-
-// ===============================
-// SHOW PROFILE CARD (USTAZ PROFILE COMPLETION)
-function showProfileCard() {
-  card.classList.add("profile-active");
-  card.classList.remove("otp-active");
-  card.classList.remove("home-active");
-}
-
-// ===============================
-// SUBMIT PROFILE → HOME
-// ===============================
-function submitProfile() {
-  // Gather profile info
-  const gender = document.querySelector('input[name="gender"]:checked')?.value || "";
-  const subjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(s => s.value);
-  const bio = document.getElementById("bio").value.trim();
-  const certification = document.getElementById("certification").value.trim();
-  const languages = document.getElementById("languages").value.trim();
-  const teachingMode = Array.from(document.querySelectorAll('input[name="teachingMode"]:checked')).map(m => m.value);
-  const landmarks = document.getElementById("landmarks").value.trim();
-
-  if (!gender || subjects.length === 0 || !bio || teachingMode.length === 0) {
-    return showMessage("Please fill all required fields");
-  }
-
-  signupData.profile = { gender, subjects, bio, certification, languages, teachingMode, landmarks };
-  successMessage("Profile completed!");
-  showHomeCard();
 }
 
 // ===============================
@@ -253,7 +216,7 @@ document.getElementById("role").addEventListener("change", function() {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  card.classList.remove("flipped", "otp-active", "home-active", "profile-active");
+  card.classList.remove("flipped", "otp-active", "home-active");
   document.getElementById("subcity").addEventListener("change", loadAreas);
 
   if (window.Telegram?.WebApp) {
