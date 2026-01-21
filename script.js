@@ -104,9 +104,8 @@ async function signup() {
     showMessage("OTP error: " + err.message);
   }
 }
-
 // ===============================
-// VERIFY OTP → SHOW HOME OR PROFILE CARD
+// VERIFY OTP → SHOW PROFILE OR HOME
 // ===============================
 async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
@@ -145,6 +144,7 @@ async function verifyOtp() {
     showMessage("Verification error: " + err.message);
   }
 }
+
 // ===============================
 // SHOW PROFILE COMPLETION CARD
 // ===============================
@@ -152,6 +152,48 @@ function showProfileCard() {
   card.classList.add("profile-active");
   card.classList.remove("otp-active");
   card.classList.remove("home-active");
+  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+}
+
+// ===============================
+// SUBMIT USTAZ PROFILE
+// ===============================
+function submitProfile() {
+  const gender = document.getElementById("gender").value;
+  const subjects = Array.from(document.querySelectorAll("#subjects input:checked")).map(cb => cb.value);
+  const bio = document.getElementById("bio").value.trim();
+  const photo = document.getElementById("photo").files[0];
+  const languages = document.getElementById("languages").value.trim();
+  const mode = document.getElementById("mode").value;
+  const certification = document.getElementById("certification").value.trim();
+  const landmark = document.getElementById("landmark").value.trim();
+
+  // REQUIRED FIELD VALIDATION
+  if (!gender || subjects.length === 0 || !bio || !languages || !mode) {
+    return showMessage("Please fill all required fields in your profile");
+  }
+
+  // Save profile info inside signupData
+  signupData.profile = { gender, subjects, bio, photo, languages, mode, certification, landmark };
+  console.log("Ustaz profile completed:", signupData.profile);
+
+  successMessage("Profile completed successfully!");
+  card.classList.remove("profile-active");
+  showHomeCard();
+
+  // OPTIONAL: Here you can also send the profile data to your backend
+  // sendProfileToBackend(signupData);
+}
+
+// ===============================
+// SHOW HOME CARD
+// ===============================
+function showHomeCard() {
+  card.classList.add("home-active");
+  card.classList.remove("otp-active");
+  card.classList.remove("profile-active");
+  card.classList.remove("flipped");
+  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
 }
 // ===============================
 // LOGOUT → BACK TO LOGIN
