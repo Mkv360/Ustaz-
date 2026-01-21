@@ -14,7 +14,6 @@ body {
   overflow: hidden; /* Telegram-safe */
 }
 
-/* APP WRAPPER */
 .app {
   width: 100%;
   max-width: 380px;
@@ -47,7 +46,7 @@ body {
   position: relative;
   width: 320px;
   max-width: 100%;
-  min-height: 440px; /* reduced height */
+  min-height: 440px;
   margin: 0 auto;
   transform-style: preserve-3d;
   transition: transform 0.7s ease;
@@ -106,14 +105,14 @@ body {
   padding-bottom: 6px;
 }
 
-/* INPUTS */
+/* ===== UNIFIED INPUT & SELECT SIZE ===== */
 .form-input {
   width: 88%;
   max-width: 260px;
-  height: 36px;
+  height: 42px;       /* MATCH Available days / experience */
   padding: 0 12px;
   margin: 6px 0;
-  border-radius: 20px;
+  border-radius: 14px;
   border: none;
   outline: none;
   font-size: 13px;
@@ -131,29 +130,30 @@ select.form-input {
   cursor: pointer;
 }
 
-/* MULTI SELECT */
+/* MULTI SELECT (Available days) */
 #availableDays {
   width: 88%;
   max-width: 260px;
-  min-height: 95px;
-  padding: 6px;
+  min-height: 42px;  /* same as other inputs now */
+  padding: 8px;
   border-radius: 14px;
   font-size: 13px;
   margin: 6px 0;
 }
 
-/* BUTTONS */
+/* BUTTONS (smaller than inputs) */
 button {
-  width: 88%;
-  max-width: 260px;
-  height: 36px;
+  width: 70%;       /* smaller than input boxes */
+  max-width: 200px;
+  height: 32px;     /* slightly smaller */
   margin: 10px auto;
-  border-radius: 20px;
-  font-size: 14px;
+  border-radius: 16px;
+  font-size: 13px;
   background: #2ecc71;
   color: #000;
   border: none;
   cursor: pointer;
+  display: block;
 }
 
 button:active {
