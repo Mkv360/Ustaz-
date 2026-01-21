@@ -5,59 +5,48 @@
 
 body {
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
   background: linear-gradient(180deg, #0b132b, #1c2541);
   display: flex;
   justify-content: center;
-  align-items: center; /* vertical centering */
   color: #fff;
-  overflow: hidden;
 }
 
+/* APP LAYOUT */
 .app {
   width: 100%;
   max-width: 380px;
   text-align: center;
-  padding: 10px;
+  padding: 32px 16px 24px;
 }
 
+/* TITLE AREA */
 .title {
-  margin-bottom: 4px;
-  font-size: 22px;
+  font-size: 24px;
+  margin-bottom: 6px;
 }
 
 .subtitle {
   font-size: 13px;
   opacity: 0.8;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 /* CARD CONTAINER */
 .card-container {
-  perspective: 1000px;
   display: flex;
   justify-content: center;
-  align-items: center; /* vertically center the card */
-  width: 100%;
-  height: 100%;
+  align-items: center;
 }
 
 /* CARD */
 .card {
   position: relative;
   width: 320px;
-  max-width: 90%;
-  min-height: 480px;
-  max-height: 90vh; /* prevent overflow */
-  margin: 0 auto;
+  max-width: 100%;
+  min-height: 460px;
   transform-style: preserve-3d;
   transition: transform 0.7s ease;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* vertical centering inside card */
-  align-items: center;
-  padding: 20px 0;
 }
 
 .card.flipped {
@@ -67,19 +56,16 @@ body {
 /* CARD FACES */
 .card-face {
   position: absolute;
-  width: 100%;
-  padding: 20px;
-  border-radius: 18px;
+  inset: 0;
+  padding: 24px 16px;
+  border-radius: 20px;
   backdrop-filter: blur(14px);
   background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
   backface-visibility: hidden;
-  overflow-y: auto;
-  max-height: 90vh;
 
   display: flex;
-  flex-direction: column;
-  justify-content: center; /* vertical center content inside card face */
+  justify-content: center;
   align-items: center;
 }
 
@@ -103,36 +89,32 @@ body {
 
 /* CARD CONTENT */
 .card-content {
-  width: 90%;
+  width: 100%;
+  max-width: 260px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
-/* UNIFORM INPUTS */
+/* INPUTS */
 .form-input,
 .form-input-multi {
-  width: 90%;
-  max-width: 260px;
-  height: 44px; /* uniform height for all inputs */
-  padding: 0 12px;
-  margin: 6px 0;
-  border-radius: 14px;
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 16px;
   border: none;
-  outline: none;
   font-size: 13px;
+  outline: none;
 }
 
-/* Multi-select for Available Days */
 .form-input-multi {
-  min-height: 44px; /* same height as normal input */
-  padding: 6px 8px;
+  height: auto;
+  padding: 6px 10px;
 }
 
 /* SELECT ARROW */
-select.form-input,
-select.form-input-multi {
+select {
   appearance: none;
   background-color: #fff;
   background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
@@ -140,22 +122,18 @@ select.form-input-multi {
   background-position: right 14px center;
   background-size: 16px;
   padding-right: 36px;
-  cursor: pointer;
 }
 
-/* BUTTONS */
+/* BUTTON */
 .form-button {
-  width: 75%;
-  max-width: 180px;
-  height: 34px;
-  margin: 8px auto;
-  border-radius: 16px;
+  height: 36px;
+  border-radius: 18px;
   font-size: 13px;
   background: #2ecc71;
   color: #000;
   border: none;
   cursor: pointer;
-  display: block;
+  margin-top: 6px;
 }
 
 .form-button:active {
@@ -164,7 +142,6 @@ select.form-input-multi {
 
 /* LINKS */
 .link {
-  margin-top: 10px;
   font-size: 12.5px;
 }
 
@@ -174,15 +151,14 @@ select.form-input-multi {
 }
 
 .back-btn {
-  margin-top: 8px;
   font-size: 12.5px;
   opacity: 0.8;
   cursor: pointer;
+  margin-top: 6px;
 }
 
-/* HOME CONTENT */
+/* HOME */
 #homeContent {
-  margin-top: 16px;
   font-size: 13.5px;
   text-align: left;
 }
