@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Barakah Link</title>
-  <script> src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- TELEGRAM SDK (FIXED) -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,91 +19,24 @@
   <div class="card-container">
     <div class="card" id="card">
 
-      <!-- LOGIN -->
       <div class="card-face front">
         <div class="card-content">
           <h2>Login</h2>
-          <input type="text" class="form-input" placeholder="Phone number">
+          <input class="form-input" placeholder="Phone number">
           <input type="password" class="form-input" placeholder="Password">
-          <button class="form-button" onclick="login()">Login</button>
-          <p class="link">Don’t have an account? <span onclick="flipCard()">Sign up</span></p>
+          <button class="form-button">Login</button>
+          <p class="link">Don’t have an account? <span>Sign up</span></p>
         </div>
       </div>
 
-      <!-- SIGNUP -->
       <div class="card-face back">
         <div class="card-content">
           <h2>Create Account</h2>
-          <select class="form-input" id="role">
-            <option value="">Sign up as</option>
-            <option value="parent">Parent</option>
-            <option value="ustaz">Ustaz / Ustaza</option>
-          </select>
-
-          <input type="text" class="form-input" placeholder="Full name">
-          <input type="text" class="form-input" placeholder="Phone number">
-
-          <select class="form-input" id="subcity">
-            <option value="">Select Sub-City</option>
-            <option value="bole">Bole</option>
-            <option value="yeka">Yeka</option>
-            <option value="kirkos">Kirkos</option>
-            <option value="lideta">Lideta</option>
-            <option value="arada">Arada</option>
-            <option value="addisketema">Addis Ketema</option>
-            <option value="nifassilk">Nifas Silk</option>
-            <option value="kolfe">Kolfe Keranio</option>
-            <option value="akakikaliti">Akaki Kality</option>
-            <option value="gullele">Gullele</option>
-          </select>
-
-          <select class="form-input" id="area">
-            <option value="">Select Area</option>
-          </select>
-
-          <div id="ustazFields" style="display:none; width:100%; text-align:center; margin-top:10px;">
-            <input type="number" class="form-input" placeholder="Years of Experience" min="0" max="50">
-            <label style="font-size:13px; margin-top:4px; display:block;">Available days:</label>
-            <select class="form-input form-input-multi" id="availableDays" multiple size="5">
-              <option value="monday">Monday</option>
-              <option value="tuesday">Tuesday</option>
-              <option value="wednesday">Wednesday</option>
-              <option value="thursday">Thursday</option>
-              <option value="friday">Friday</option>
-              <option value="saturday">Saturday</option>
-              <option value="sunday">Sunday</option>
-            </select>
-            <small>Hold Ctrl/Cmd to select multiple days</small>
-          </div>
-
+          <input class="form-input" placeholder="Full name">
+          <input class="form-input" placeholder="Phone number">
           <input type="password" class="form-input" placeholder="Password">
-          <button class="form-button" onclick="signup()">Sign Up</button>
-
-          <p class="link">Already have an account? <span onclick="flipCard()">Login</span></p>
-          <div class="back-btn" onclick="flipCard()">← Back</div>
-        </div>
-      </div>
-
-      <!-- OTP -->
-      <div class="card-face otp">
-        <div class="card-content">
-          <h2>Enter OTP</h2>
-          <p>An OTP has been sent to your phone</p>
-          <input type="text" class="form-input" placeholder="Enter OTP">
-          <button class="form-button" onclick="verifyOtp()">Verify OTP</button>
-          <div class="back-btn" onclick="backToSignup()">← Back</div>
-        </div>
-      </div>
-
-      <!-- HOME -->
-      <div class="card-face home">
-        <div class="card-content">
-          <h2>Welcome!</h2>
-          <p>You are now logged in.</p>
-          <div id="homeContent">
-            <p>Search for Quran Ustaz, view profiles, and contact them here.</p>
-          </div>
-          <div class="back-btn" onclick="logout()">← Logout</div>
+          <button class="form-button">Sign Up</button>
+          <p class="link">Already have an account? <span>Login</span></p>
         </div>
       </div>
 
@@ -108,6 +44,26 @@
   </div>
 </div>
 
-<script src="script.js"></script>
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.expand();
+
+  function applyTelegramLayout() {
+    const vh = tg.viewportHeight;
+    const safeTop = tg.safeAreaInsetTop || 0;
+    const safeBottom = tg.safeAreaInsetBottom || 0;
+
+    document.documentElement.style.setProperty("--tg-vh", vh + "px");
+    document.documentElement.style.setProperty("--safe-top", safeTop + "px");
+    document.documentElement.style.setProperty("--safe-bottom", safeBottom + "px");
+  }
+
+  applyTelegramLayout();
+  tg.onEvent("viewportChanged", applyTelegramLayout);
+
+  /* LOCK SCROLL */
+  document.body.style.overflow = "hidden";
+</script>
+
 </body>
 </html>
