@@ -1,106 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-  <title>Quran Ustaz Finder</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Barakah Link</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
 </head>
 <body>
 
-  <!-- ===== Landing Page (Flip Card: Login / Signup) ===== -->
-  <section id="landing" class="centered">
-    <div class="flip-card">
-      <div class="flip-card-inner">
+<div class="app">
+  <h1 class="title">Quran Ustaz Finder</h1>
+  <p class="subtitle">Find a trusted Quran teacher near you</p>
 
-        <!-- Front: Login -->
-        <div class="flip-card-front glass-card">
+  <div class="card-container">
+    <div class="card" id="card">
+
+      <!-- LOGIN -->
+      <div class="card-face front">
+        <div class="card-content">
           <h2>Login</h2>
-          <input type="tel" id="login-phone" placeholder="Phone Number">
-          <input type="password" id="login-password" placeholder="Password">
-          <button id="login-btn">Login</button>
-          <p>Don't have an account? <span class="link" id="show-signup">Sign Up</span></p>
+          <input type="text" id="loginPhone" placeholder="Phone number">
+          <input type="password" id="loginPassword" placeholder="Password">
+          <button onclick="login()">Login</button>
+          <p class="link">
+            Don’t have an account?
+            <span onclick="flipCard()">Sign up</span>
+          </p>
         </div>
+      </div>
 
-        <!-- Back: Signup -->
-        <div class="flip-card-back glass-card">
-          <h2>Sign Up</h2>
+      <!-- SIGNUP -->
+      <div class="card-face back">
+        <div class="card-content">
+          <h2>Create Account</h2>
+
           <select id="role">
+            <option value="">Sign up as</option>
             <option value="parent">Parent</option>
-            <option value="ustaz">Ustaz</option>
+            <option value="ustaz">Ustaz / Ustaza</option>
           </select>
-          <input type="text" id="full-name" placeholder="Full Name">
-          <input type="tel" id="signup-phone" placeholder="Phone Number">
-          <select id="gender" style="display:none">
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
+
+          <input type="text" id="fullName" placeholder="Full name">
+          <input type="text" id="signupPhone" placeholder="Phone number">
+
           <select id="subcity">
-            <option value="">Select Subcity</option>
-            <option value="subcity1">Subcity 1</option>
-            <option value="subcity2">Subcity 2</option>
+            <option value="">Select Sub-City</option>
+            <option value="bole">Bole</option>
+            <option value="yeka">Yeka</option>
+            <option value="kirkos">Kirkos</option>
+            <option value="lideta">Lideta</option>
+            <option value="arada">Arada</option>
+            <option value="addisketema">Addis Ketema</option>
+            <option value="nifassilk">Nifas Silk</option>
+            <option value="kolfe">Kolfe Keranio</option>
+            <option value="akakikaliti">Akaki Kality</option>
+            <option value="gullele">Gullele</option>
           </select>
+
           <select id="area">
             <option value="">Select Area</option>
           </select>
-          <input type="number" id="experience" placeholder="Experience (yrs)" style="display:none">
-          <input type="password" id="signup-password" placeholder="Password">
-          <button id="signup-btn">Sign Up</button>
-          <button class="back-btn" id="back-to-login">Back</button>
+
+          <div id="ustazFields" style="display:none; margin-top:10px;">
+            <input type="number" id="experience" placeholder="Years of Experience" min="0" max="50">
+            <label style="margin-top:10px; font-size:13px;">Available days:</label>
+            <select id="availableDays" multiple size="5">
+              <option value="monday">Monday</option>
+              <option value="tuesday">Tuesday</option>
+              <option value="wednesday">Wednesday</option>
+              <option value="thursday">Thursday</option>
+              <option value="friday">Friday</option>
+              <option value="saturday">Saturday</option>
+              <option value="sunday">Sunday</option>
+            </select>
+            <small>Hold Ctrl (or Cmd) to select multiple days</small>
+          </div>
+
+          <input type="password" id="signupPassword" placeholder="Password">
+          <button onclick="signup()">Sign Up</button>
+
+          <p class="link">
+            Already have an account?
+            <span onclick="flipCard()">Login</span>
+          </p>
+          <div class="back-btn" onclick="flipCard()">← Back</div>
         </div>
-
       </div>
-    </div>
-  </section>
 
-  <!-- ===== OTP Verification Section ===== -->
-  <section id="otp-section" class="centered" style="display:none;">
-    <h2>Verify Phone Number</h2>
-    <p>Enter the OTP sent to your phone</p>
-    <div class="otp-inputs">
-      <input type="text" maxlength="1">
-      <input type="text" maxlength="1">
-      <input type="text" maxlength="1">
-      <input type="text" maxlength="1">
-    </div>
-    <div class="otp-buttons">
-      <button id="resend-otp">Resend OTP</button>
-      <button id="verify-otp">Verify & Continue</button>
-    </div>
-  </section>
-
-  <!-- ===== Welcome / Home Section ===== -->
-  <section id="home-section" style="display:none;">
-    <header>
-      <h2>Welcome, <span id="user-name"></span>!</h2>
-      <button id="logout-btn">Logout</button>
-    </header>
-    <aside class="side-menu">
-      <ul>
-        <li>Home</li>
-        <li>About</li>
-        <li>Contact Us</li>
-      </ul>
-    </aside>
-    <main>
-      <div class="filters">
-        <select id="filter-subcity">
-          <option value="">All Subcities</option>
-        </select>
-        <select id="filter-area">
-          <option value="">All Areas</option>
-        </select>
-        <select id="filter-gender">
-          <option value="">All Genders</option>
-        </select>
+      <!-- OTP -->
+      <div class="card-face otp">
+        <div class="card-content">
+          <h2>Enter OTP</h2>
+          <p>An OTP has been sent to your phone</p>
+          <input type="text" id="otpInput" placeholder="Enter OTP">
+          <button onclick="verifyOtp()">Verify OTP</button>
+          <div class="back-btn" onclick="backToSignup()">← Back</div>
+        </div>
       </div>
-      <div id="ustaz-cards" class="cards-container">
-        <!-- Dynamic Ustaz cards inserted here -->
-      </div>
-    </main>
-  </section>
 
+      <!-- HOME (inside card, no external redirect) -->
+      <div class="card-face home">
+        <div class="card-content">
+          <h2>Welcome!</h2>
+          <p>You are now logged in.</p>
+          <div id="homeContent">
+            <p>Search for Quran Ustaz, view profiles, and contact them here.</p>
+          </div>
+          <div class="back-btn" onclick="logout()">← Logout</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
