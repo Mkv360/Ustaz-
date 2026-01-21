@@ -14,20 +14,23 @@ body {
   overflow: hidden; /* Telegram-safe */
 }
 
+/* APP WRAPPER */
 .app {
   width: 100%;
   max-width: 380px;
   text-align: center;
+  padding: 10px;
 }
 
 .title {
-  margin-bottom: 5px;
+  margin-bottom: 4px;
+  font-size: 22px;
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: 13px;
   opacity: 0.8;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 /* CARD CONTAINER */
@@ -37,18 +40,17 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
 }
 
 /* CARD */
 .card {
   position: relative;
-  width: 340px;
-  max-width: 340px;
-  min-height: 480px;
+  width: 320px;
+  max-width: 100%;
+  min-height: 440px; /* reduced height */
   margin: 0 auto;
   transform-style: preserve-3d;
-  transition: transform 0.7s;
+  transition: transform 0.7s ease;
 }
 
 .card.flipped {
@@ -60,13 +62,18 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  padding: 25px;
-  border-radius: 20px;
+  padding: 22px;
+  border-radius: 18px;
   backdrop-filter: blur(14px);
   background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.3);
   backface-visibility: hidden;
   overflow: hidden;
+}
+
+.card-face h2 {
+  margin-bottom: 8px;
+  font-size: 18px;
 }
 
 .back {
@@ -93,66 +100,60 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 8px;
   overflow-y: auto;
   max-height: 100%;
-  gap: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 6px;
 }
 
-/* ===== SHARED INPUT STYLE ===== */
+/* INPUTS */
 .form-input {
-  width: 85%;
+  width: 88%;
   max-width: 260px;
-  height: 38px;
+  height: 36px;
   padding: 0 12px;
-  margin: 8px 0;
-  border-radius: 22px;
+  margin: 6px 0;
+  border-radius: 20px;
   border: none;
   outline: none;
-  font-size: 13.5px;
+  font-size: 13px;
 }
 
-/* SELECTS (same size as inputs) */
+/* SELECTS */
 select.form-input {
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   background-color: #fff;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
-  background-position: right 15px center;
-  background-size: 18px;
-  padding-right: 40px;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 36px;
   cursor: pointer;
 }
 
-/* MULTI SELECT (USTAZ DAYS) */
+/* MULTI SELECT */
 #availableDays {
-  width: 85%;
+  width: 88%;
   max-width: 260px;
-  min-height: 110px;
-  padding: 8px;
+  min-height: 95px;
+  padding: 6px;
   border-radius: 14px;
   font-size: 13px;
-  margin: 8px 0;
+  margin: 6px 0;
 }
 
-/* BUTTONS (MATCH INPUT WIDTH) */
-.front button,
-.back button,
-.card-face.otp button,
-.card-face.home button {
-  width: 85%;
+/* BUTTONS */
+button {
+  width: 88%;
   max-width: 260px;
-  height: 38px;
-  margin: 12px auto;
-  border-radius: 22px;
+  height: 36px;
+  margin: 10px auto;
+  border-radius: 20px;
   font-size: 14px;
   background: #2ecc71;
   color: #000;
   border: none;
   cursor: pointer;
-  display: block;
 }
 
 button:active {
@@ -161,8 +162,8 @@ button:active {
 
 /* LINKS */
 .link {
-  margin-top: 15px;
-  font-size: 13px;
+  margin-top: 10px;
+  font-size: 12.5px;
 }
 
 .link span {
@@ -170,16 +171,17 @@ button:active {
   cursor: pointer;
 }
 
+/* BACK BUTTON */
 .back-btn {
-  margin-top: 10px;
-  font-size: 13px;
+  margin-top: 8px;
+  font-size: 12.5px;
   opacity: 0.8;
   cursor: pointer;
 }
 
 /* HOME CONTENT */
 #homeContent {
-  margin-top: 20px;
-  font-size: 14px;
+  margin-top: 16px;
+  font-size: 13.5px;
   text-align: left;
 }
