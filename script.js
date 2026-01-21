@@ -106,7 +106,7 @@ async function signup() {
 }
 
 // ===============================
-// VERIFY OTP → SHOW HOME CARD
+// VERIFY OTP → SHOW HOME OR PROFILE CARD
 // ===============================
 async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
@@ -120,7 +120,7 @@ async function verifyOtp() {
   if (!otp) return showMessage("Enter the OTP");
 
   try {
-    const res = await fetch(${BASE_URL}/verify_otp.php, {
+    const res = await fetch(`${BASE_URL}/verify_otp.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone: signupData.phone, otp })
@@ -128,10 +128,16 @@ async function verifyOtp() {
 
     const data = await res.json();
 
-if (data.success) {
+    if (data.success) {
       successMessage("OTP verified!");
       resetOtp();
-      showHomeCard();
+
+      // Show profile completion card if Ustaz, else go home
+      if (signupData.role === "ustaz") {
+        showProfileCard();
+      } else {
+        showHomeCard();
+      }
     } else {
       showMessage(data.message || "Invalid or expired OTP");
     }
@@ -139,16 +145,14 @@ if (data.success) {
     showMessage("Verification error: " + err.message);
   }
 }
-
 // ===============================
-// SHOW HOME CARD
+// SHOW PROFILE COMPLETION CARD
 // ===============================
-function showHomeCard() {
-  card.classList.add("home-active");
+function showProfileCard() {
+  card.classList.add("profile-active");
   card.classList.remove("otp-active");
-  card.classList.remove("flipped");
+  card.classList.remove("home-active");
 }
-
 // ===============================
 // LOGOUT → BACK TO LOGIN
 // ===============================
