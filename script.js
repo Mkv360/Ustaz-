@@ -5,7 +5,12 @@ const card = document.getElementById("card");
 
 function flipCard() {
   card.classList.toggle("flipped");
+  scrollCardToTop();
+}
+
+function scrollCardToTop() {
   document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+  if (window.Telegram?.WebApp) Telegram.WebApp.expand();
 }
 
 // ===============================
@@ -99,6 +104,7 @@ async function signup() {
       document.querySelector("button[onclick='signup()']").disabled = true;
       card.classList.add("otp-active");
       card.classList.remove("flipped");
+      scrollCardToTop();
     } else {
       showMessage(data.message || "Failed to send OTP");
     }
@@ -158,7 +164,7 @@ function showProfileCard() {
   card.classList.add("profile-active");
   card.classList.remove("otp-active");
   card.classList.remove("home-active");
-  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+  scrollCardToTop();
 }
 
 // ===============================
@@ -196,7 +202,7 @@ function showHomeCard() {
   card.classList.remove("otp-active");
   card.classList.remove("profile-active");
   card.classList.remove("flipped");
-  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+  scrollCardToTop();
 }
 
 // ===============================
