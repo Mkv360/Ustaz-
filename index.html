@@ -1,51 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login / Signup</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>Quran Ustaz Finder</title>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
 
-<div class="container">
-  <div class="card" id="card">
+  <!-- ===== Landing Page (Flip Card: Login / Signup) ===== -->
+  <section id="landing" class="centered">
+    <div class="flip-card">
+      <div class="flip-card-inner">
 
-    <!-- LOGIN -->
-    <div class="card-face front">
-      <h2>Login</h2>
+        <!-- Front: Login -->
+        <div class="flip-card-front glass-card">
+          <h2>Login</h2>
+          <input type="tel" id="login-phone" placeholder="Phone Number">
+          <input type="password" id="login-password" placeholder="Password">
+          <button id="login-btn">Login</button>
+          <p>Don't have an account? <span class="link" id="show-signup">Sign Up</span></p>
+        </div>
 
-      <input type="text" placeholder="Email">
-      <input type="password" placeholder="Password">
+        <!-- Back: Signup -->
+        <div class="flip-card-back glass-card">
+          <h2>Sign Up</h2>
+          <select id="role">
+            <option value="parent">Parent</option>
+            <option value="ustaz">Ustaz</option>
+          </select>
+          <input type="text" id="full-name" placeholder="Full Name">
+          <input type="tel" id="signup-phone" placeholder="Phone Number">
+          <select id="gender" style="display:none">
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          <select id="subcity">
+            <option value="">Select Subcity</option>
+            <option value="subcity1">Subcity 1</option>
+            <option value="subcity2">Subcity 2</option>
+          </select>
+          <select id="area">
+            <option value="">Select Area</option>
+          </select>
+          <input type="number" id="experience" placeholder="Experience (yrs)" style="display:none">
+          <input type="password" id="signup-password" placeholder="Password">
+          <button id="signup-btn">Sign Up</button>
+          <button class="back-btn" id="back-to-login">Back</button>
+        </div>
 
-      <button>Login</button>
-
-      <p class="switch">
-        Don’t have an account?
-        <span onclick="flipCard()">Sign up</span>
-      </p>
+      </div>
     </div>
+  </section>
 
-    <!-- SIGNUP -->
-    <div class="card-face back">
-      <h2>Sign Up</h2>
-
-      <input type="text" placeholder="Full Name">
-      <input type="email" placeholder="Email">
-      <input type="password" placeholder="Password">
-
-      <button>Create Account</button>
-
-      <p class="switch">
-        Already have an account?
-        <span onclick="flipCard()">Login</span>
-      </p>
+  <!-- ===== OTP Verification Section ===== -->
+  <section id="otp-section" class="centered" style="display:none;">
+    <h2>Verify Phone Number</h2>
+    <p>Enter the OTP sent to your phone</p>
+    <div class="otp-inputs">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
     </div>
+    <div class="otp-buttons">
+      <button id="resend-otp">Resend OTP</button>
+      <button id="verify-otp">Verify & Continue</button>
+    </div>
+  </section>
 
-  </div>
-</div>
+  <!-- ===== Welcome / Home Section ===== -->
+  <section id="home-section" style="display:none;">
+    <header>
+      <h2>Welcome, <span id="user-name"></span>!</h2>
+      <button id="logout-btn">Logout</button>
+    </header>
+    <aside class="side-menu">
+      <ul>
+        <li>Home</li>
+        <li>About</li>
+        <li>Contact Us</li>
+      </ul>
+    </aside>
+    <main>
+      <div class="filters">
+        <select id="filter-subcity">
+          <option value="">All Subcities</option>
+        </select>
+        <select id="filter-area">
+          <option value="">All Areas</option>
+        </select>
+        <select id="filter-gender">
+          <option value="">All Genders</option>
+        </select>
+      </div>
+      <div id="ustaz-cards" class="cards-container">
+        <!-- Dynamic Ustaz cards inserted here -->
+      </div>
+    </main>
+  </section>
 
-<script src="script.js"></script>
 </body>
 </html>
