@@ -106,7 +106,7 @@ async function signup() {
 }
 
 // ===============================
-// VERIFY OTP → SHOW HOME CARD
+// VERIFY OTP → SHOW PROFILE OR HOME CARD
 // ===============================
 async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
@@ -131,7 +131,13 @@ async function verifyOtp() {
     if (data.success) {
       successMessage("OTP verified!");
       resetOtp();
-      showHomeCard();
+
+      // If role is ustaz → show profile completion, else → home
+      if (signupData.role === "ustaz") {
+        showProfileCard();
+      } else {
+        showHomeCard();
+      }
     } else {
       showMessage(data.message || "Invalid or expired OTP");
     }
@@ -146,7 +152,38 @@ async function verifyOtp() {
 function showHomeCard() {
   card.classList.add("home-active");
   card.classList.remove("otp-active");
+  card.classList.remove("profile-active");
   card.classList.remove("flipped");
+}
+
+// ===============================
+// SHOW PROFILE CARD (USTAZ PROFILE COMPLETION)
+function showProfileCard() {
+  card.classList.add("profile-active");
+  card.classList.remove("otp-active");
+  card.classList.remove("home-active");
+}
+
+// ===============================
+// SUBMIT PROFILE → HOME
+// ===============================
+function submitProfile() {
+  // Gather profile info
+  const gender = document.querySelector('input[name="gender"]:checked')?.value || "";
+  const subjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(s => s.value);
+  const bio = document.getElementById("bio").value.trim();
+  const certification = document.getElementById("certification").value.trim();
+  const languages = document.getElementById("languages").value.trim();
+  const teachingMode = Array.from(document.querySelectorAll('input[name="teachingMode"]:checked')).map(m => m.value);
+  const landmarks = document.getElementById("landmarks").value.trim();
+
+  if (!gender || subjects.length === 0 || !bio || teachingMode.length === 0) {
+    return showMessage("Please fill all required fields");
+  }
+
+  signupData.profile = { gender, subjects, bio, certification, languages, teachingMode, landmarks };
+  successMessage("Profile completed!");
+  showHomeCard();
 }
 
 // ===============================
@@ -216,7 +253,7 @@ document.getElementById("role").addEventListener("change", function() {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  card.classList.remove("flipped", "otp-active", "home-active");
+  card.classList.remove("flipped", "otp-active", "home-active", "profile-active");
   document.getElementById("subcity").addEventListener("change", loadAreas);
 
   if (window.Telegram?.WebApp) {
