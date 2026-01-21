@@ -2,68 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Barakah Link</title>
-
-  <!-- TELEGRAM SDK (FIXED) -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login / Signup</title>
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="app">
-  <h1 class="title">Quran Ustaz Finder</h1>
-  <p class="subtitle">Find a trusted Quran teacher near you</p>
+<div class="container">
+  <div class="card" id="card">
 
-  <div class="card-container">
-    <div class="card" id="card">
+    <!-- LOGIN -->
+    <div class="card-face front">
+      <h2>Login</h2>
 
-      <div class="card-face front">
-        <div class="card-content">
-          <h2>Login</h2>
-          <input class="form-input" placeholder="Phone number">
-          <input type="password" class="form-input" placeholder="Password">
-          <button class="form-button">Login</button>
-          <p class="link">Don’t have an account? <span>Sign up</span></p>
-        </div>
-      </div>
+      <input type="text" placeholder="Email">
+      <input type="password" placeholder="Password">
 
-      <div class="card-face back">
-        <div class="card-content">
-          <h2>Create Account</h2>
-          <input class="form-input" placeholder="Full name">
-          <input class="form-input" placeholder="Phone number">
-          <input type="password" class="form-input" placeholder="Password">
-          <button class="form-button">Sign Up</button>
-          <p class="link">Already have an account? <span>Login</span></p>
-        </div>
-      </div>
+      <button>Login</button>
 
+      <p class="switch">
+        Don’t have an account?
+        <span onclick="flipCard()">Sign up</span>
+      </p>
     </div>
+
+    <!-- SIGNUP -->
+    <div class="card-face back">
+      <h2>Sign Up</h2>
+
+      <input type="text" placeholder="Full Name">
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Password">
+
+      <button>Create Account</button>
+
+      <p class="switch">
+        Already have an account?
+        <span onclick="flipCard()">Login</span>
+      </p>
+    </div>
+
   </div>
 </div>
 
-<script>
-  const tg = window.Telegram.WebApp;
-  tg.expand();
-
-  function applyTelegramLayout() {
-    const vh = tg.viewportHeight;
-    const safeTop = tg.safeAreaInsetTop || 0;
-    const safeBottom = tg.safeAreaInsetBottom || 0;
-
-    document.documentElement.style.setProperty("--tg-vh", vh + "px");
-    document.documentElement.style.setProperty("--safe-top", safeTop + "px");
-    document.documentElement.style.setProperty("--safe-bottom", safeBottom + "px");
-  }
-
-  applyTelegramLayout();
-  tg.onEvent("viewportChanged", applyTelegramLayout);
-
-  /* LOCK SCROLL */
-  document.body.style.overflow = "hidden";
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
