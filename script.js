@@ -5,12 +5,7 @@ const card = document.getElementById("card");
 
 function flipCard() {
   card.classList.toggle("flipped");
-  scrollCardToTop();
-}
-
-function scrollCardToTop() {
   document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
-  if (window.Telegram?.WebApp) Telegram.WebApp.expand();
 }
 
 // ===============================
@@ -48,10 +43,7 @@ function login() {
   const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
   const pass = document.getElementById("loginPassword").value.trim();
   if (!phone || !pass) return showMessage("Enter valid phone & password");
-
   successMessage("Login successful (demo)");
-  localStorage.setItem("role", "parent"); // demo login as parent
-  localStorage.setItem("profileCompleted", "true");
   showHomeCard();
 }
 
@@ -104,7 +96,6 @@ async function signup() {
       document.querySelector("button[onclick='signup()']").disabled = true;
       card.classList.add("otp-active");
       card.classList.remove("flipped");
-      scrollCardToTop();
     } else {
       showMessage(data.message || "Failed to send OTP");
     }
@@ -140,15 +131,12 @@ async function verifyOtp() {
       successMessage("OTP verified!");
       resetOtp();
 
-      localStorage.setItem("role", signupData.role);
+      // Show profile completion card if Ustaz, else go home
       if (signupData.role === "ustaz") {
-        localStorage.setItem("profileCompleted", "false");
         showProfileCard();
       } else {
-        localStorage.setItem("profileCompleted", "true");
         showHomeCard();
       }
-
     } else {
       showMessage(data.message || "Invalid or expired OTP");
     }
@@ -164,7 +152,7 @@ function showProfileCard() {
   card.classList.add("profile-active");
   card.classList.remove("otp-active");
   card.classList.remove("home-active");
-  scrollCardToTop();
+  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
 }
 
 // ===============================
@@ -187,11 +175,12 @@ function submitProfile() {
   signupData.profile = { gender, subjects, bio, photo, languages, mode, certification, landmark };
   console.log("Ustaz profile completed:", signupData.profile);
 
-  localStorage.setItem("profileCompleted", "true");
-
   successMessage("Profile completed successfully!");
   card.classList.remove("profile-active");
   showHomeCard();
+
+  // Optional: send to backend
+  // sendProfileToBackend(signupData);
 }
 
 // ===============================
@@ -202,7 +191,7 @@ function showHomeCard() {
   card.classList.remove("otp-active");
   card.classList.remove("profile-active");
   card.classList.remove("flipped");
-  scrollCardToTop();
+  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
 }
 
 // ===============================
@@ -211,8 +200,6 @@ function showHomeCard() {
 function logout() {
   card.classList.remove("home-active");
   card.classList.add("flipped");
-  localStorage.removeItem("role");
-  localStorage.removeItem("profileCompleted");
 }
 
 // ===============================
@@ -274,19 +261,10 @@ document.getElementById("role").addEventListener("change", function() {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
+  // Always start at login page
+  card.classList.remove("flipped", "otp-active", "home-active", "profile-active");
+
   document.getElementById("subcity").addEventListener("change", loadAreas);
-
-  // Restore last state
-  const role = localStorage.getItem("role");
-  const profileCompleted = localStorage.getItem("profileCompleted");
-
-  if (role === "ustaz" && profileCompleted === "false") {
-    showProfileCard();
-  } else if (role) {
-    showHomeCard();
-  } else {
-    card.classList.remove("flipped", "otp-active", "home-active", "profile-active");
-  }
 
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
