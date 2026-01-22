@@ -1,11 +1,36 @@
 // ===============================
-// CARD FLIP
+// CARD
 // ===============================
 const card = document.getElementById("card");
 
-function flipCard() {
-  card.classList.toggle("flipped");
-  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+// ===============================
+// GLOBAL STATE
+// ===============================
+let signupData = {};
+const BASE_URL =
+  "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/api";
+
+// ===============================
+// UTIL
+// ===============================
+function resetScroll() {
+  document.querySelectorAll(".card-content").forEach(c => (c.scrollTop = 0));
+}
+
+function resetSignupState() {
+  signupData = {};
+
+  card.classList.remove(
+    "otp-active",
+    "profile-active",
+    "home-active"
+  );
+
+  const otpInput = document.getElementById("otpInput");
+  if (otpInput) otpInput.value = "";
+
+  const signupBtn = document.querySelector("button[onclick='signup()']");
+  if (signupBtn) signupBtn.disabled = false;
 }
 
 // ===============================
@@ -27,10 +52,10 @@ function successMessage(msg) {
 }
 
 // ===============================
-// ETHIOPIAN PHONE VALIDATION
+// PHONE VALIDATION
 // ===============================
 function validateEthiopianPhone(phone) {
-  const p = phone.replace(/\s+/g, '');
+  const p = phone.replace(/\s+/g, "");
   if (/^0[79]\d{8}$/.test(p)) return "+251" + p.slice(1);
   if (/^\+251[79]\d{8}$/.test(p)) return p;
   return null;
@@ -40,31 +65,42 @@ function validateEthiopianPhone(phone) {
 // LOGIN
 // ===============================
 function login() {
-  const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
+  const phone = validateEthiopianPhone(
+    document.getElementById("loginPhone").value.trim()
+  );
   const pass = document.getElementById("loginPassword").value.trim();
-  if (!phone || !pass) return showMessage("Enter valid phone & password");
+
+  if (!phone || !pass)
+    return showMessage("Enter valid phone & password");
 
   successMessage("Login successful (demo)");
   showHomeCard();
 }
 
 // ===============================
+// OPEN SIGNUP (ALWAYS CLEAN)
+// ===============================
+function goToSignup() {
+  resetSignupState();
+  card.classList.add("flipped");
+  resetScroll();
+}
+
+// ===============================
 // SIGNUP → SEND OTP
 // ===============================
-let signupData = {};
-const BASE_URL = "https://b6d85591-5d99-43d5-8bb2-3ed838636e9e-00-bffsz574z1ei.spock.replit.dev/api";
-
 async function signup() {
   const role = document.getElementById("role").value;
   const name = document.getElementById("fullName").value.trim();
-  const phone = validateEthiopianPhone(document.getElementById("signupPhone").value.trim());
+  const phone = validateEthiopianPhone(
+    document.getElementById("signupPhone").value.trim()
+  );
   const subcity = document.getElementById("subcity").value;
   const area = document.getElementById("area").value;
   const pass = document.getElementById("signupPassword").value.trim();
 
-  if (!role || !name || !phone || !subcity || !area || !pass) {
+  if (!role || !name || !phone || !subcity || !area || !pass)
     return showMessage("Fill all signup fields correctly");
-  }
 
   let experience = null;
   let availableDays = [];
@@ -75,10 +111,20 @@ async function signup() {
       document.getElementById("availableDays").selectedOptions
     ).map(o => o.value);
 
-    if (!experience || availableDays.length === 0) return showMessage("Fill Ustaz experience and days");
+    if (!experience || availableDays.length === 0)
+      return showMessage("Fill Ustaz experience and days");
   }
 
-  signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
+  signupData = {
+    role,
+    name,
+    phone,
+    subcity,
+    area,
+    pass,
+    experience,
+    availableDays
+  };
 
   try {
     const res = await fetch(`${BASE_URL}/send_otp.php`, {
@@ -89,30 +135,31 @@ async function signup() {
 
     const data = await res.json();
 
-    if (data.success) {
-      successMessage("OTP sent!");
-      console.log("OTP (testing):", data.otp);
+    if (!data.success)
+      return showMessage(data.message || "Failed to send OTP");
 
-      document.querySelector("button[onclick='signup()']").disabled = true;
-      card.classList.add("otp-active");
-      card.classList.remove("flipped");
-    } else {
-      showMessage(data.message || "Failed to send OTP");
-    }
+    successMessage("OTP sent!");
+    console.log("OTP (testing):", data.otp);
+
+    document.querySelector("button[onclick='signup()']").disabled = true;
+
+    card.classList.add("otp-active");
+    card.classList.remove("flipped");
+    resetScroll();
   } catch (err) {
     showMessage("OTP error: " + err.message);
   }
 }
 
 // ===============================
-// VERIFY OTP → SHOW PROFILE OR HOME
+// VERIFY OTP
 // ===============================
 async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
 
   if (!signupData.phone) {
     showMessage("Session expired. Please sign up again.");
-    backToSignup();
+    goToSignup();
     return;
   }
 
@@ -127,18 +174,17 @@ async function verifyOtp() {
 
     const data = await res.json();
 
-    if (data.success) {
-      successMessage("OTP verified!");
-      resetOtp();
+    if (!data.success)
+      return showMessage(data.message || "Invalid or expired OTP");
 
-      // Show profile card only for Ustaz, else go home
-      if (signupData.role === "ustaz") {
-        showProfileCard();
-      } else {
-        showHomeCard();
-      }
+    successMessage("OTP verified!");
+
+    card.classList.remove("otp-active");
+
+    if (signupData.role === "ustaz") {
+      showProfileCard();
     } else {
-      showMessage(data.message || "Invalid or expired OTP");
+      showHomeCard();
     }
   } catch (err) {
     showMessage("Verification error: " + err.message);
@@ -146,21 +192,28 @@ async function verifyOtp() {
 }
 
 // ===============================
-// SHOW PROFILE COMPLETION CARD
+// PROFILE (USTAZ ONLY)
 // ===============================
 function showProfileCard() {
+  if (!signupData.phone || signupData.role !== "ustaz") {
+    showMessage("Please complete signup and OTP first");
+    goToSignup();
+    return;
+  }
+
   card.classList.add("profile-active");
-  card.classList.remove("otp-active");
   card.classList.remove("home-active");
-  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+  resetScroll();
 }
 
 // ===============================
-// SUBMIT USTAZ PROFILE
+// SUBMIT PROFILE
 // ===============================
 function submitProfile() {
   const gender = document.getElementById("gender").value;
-  const subjects = Array.from(document.querySelectorAll("#subjects input:checked")).map(cb => cb.value);
+  const subjects = Array.from(
+    document.querySelectorAll("#subjects input:checked")
+  ).map(cb => cb.value);
   const bio = document.getElementById("bio").value.trim();
   const photo = document.getElementById("photo").files[0];
   const languages = document.getElementById("languages").value.trim();
@@ -168,54 +221,43 @@ function submitProfile() {
   const certification = document.getElementById("certification").value.trim();
   const landmark = document.getElementById("landmark").value.trim();
 
-  if (!gender || subjects.length === 0 || !bio || !languages || !mode) {
-    return showMessage("Please fill all required fields in your profile");
-  }
+  if (!gender || !subjects.length || !bio || !languages || !mode)
+    return showMessage("Please fill all required profile fields");
 
-  signupData.profile = { gender, subjects, bio, photo, languages, mode, certification, landmark };
-  console.log("Ustaz profile completed:", signupData.profile);
+  signupData.profile = {
+    gender,
+    subjects,
+    bio,
+    photo,
+    languages,
+    mode,
+    certification,
+    landmark
+  };
+
+  console.log("Ustaz profile completed:", signupData);
 
   successMessage("Profile completed successfully!");
+
   card.classList.remove("profile-active");
   showHomeCard();
-
-  // TODO: Send profile to backend
 }
 
 // ===============================
-// SHOW HOME CARD
+// HOME
 // ===============================
 function showHomeCard() {
   card.classList.add("home-active");
-  card.classList.remove("otp-active");
-  card.classList.remove("profile-active");
   card.classList.remove("flipped");
-  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
+  resetScroll();
 }
 
 // ===============================
-// LOGOUT → BACK TO LOGIN
+// LOGOUT
 // ===============================
 function logout() {
-  card.classList.remove("home-active");
-  card.classList.add("flipped"); // back to signup/login
-}
-
-// ===============================
-// BACK / RESET OTP
-// ===============================
-function backToSignup() {
-  resetOtp();
-  card.classList.remove("otp-active");
+  resetSignupState();
   card.classList.add("flipped");
-}
-
-function resetOtp() {
-  const otpInput = document.getElementById("otpInput");
-  if (otpInput) otpInput.value = "";
-  const btn = document.querySelector("button[onclick='signup()']");
-  if (btn) btn.disabled = false;
-  card.classList.remove("otp-active");
 }
 
 // ===============================
@@ -238,7 +280,9 @@ function loadAreas() {
   const subcity = document.getElementById("subcity").value;
   const areaSelect = document.getElementById("area");
   areaSelect.innerHTML = '<option value="">Select Area</option>';
+
   if (!areas[subcity]) return;
+
   areas[subcity].forEach(a => {
     const opt = document.createElement("option");
     opt.value = a;
@@ -250,7 +294,7 @@ function loadAreas() {
 // ===============================
 // ROLE TOGGLE
 // ===============================
-document.getElementById("role").addEventListener("change", function() {
+document.getElementById("role").addEventListener("change", function () {
   document.getElementById("ustazFields").style.display =
     this.value === "ustaz" ? "block" : "none";
 });
@@ -259,11 +303,12 @@ document.getElementById("role").addEventListener("change", function() {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  // Always start from login
+  resetSignupState();
   card.classList.add("flipped");
-  card.classList.remove("otp-active", "profile-active", "home-active");
 
-  document.getElementById("subcity").addEventListener("change", loadAreas);
+  document
+    .getElementById("subcity")
+    .addEventListener("change", loadAreas);
 
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
