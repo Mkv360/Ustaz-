@@ -11,38 +11,39 @@ function flipCard() {
 // ===============================
 // ALERTS
 // ===============================
-function showMessage(msg) { 
-  if (window.Telegram?.WebApp) Telegram.WebApp.showAlert(msg); 
-  else alert(msg); 
+function showMessage(msg) {
+  if (window.Telegram?.WebApp) Telegram.WebApp.showAlert(msg);
+  else alert(msg);
 }
 
-function successMessage(msg) { 
+function successMessage(msg) {
   if (window.Telegram?.WebApp) {
-    Telegram.WebApp.showPopup({ 
-      title: "Success", 
-      message: msg, 
-      buttons: [{ type: "ok" }] 
-    }); 
-  } else alert(msg); 
+    Telegram.WebApp.showPopup({
+      title: "Success",
+      message: msg,
+      buttons: [{ type: "ok" }]
+    });
+  } else alert(msg);
 }
 
 // ===============================
 // ETHIOPIAN PHONE VALIDATION
 // ===============================
 function validateEthiopianPhone(phone) {
-  const p = phone.replace(/\s+/g,'');
+  const p = phone.replace(/\s+/g, '');
   if (/^0[79]\d{8}$/.test(p)) return "+251" + p.slice(1);
   if (/^\+251[79]\d{8}$/.test(p)) return p;
   return null;
 }
 
 // ===============================
-// LOGIN (demo)
+// LOGIN
 // ===============================
 function login() {
   const phone = validateEthiopianPhone(document.getElementById("loginPhone").value.trim());
   const pass = document.getElementById("loginPassword").value.trim();
   if (!phone || !pass) return showMessage("Enter valid phone & password");
+
   successMessage("Login successful (demo)");
   showHomeCard();
 }
@@ -74,8 +75,7 @@ async function signup() {
       document.getElementById("availableDays").selectedOptions
     ).map(o => o.value);
 
-    if (!experience || availableDays.length === 0)
-      return showMessage("Fill Ustaz experience and days");
+    if (!experience || availableDays.length === 0) return showMessage("Fill Ustaz experience and days");
   }
 
   signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
@@ -131,7 +131,7 @@ async function verifyOtp() {
       successMessage("OTP verified!");
       resetOtp();
 
-      // Show profile completion card if Ustaz, else go home
+      // Show profile card only for Ustaz, else go home
       if (signupData.role === "ustaz") {
         showProfileCard();
       } else {
@@ -179,8 +179,7 @@ function submitProfile() {
   card.classList.remove("profile-active");
   showHomeCard();
 
-  // Optional: send to backend
-  // sendProfileToBackend(signupData);
+  // TODO: Send profile to backend
 }
 
 // ===============================
@@ -199,7 +198,7 @@ function showHomeCard() {
 // ===============================
 function logout() {
   card.classList.remove("home-active");
-  card.classList.add("flipped");
+  card.classList.add("flipped"); // back to signup/login
 }
 
 // ===============================
@@ -212,7 +211,6 @@ function backToSignup() {
 }
 
 function resetOtp() {
-  signupData = {};
   const otpInput = document.getElementById("otpInput");
   if (otpInput) otpInput.value = "";
   const btn = document.querySelector("button[onclick='signup()']");
@@ -261,8 +259,9 @@ document.getElementById("role").addEventListener("change", function() {
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  // Always start at login page
-  card.classList.remove("flipped", "otp-active", "home-active", "profile-active");
+  // Always start from login
+  card.classList.add("flipped");
+  card.classList.remove("otp-active", "profile-active", "home-active");
 
   document.getElementById("subcity").addEventListener("change", loadAreas);
 
