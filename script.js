@@ -3,25 +3,33 @@
 // ===============================
 const card = document.getElementById("card");
 
-function showLogin() {
-  card.classList.remove("flipped", "otp-active", "home-active");
+// HARD RESET (important for Telegram)
+function resetUI() {
+  card.className = "card"; // removes ALL states
   scrollTopAll();
+}
+
+function showLogin() {
+  resetUI();
 }
 
 function showSignup() {
+  resetUI();
   card.classList.add("flipped");
-  card.classList.remove("otp-active", "home-active");
-  scrollTopAll();
+}
+
+function showOtp() {
+  resetUI();
+  card.classList.add("otp-active");
+}
+
+function showHome() {
+  resetUI();
+  card.classList.add("home-active");
 }
 
 function scrollTopAll() {
-  document.querySelectorAll(".card-content").forEach(c => c.scrollTop = 0);
-}
-
-// Used only for login ↔ signup switch
-function flipCard() {
-  card.classList.toggle("flipped");
-  scrollTopAll();
+  document.querySelectorAll(".card-content").forEach(c => (c.scrollTop = 0));
 }
 
 // ===============================
@@ -43,10 +51,10 @@ function successMessage(msg) {
 }
 
 // ===============================
-// ETHIOPIAN PHONE VALIDATION
+// PHONE VALIDATION
 // ===============================
 function validateEthiopianPhone(phone) {
-  const p = phone.replace(/\s+/g, '');
+  const p = phone.replace(/\s+/g, "");
   if (/^0[79]\d{8}$/.test(p)) return "+251" + p.slice(1);
   if (/^\+251[79]\d{8}$/.test(p)) return p;
   return null;
@@ -65,11 +73,11 @@ function login() {
     return showMessage("Enter valid phone & password");
 
   successMessage("Login successful (demo)");
-  showHomeCard();
+  showHome();
 }
 
 // ===============================
-// SIGNUP → SEND OTP
+// SIGNUP → OTP
 // ===============================
 let signupData = {};
 const BASE_URL =
@@ -85,24 +93,10 @@ async function signup() {
   const area = document.getElementById("area").value;
   const pass = document.getElementById("signupPassword").value.trim();
 
-  if (!role || !name || !phone || !subcity || !area || !pass) {
-    return showMessage("Fill all signup fields correctly");
-  }
+  if (!role || !name || !phone || !subcity || !area || !pass)
+    return showMessage("Fill all fields");
 
-  let experience = null;
-  let availableDays = [];
-
-  if (role === "ustaz") {
-    experience = document.getElementById("experience").value;
-    availableDays = Array.from(
-      document.getElementById("availableDays").selectedOptions
-    ).map(o => o.value);
-
-    if (!experience || availableDays.length === 0)
-      return showMessage("Fill Ustaz experience and days");
-  }
-
-  signupData = { role, name, phone, subcity, area, pass, experience, availableDays };
+  signupData = { phone };
 
   try {
     const res = await fetch(`${BASE_URL}/send_otp.php`, {
@@ -113,35 +107,22 @@ async function signup() {
 
     const data = await res.json();
 
-    if (data.success) {
-      successMessage("OTP sent!");
-      console.log("OTP (testing):", data.otp);
+    if (!data.success) throw new Error(data.message);
 
-      document.querySelector("button[onclick='signup()']").disabled = true;
-      card.classList.add("otp-active");
-      card.classList.remove("flipped");
-      scrollTopAll();
-    } else {
-      showMessage(data.message || "Failed to send OTP");
-    }
+    console.log("OTP (testing):", data.otp);
+    showOtp();
   } catch (err) {
-    showMessage("OTP error: " + err.message);
+    showMessage(err.message);
   }
 }
 
 // ===============================
-// VERIFY OTP → HOME
+// VERIFY OTP
 // ===============================
 async function verifyOtp() {
   const otp = document.getElementById("otpInput").value.trim();
-
-  if (!signupData.phone) {
-    showMessage("Session expired. Please sign up again.");
-    backToSignup();
-    return;
-  }
-
-  if (!otp) return showMessage("Enter the OTP");
+  if (!otp || !signupData.phone)
+    return showMessage("Invalid session");
 
   try {
     const res = await fetch(`${BASE_URL}/verify_otp.php`, {
@@ -152,101 +133,67 @@ async function verifyOtp() {
 
     const data = await res.json();
 
-    if (data.success) {
-      successMessage("OTP verified!");
-      resetOtp();
-      showHomeCard();
-    } else {
-      showMessage(data.message || "Invalid or expired OTP");
-    }
+    if (!data.success) throw new Error(data.message);
+
+    successMessage("Account created!");
+    signupData = {};
+    showLogin();
   } catch (err) {
-    showMessage("Verification error: " + err.message);
+    showMessage(err.message);
   }
 }
 
 // ===============================
-// HOME
+// NAVIGATION
 // ===============================
-function showHomeCard() {
-  card.classList.add("home-active");
-  card.classList.remove("otp-active", "flipped");
-  scrollTopAll();
+function flipCard() {
+  card.classList.toggle("flipped");
 }
 
-// ===============================
-// LOGOUT → LOGIN
-// ===============================
-function logout() {
-  resetOtp();
-  showLogin();
-}
-
-// ===============================
-// BACK FROM OTP → SIGNUP
-// ===============================
 function backToSignup() {
-  resetOtp();
+  signupData = {};
   showSignup();
 }
 
-function resetOtp() {
-  signupData = {};
-  const otpInput = document.getElementById("otpInput");
-  if (otpInput) otpInput.value = "";
-
-  const btn = document.querySelector("button[onclick='signup()']");
-  if (btn) btn.disabled = false;
-
-  card.classList.remove("otp-active");
+function logout() {
+  showLogin();
 }
 
 // ===============================
 // SUBCITY → AREA
 // ===============================
 const areas = {
-  bole: ["Bole Medhanealem","Gerji","Edna Mall","Welo Sefer","Japan","Rwanda","Michael","CMC","Bulbula"],
-  yeka: ["Megenagna","Kotebe","Summit","Ayat","Shola"],
-  kirkos: ["Kazanchis","Mexico","Meskel Flower","Sar Bet"],
-  lideta: ["Lideta","Abinet","Tor Hailoch","Balcha Hospital"],
-  arada: ["Piazza","Arat Kilo","Sidist Kilo"],
-  addisketema: ["Merkato","Sebategna","Alem Bank"],
-  nifassilk: ["Jemo","Lancha","Sar Bet"],
-  kolfe: ["Kolfe","Asko","Alem Bank"],
-  akakikaliti: ["Akaki","Kality"],
-  gullele: ["Shiro Meda","Entoto"]
+  bole: ["Bole Medhanealem", "Gerji", "Edna Mall"],
+  yeka: ["Megenagna", "Kotebe"],
+  kirkos: ["Kazanchis", "Mexico"]
 };
 
 function loadAreas() {
   const subcity = document.getElementById("subcity").value;
-  const areaSelect = document.getElementById("area");
-  areaSelect.innerHTML = '<option value="">Select Area</option>';
-  if (!areas[subcity]) return;
-
-  areas[subcity].forEach(a => {
-    const opt = document.createElement("option");
-    opt.value = a;
-    opt.textContent = a;
-    areaSelect.appendChild(opt);
+  const area = document.getElementById("area");
+  area.innerHTML = '<option value="">Select Area</option>';
+  (areas[subcity] || []).forEach(a => {
+    const o = document.createElement("option");
+    o.value = a;
+    o.textContent = a;
+    area.appendChild(o);
   });
 }
 
 // ===============================
-// ROLE TOGGLE
-// ===============================
-document.getElementById("role").addEventListener("change", function () {
-  document.getElementById("ustazFields").style.display =
-    this.value === "ustaz" ? "block" : "none";
-});
-
-// ===============================
-// INIT
+// INIT (CRITICAL FIX)
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  showLogin();
+  resetUI(); // 🔥 FORCE RESET ALWAYS
+
   document.getElementById("subcity").addEventListener("change", loadAreas);
 
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
+
+    // 🔥 Telegram resume fix
+    setTimeout(resetUI, 50);
+    setTimeout(resetUI, 200);
   }
 });
